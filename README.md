@@ -101,10 +101,10 @@ COL#{3:n}     = FEATURES (Number)
 
 There are (i) one exploration dataset, and, (ii) two different characterization datasets provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory. 
 
-*(i) Exploration dataset: It consists of 7 compiler exploration (mentioned in the COBAYN's paper) with 24 applications from [Cbench] (http://ctuning.org/wiki/index.php?title=CTools:CBench) suite. Each application has been evaluated with 5 different datasets for its execution time and code-size.
+*(i) Exploration dataset: It consists of 7 compiler exploration (mentioned in the COBAYN's paper) with 24 applications from [Cbench](http://ctuning.org/wiki/index.php?title=CTools:CBench) suite. Each application has been evaluated with 5 different datasets for its execution time and code-size.
 
 
-*(ii) Characterization datasets are derived with [MICA] (https://github.com/boegel/MICA) (dynamic instrumentation) and [Milepost] (https://github.com/ctuning/reproduce-milepost-project) (static characterization).
+*(ii) Characterization datasets are derived with [MICA](https://github.com/boegel/MICA) (dynamic instrumentation) and [Milepost](https://github.com/ctuning/reproduce-milepost-project) (static characterization).
 
 
 
