@@ -121,10 +121,10 @@ In order to train the COBAYN BN network, you should follow these steps:
 ##  Testing COBAYN (Inference)
 ```
 Cross-validation Mode
->>predictionTableGenerator.m  // predicts per application and generates --> COBAYN structure
+>>predictionTableGenerator.m  // predicts per application and generates --> Generates COBAYN prediction matlab structure
 
 Standalone Test 
-Not available in the current project.
+Currently not available.
 ```
 
 #### Original Bayesian network package in Matlab: 
