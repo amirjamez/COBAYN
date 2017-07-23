@@ -1,5 +1,5 @@
 # COBAYN: Compiler Autotuning Framework Using Bayesian Networks
-COBAYN is partialy funded by [ANTAREX](antarex-project.eu) European project. 
+COBAYN is partialy funded by [ANTAREX](http://antarex-project.eu) European project. 
 ```
 All rights reserved for the author. 
 Any non-academic usage of COBAYN must be permitted by the author.
@@ -131,4 +131,4 @@ pages={1--30},
 year={2010}
 }
 ```
-# COBAYN
+# COBAYN 2016-2017
