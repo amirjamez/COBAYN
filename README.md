@@ -142,4 +142,11 @@ year={2010}
 }
 ```
 # COBAYN 2016-2017 
-Amir H. Ashouri
+```
+All rights reserved for the author. 
+Any non-academic usage of COBAYN must be permitted by the author.
+
+v1.0 July 2017              
+Amir H. Ashouri             
+aashouri@ece.utoronto.ca
+```
