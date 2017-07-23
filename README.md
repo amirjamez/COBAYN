@@ -10,8 +10,7 @@ aashouri@ece.utoronto.ca
 ```
 
 
-
-This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. There are one exploration dataset and two different characterization dataset provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory.
+This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. 
 
 ## Reference Journal
 For the details of the methodology, [COBAYN](http://dl.acm.org/citation.cfm?id=2928270) can be found at ACM digital library.
@@ -73,7 +72,7 @@ based on you need as you have to mention the following:
 - pick 1-5 and comment it out
 ```
 
-### 1- Importing the files 
+### Importing the files 
 
 *Exploration Data set:
 Your input dataset.csv must be a N columns csv file and  conformed to the following structure:
@@ -98,7 +97,18 @@ COL#{2}       = DATA_SET_No (i.e: dataset1)
 COL#{3:n}     = FEATURES (Number)
 ```
 
-* Training the BN:
+### Provided datasets
+
+There are (i) one exploration dataset, and, (ii) two different characterization datasets provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory. 
+
+*(i) Exploration dataset: It consists of 7 compiler exploration (mentioned in the COBAYN's paper) with 24 applications from [Cbench] (http://ctuning.org/wiki/index.php?title=CTools:CBench) suite. Each application has been evaluated with 5 different datasets for its execution time and code-size.
+
+
+*(ii) Characterization datasets are derived with [MICA] (https://github.com/boegel/MICA) (dynamic instrumentation) and [Milepost] (https://github.com/ctuning/reproduce-milepost-project) (static characterization).
+
+
+
+## Training COBAYN:
 In order to train the COBAYN BN network, you should follow these steps:
 
 ```
@@ -107,7 +117,8 @@ In order to train the COBAYN BN network, you should follow these steps:
 >>generateModels.m  // trains COBAYN
 ```
 
-##  4- Testing the BN (Inference)
+
+##  Testing COBAYN (Inference)
 ```
 Cross-validation Mode
 >>predictionTableGenerator.m  // predicts per application and generates --> COBAYN structure
