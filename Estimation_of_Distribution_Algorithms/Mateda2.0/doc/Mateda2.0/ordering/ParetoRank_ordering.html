@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ParetoRank_ordering</title>
+  <meta name="keywords" content="ParetoRank_ordering">
+  <meta name="description" content="[Index]=ParetoRank_ordering(Pop,FunVal)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">ordering</a> &gt; ParetoRank_ordering.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ordering&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ParetoRank_ordering
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[Index]=ParetoRank_ordering(Pop,FunVal)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[Index]=ParetoRank_ordering(Pop,FunVal) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Index]=ParetoRank_ordering(Pop,FunVal)
+ ParetoRank_ordering:        Individuals are firstly ordered according to the front they belong to. 
+                             Then, in each front, they are ordered according to the average rank of
+                             their fitness functions (see Pareto_ordering and fitness_ordering
+                             for details)
+                             The first front (non-dominated solutions) come first. Then individuals that are only
+                             dominated by those in the first front and so on. 
+ INPUTS 
+ Pop:                 Population
+ FunVal:              A matrix of function evaluations, one vector of m objectives for each individual
+ OUTPUTS
+ Index: Ordered index of the individuals in the population
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="fitness_ordering.html" class="code" title="function[Index]=fitness_ordering(Pop,FunVal)">fitness_ordering</a>	[Index]=fitness_ordering(Pop,FunVal)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Index]=ParetoRank_ordering(Pop,FunVal)</a>
+0002 <span class="comment">% [Index]=ParetoRank_ordering(Pop,FunVal)</span>
+0003 <span class="comment">% ParetoRank_ordering:        Individuals are firstly ordered according to the front they belong to.</span>
+0004 <span class="comment">%                             Then, in each front, they are ordered according to the average rank of</span>
+0005 <span class="comment">%                             their fitness functions (see Pareto_ordering and fitness_ordering</span>
+0006 <span class="comment">%                             for details)</span>
+0007 <span class="comment">%                             The first front (non-dominated solutions) come first. Then individuals that are only</span>
+0008 <span class="comment">%                             dominated by those in the first front and so on.</span>
+0009 <span class="comment">% INPUTS</span>
+0010 <span class="comment">% Pop:                 Population</span>
+0011 <span class="comment">% FunVal:              A matrix of function evaluations, one vector of m objectives for each individual</span>
+0012 <span class="comment">% OUTPUTS</span>
+0013 <span class="comment">% Index: Ordered index of the individuals in the population</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0016 
+0017    PopSize = size(Pop,1);
+0018    number_objectives = size(FunVal,2);
+0019    Ind = [1:PopSize];
+0020    nfronts = 0;
+0021   <span class="comment">% First, Pareto_ordering is applied to identify the fronts</span>
+0022   
+0023   <span class="keyword">while</span> ~isempty(Ind) 
+0024    last = size(Ind,2);
+0025    DomPop = zeros(1,last);
+0026    <span class="keyword">for</span> i=1:last-1
+0027     <span class="keyword">for</span> j=i+1:last,
+0028       <span class="keyword">if</span>(sum(FunVal(Ind(i),:)&gt;=FunVal(Ind(j),:))==number_objectives)
+0029         DomPop(j) = DomPop(j) + 1;
+0030       <span class="keyword">elseif</span>(sum(FunVal(Ind(j),:)&gt;=FunVal(Ind(i),:))==number_objectives)      
+0031         DomPop(i) = DomPop(i) + 1;  
+0032       <span class="keyword">end</span>,
+0033     <span class="keyword">end</span>
+0034    <span class="keyword">end</span>
+0035    NonDom = Ind(find(DomPop==0));
+0036    nfronts = nfronts + 1;
+0037    Front{nfronts} = NonDom;
+0038    Ind = setdiff(Ind,NonDom);
+0039   <span class="keyword">end</span>,
+0040   
+0041   <span class="comment">% Solution in each front are ordered according to the rank</span>
+0042   Index = [];
+0043   <span class="keyword">for</span> i=1:nfronts
+0044    [AuxIndex]=<a href="fitness_ordering.html" class="code" title="function[Index]=fitness_ordering(Pop,FunVal)">fitness_ordering</a>(Pop(Front{i},:),FunVal(Front{i},:));
+0045    Index = [Index,Front{i}(AuxIndex)];
+0046   <span class="keyword">end</span>
+0047    
+0048  <span class="keyword">return</span>
+0049  
+0050    
+0051    
+0052</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

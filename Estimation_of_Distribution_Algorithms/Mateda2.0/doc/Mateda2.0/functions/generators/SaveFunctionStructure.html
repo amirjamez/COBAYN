@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of SaveFunctionStructure</title>
+  <meta name="keywords" content="SaveFunctionStructure">
+  <meta name="description" content="SaveFunctionStructure(filename,NumberVar,ListFactors,Card)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">generators</a> &gt; SaveFunctionStructure.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/generators&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>SaveFunctionStructure
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>SaveFunctionStructure(filename,NumberVar,ListFactors,Card)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function SaveFunctionStructure(filename,NumberVar,ListFactors,Card) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> SaveFunctionStructure(filename,NumberVar,ListFactors,Card)
+
+ SaveFunctionStructure:   Saves the structure of a function in the form of a factor graph 
+                       The factor graph has two classes of nodes variable
+                       nodes and factor nodes. Each variable node should
+                       be associated to at least one factor node and
+                       viceversa. There each one edge from each variable
+                       node to the factor it belongs to.
+ INPUTS
+ filename:  Name of file 
+ NumberVar: Number of variables
+ ListFactors: Each  cell {i} stores the numb variables in the factor (k+1), the
+              current variable (i), and its k neighbors
+ Card: Cardinality of the variables
+ OUTPUTS
+ file of name 'filename' with the following format:
+
+    Total number of nodes
+    Total number of variable  nodes
+    for i=1 to Total number of variables nodes
+      Variable node (for C compatibility i-1 instead of i is printed to the file) 
+      Cardinality of variable node i
+    end
+    Number of edges in the factor graph
+    for i=1 to Total number of edges
+      variable node incident to  edge i
+      factor node incident to  edge i
+    end
+
+ Last version 8/26/2008. Alex Mendiburu and Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="AllNKInstances.html" class="code" title="function  AllNKInstances(NumberVar,k,Number_Inst,nam)">AllNKInstances</a>	AllNKInstances(NumberVar,k,Number_Inst,nam)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function SaveFunctionStructure(filename,NumberVar,ListFactors,Card)</a>
+0002 <span class="comment">% SaveFunctionStructure(filename,NumberVar,ListFactors,Card)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% SaveFunctionStructure:   Saves the structure of a function in the form of a factor graph</span>
+0005 <span class="comment">%                       The factor graph has two classes of nodes variable</span>
+0006 <span class="comment">%                       nodes and factor nodes. Each variable node should</span>
+0007 <span class="comment">%                       be associated to at least one factor node and</span>
+0008 <span class="comment">%                       viceversa. There each one edge from each variable</span>
+0009 <span class="comment">%                       node to the factor it belongs to.</span>
+0010 <span class="comment">% INPUTS</span>
+0011 <span class="comment">% filename:  Name of file</span>
+0012 <span class="comment">% NumberVar: Number of variables</span>
+0013 <span class="comment">% ListFactors: Each  cell {i} stores the numb variables in the factor (k+1), the</span>
+0014 <span class="comment">%              current variable (i), and its k neighbors</span>
+0015 <span class="comment">% Card: Cardinality of the variables</span>
+0016 <span class="comment">% OUTPUTS</span>
+0017 <span class="comment">% file of name 'filename' with the following format:</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%    Total number of nodes</span>
+0020 <span class="comment">%    Total number of variable  nodes</span>
+0021 <span class="comment">%    for i=1 to Total number of variables nodes</span>
+0022 <span class="comment">%      Variable node (for C compatibility i-1 instead of i is printed to the file)</span>
+0023 <span class="comment">%      Cardinality of variable node i</span>
+0024 <span class="comment">%    end</span>
+0025 <span class="comment">%    Number of edges in the factor graph</span>
+0026 <span class="comment">%    for i=1 to Total number of edges</span>
+0027 <span class="comment">%      variable node incident to  edge i</span>
+0028 <span class="comment">%      factor node incident to  edge i</span>
+0029 <span class="comment">%    end</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% Last version 8/26/2008. Alex Mendiburu and Roberto Santana (roberto.santana@ehu.es)</span>
+0032 
+0033 
+0034 totfactors = size(ListFactors,2);
+0035 totnodes = totfactors + NumberVar;
+0036 
+0037 membership = zeros(1,NumberVar); <span class="comment">% In how many factors is each variable</span>
+0038 
+0039 <span class="keyword">for</span> i=1:totfactors,     
+0040   sizefactor = size(ListFactors{i},2);    <span class="comment">% Size of factor i</span>
+0041   <span class="keyword">for</span> j=1:sizefactor,
+0042      membership(ListFactors{i}(j)) = membership(ListFactors{i}(j)) + 1;
+0043   <span class="keyword">end</span>, 
+0044 <span class="keyword">end</span>,
+0045 NumberEdges = sum(membership);
+0046 
+0047 fid = fopen(filename,<span class="string">'wt'</span>);
+0048  
+0049 fprintf(fid,<span class="string">'%d \n'</span>,totnodes);  <span class="comment">% Total number of nodes</span>
+0050 fprintf(fid,<span class="string">'%d \n'</span>,NumberVar); <span class="comment">% Total number of variable  nodes</span>
+0051   
+0052  <span class="keyword">for</span> i=1:NumberVar,              <span class="comment">% Each variable node and its cardinality</span>
+0053    fprintf(fid,<span class="string">'%d  \n'</span>,i-1);    
+0054    fprintf(fid,<span class="string">'%d  \n'</span>, Card(i));
+0055  <span class="keyword">end</span>,
+0056 
+0057 fprintf(fid,<span class="string">'%d \n'</span>,NumberEdges); <span class="comment">% Number of edges in the factor graph</span>
+0058 
+0059 <span class="keyword">for</span> i=1:totfactors,      <span class="comment">% All the edges are printed</span>
+0060   sizefactor = size(ListFactors{i},2); 
+0061   <span class="keyword">for</span> j=1:sizefactor,
+0062   fprintf(fid,<span class="string">'%d  \n'</span>,ListFactors{i}(j)-1);
+0063   fprintf(fid,<span class="string">'%d  \n'</span>,NumberVar+i-1);
+0064   <span class="keyword">end</span>, 
+0065 <span class="keyword">end</span>,
+0066 
+0067 fclose(fid);
+0068</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

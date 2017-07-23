@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Probability_monitor</title>
+  <meta name="keywords" content="Probability_monitor">
+  <meta name="description" content="function [Probs] =  Probability_monitor(bnets, point)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">knowledge_extraction</a> &gt; Probability_monitor.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>Probability_monitor
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Probs] =  Probability_monitor(bnets, point)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Probs] =  Probability_monitor(bnets, point) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function [Probs] =  Probability_monitor(bnets, point)
+
+ Probability_monitor: Computes the probability given by the models to a given point along the generations.
+                      For example, it is useful to calculate the probability of the
+                      optimum point during the search if it is known. 
+                      Nevertheless, it is also useful to calculate the probability of different interesting points such as 
+                      suboptimals. 
+ INPUT
+ bnets{maxgen}: Cell array that stores the Bayesian networks learned at
+                each generation. It is obtained from Cache{3,:}
+ point: Array with the point whose probability will  be computed. For example the
+        optimum point
+
+
+ OUTPUT
+ Probs: An array with the probability for the given point at each
+        generation. The values are in logarithmic scale. 
+
+ Example: (If the algorithm have reached the optimum (it is known))
+ optimal_point = AllStat{maxgen,2}
+ for i=1:maxgen
+   bnets{i}=Cache{3,i};
+ end
+ [P] = Probability_monitor(bnets, optimal_point);</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/ScriptsMateda/FitnessModScripts/BN_MPCsFitness.html" class="code" title="">BN_MPCsFitness</a>	EXAMPLE 5:</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Probs] =  Probability_monitor(bnets, point)</a>
+0002 
+0003 <span class="comment">% function [Probs] =  Probability_monitor(bnets, point)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Probability_monitor: Computes the probability given by the models to a given point along the generations.</span>
+0006 <span class="comment">%                      For example, it is useful to calculate the probability of the</span>
+0007 <span class="comment">%                      optimum point during the search if it is known.</span>
+0008 <span class="comment">%                      Nevertheless, it is also useful to calculate the probability of different interesting points such as</span>
+0009 <span class="comment">%                      suboptimals.</span>
+0010 <span class="comment">% INPUT</span>
+0011 <span class="comment">% bnets{maxgen}: Cell array that stores the Bayesian networks learned at</span>
+0012 <span class="comment">%                each generation. It is obtained from Cache{3,:}</span>
+0013 <span class="comment">% point: Array with the point whose probability will  be computed. For example the</span>
+0014 <span class="comment">%        optimum point</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% OUTPUT</span>
+0018 <span class="comment">% Probs: An array with the probability for the given point at each</span>
+0019 <span class="comment">%        generation. The values are in logarithmic scale.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% Example: (If the algorithm have reached the optimum (it is known))</span>
+0022 <span class="comment">% optimal_point = AllStat{maxgen,2}</span>
+0023 <span class="comment">% for i=1:maxgen</span>
+0024 <span class="comment">%   bnets{i}=Cache{3,i};</span>
+0025 <span class="comment">% end</span>
+0026 <span class="comment">% [P] = Probability_monitor(bnets, optimal_point);</span>
+0027 
+0028 <span class="comment">% Last version 5/11/2008. Carlos Echegoyen and Roberto Santana (carlos.echegoyen@ehu.es)</span>
+0029 
+0030 k = size(bnets,2);                   <span class="comment">% Number of networks</span>
+0031 num_vars = size(bnets{1}.dnodes,2);  <span class="comment">% Number of variables</span>
+0032 
+0033 <span class="keyword">for</span> j=1:num_vars
+0034     point_cell{j} = point(j)+1;
+0035 <span class="keyword">end</span>
+0036 
+0037 <span class="keyword">for</span> i=1:k
+0038     engine = jtree_inf_engine(bnets{i});
+0039     [eng, loglik_point]=enter_evidence(engine,point_cell);
+0040     Probs(i) = exp(loglik_point);
+0041 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

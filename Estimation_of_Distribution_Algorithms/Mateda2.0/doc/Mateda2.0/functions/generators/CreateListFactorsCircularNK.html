@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of CreateListFactorsCircularNK</title>
+  <meta name="keywords" content="CreateListFactorsCircularNK">
+  <meta name="description" content="[ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">generators</a> &gt; CreateListFactorsCircularNK.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/generators&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>CreateListFactorsCircularNK
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [ListFactors] =  CreateListFactorsCircularNK(NumberVar,k) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)
+ CreateListFactorsCircularNK:   Creates the structure of an instance of the NK landscape 
+                                where each variable depends on its k/2
+                                previous and k/2 subsequent neighbors in a
+                                circular way
+ INPUTS
+ NumbVar: Number of variables 
+ k: Number of neighbors (0&lt;k&lt;NumbVar)
+ OUTPUTS
+ ListFactors: Each  cell {i} stores the current variable (i), and its k neighbors
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/ScriptsMateda/FitnessModScripts/BN_Prediction.html" class="code" title="">BN_Prediction</a>	EXAMPLE 2: Evaluation of the prediction capability of the models</li><li><a href="../../../Mateda2.0/ScriptsMateda/OptimizationScripts/DefaultEDA_NKRandom.html" class="code" title="">DefaultEDA_NKRandom</a>	EXAMPLE 9:  Bayesian tree for a multiobjective function of the NK random</li><li><a href="../../../Mateda2.0/ScriptsMateda/OptimizationScripts/EBNA_PLS_MPC_NKRandom.html" class="code" title="">EBNA_PLS_MPC_NKRandom</a>	EXAMPLE 16:</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)</a>
+0002 <span class="comment">% [ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)</span>
+0003 <span class="comment">% CreateListFactorsCircularNK:   Creates the structure of an instance of the NK landscape</span>
+0004 <span class="comment">%                                where each variable depends on its k/2</span>
+0005 <span class="comment">%                                previous and k/2 subsequent neighbors in a</span>
+0006 <span class="comment">%                                circular way</span>
+0007 <span class="comment">% INPUTS</span>
+0008 <span class="comment">% NumbVar: Number of variables</span>
+0009 <span class="comment">% k: Number of neighbors (0&lt;k&lt;NumbVar)</span>
+0010 <span class="comment">% OUTPUTS</span>
+0011 <span class="comment">% ListFactors: Each  cell {i} stores the current variable (i), and its k neighbors</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0014 <span class="keyword">for</span> i=1:NumberVar,
+0015  ActualNeighbors = [i-k/2:i-1,i+1:i+k/2];
+0016  ind = find(ActualNeighbors&lt;=0);
+0017  <span class="keyword">if</span> ~isempty(ind)
+0018   ActualNeighbors(ind) = ActualNeighbors(ind) + NumberVar;
+0019  <span class="keyword">end</span>
+0020  ind = find(ActualNeighbors&gt;NumberVar);
+0021  <span class="keyword">if</span> ~isempty(ind)
+0022   ActualNeighbors(ind) = ActualNeighbors(ind) - NumberVar;
+0023  <span class="keyword">end</span>
+0024  ListFactors{i} = [i,ActualNeighbors];
+0025 <span class="keyword">end</span>,</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

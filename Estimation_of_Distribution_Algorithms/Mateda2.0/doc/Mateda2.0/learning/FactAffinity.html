@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FactAffinity</title>
+  <meta name="keywords" content="FactAffinity">
+  <meta name="description" content="[Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">learning</a> &gt; FactAffinity.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/learning&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>FactAffinity
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)
+ FactAffinity:   Finds a set of cliques from a matrix of mutual information
+                using affinity propagation
+ INPUTS:
+ NumbVar: Number of variables
+ dim: Number of previous variables each variables depends on 
+ OUTPUTS:
+ Cliques: Structure of the model in a list of cliques that defines the (chain shaped)  junction tree. 
+          Each row of Cliques is a clique. The first value is the number of overlapping variables. 
+          The second, is the number of new variables.
+          Then, overlapping variables are listed and  finally new variables are listed.
+ Last version 8/26/2008. Roberto Santana and Siddarta Shakya (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="FactAffinity.html" class="code" title="function [Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)">FactAffinity</a>	[Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)</li><li><a href="../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>	This program has been downloaded from</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="FactAffinity.html" class="code" title="function [Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)">FactAffinity</a>	[Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)</a>
+0002 <span class="comment">% [Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)</span>
+0003 <span class="comment">% FactAffinity:   Finds a set of cliques from a matrix of mutual information</span>
+0004 <span class="comment">%                using affinity propagation</span>
+0005 <span class="comment">% INPUTS:</span>
+0006 <span class="comment">% NumbVar: Number of variables</span>
+0007 <span class="comment">% dim: Number of previous variables each variables depends on</span>
+0008 <span class="comment">% OUTPUTS:</span>
+0009 <span class="comment">% Cliques: Structure of the model in a list of cliques that defines the (chain shaped)  junction tree.</span>
+0010 <span class="comment">%          Each row of Cliques is a clique. The first value is the number of overlapping variables.</span>
+0011 <span class="comment">%          The second, is the number of new variables.</span>
+0012 <span class="comment">%          Then, overlapping variables are listed and  finally new variables are listed.</span>
+0013 <span class="comment">% Last version 8/26/2008. Roberto Santana and Siddarta Shakya (roberto.santana@ehu.es)</span>
+0014 
+0015 
+0016 <span class="keyword">if</span> deep&gt;=10
+0017    MI = MI + rand(size(MI)); 
+0018 <span class="keyword">end</span>
+0019 deep = deep + 1;
+0020 n = size(MI,1);
+0021  vars
+0022 [idx,netsim,dpsim,expref]=<a href="../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>(MI,p); <span class="comment">%Find the clusters of the MI matrix</span>
+0023 Cliques = [];
+0024 nclusters = length(unique(idx));
+0025 exemplars = unique(idx);
+0026 <span class="keyword">for</span> i=1:nclusters
+0027  clusters{i} = find(idx==exemplars(i));
+0028  clustsize = size(clusters{i},1);
+0029  <span class="keyword">if</span>(clustsize&gt;sizeconstraint)
+0030     MI1 = MI(:,clusters{i});
+0031     MI1 = MI1(clusters{i},:);
+0032     p=  (max(MI1(:))-min(MI1(:)))*rand();  <span class="comment">% Set preference to median similarity</span>
+0033     olddeep = deep;
+0034     [Cliques1,deep]=<a href="FactAffinity.html" class="code" title="function [Cliques,deep]=FactAffinity(MI,vars,sizeconstraint,p,deep)">FactAffinity</a>(MI1,vars(clusters{i}'),sizeconstraint,p,deep);
+0035     deep = olddeep;
+0036    Cliques = [Cliques;Cliques1];
+0037  <span class="keyword">else</span>
+0038    <span class="comment">%vars(clusters{i}')'</span>
+0039    Cliq = [0,clustsize,vars(clusters{i}'),zeros(1,sizeconstraint+2-clustsize)];
+0040    Cliques = [Cliques;Cliq];
+0041  <span class="keyword">end</span>
+0042 <span class="keyword">end</span> 
+0043 
+0044 
+0045 
+0046 
+0047 
+0048 
+0049 
+0050 
+0051 
+0052</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

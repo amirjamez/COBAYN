@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of InitEnvironments</title>
+  <meta name="keywords" content="InitEnvironments">
+  <meta name="description" content="[] = InitEnvironments()">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mateda2.0</a> &gt; InitEnvironments.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>InitEnvironments
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>[] = InitEnvironments()</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function[] = InitEnvironments() </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [] = InitEnvironments()
+
+ InitEnvironments:           Initialize the environment of mateda
+                   After installing the BNT, BNT_SLP learning matlab, and
+                   mateda toolboxs, update the paths below according the
+                   location of the programs in your computer.             
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[] = InitEnvironments()</a>
+0002 <span class="comment">% [] = InitEnvironments()</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% InitEnvironments:           Initialize the environment of mateda</span>
+0005 <span class="comment">%                   After installing the BNT, BNT_SLP learning matlab, and</span>
+0006 <span class="comment">%                   mateda toolboxs, update the paths below according the</span>
+0007 <span class="comment">%                   location of the programs in your computer.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0010 
+0011 path_mateda =  <span class="string">'/home/rsantana/Work/Centro/Matlab/Mateda2.0'</span>;
+0012 path_FullBNT = <span class="string">'/home/rsantana/Work/Centro/Matlab/FullBNT-1.0.4'</span>;
+0013 path_BNT_SLP = <span class="string">'/home/rsantana/Work/Centro/Matlab/BNT_SLP'</span>;
+0014 
+0015 <span class="comment">%path_mateda =  'C:\Roberto\Centro\Matlab\Mateda2.0';</span>
+0016 <span class="comment">%path_FullBNT = 'C:\Roberto\Centro\Matlab\FullBNT-1.0.4\FullBNT-1.0.4';</span>
+0017 <span class="comment">%path_BNT_SLP = 'C:\Roberto\Centro\Matlab\FullBNT-1.0.4\BNT_StructureLearning_v1[1].4c\BNT_SLP';</span>
+0018 
+0019 
+0020    cd(path_FullBNT);
+0021    addpath(genpathKPM(pwd));
+0022    cd(path_BNT_SLP);
+0023    add_SLP;   
+0024 
+0025 
+0026 P = genpath(path_mateda);
+0027 addpath(P);
+0028 cd(path_mateda);
+0029 
+0030 
+0031 
+0032 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

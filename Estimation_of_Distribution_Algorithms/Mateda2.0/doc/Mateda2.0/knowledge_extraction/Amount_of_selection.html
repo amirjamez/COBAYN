@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Amount_of_selection</title>
+  <meta name="keywords" content="Amount_of_selection">
+  <meta name="description" content="[S] = Amount_of_selection(AllFunVals,AllSelFunVals)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">knowledge_extraction</a> &gt; Amount_of_selection.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>Amount_of_selection
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[S] = Amount_of_selection(AllFunVals,AllSelFunVals)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[S] = Amount_of_selection(AllFunVals,AllSelFunVals) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [S] = Amount_of_selection(AllFunVals,AllSelFunVals) 
+ Response_to_selection: Computes the amount of selection for every
+                        objective $S(t) = \bar{f}_{s}(t) -\bar{f}(t+1)$.
+
+ INPUT
+ AllFunVals{maxgen} = FunVals(PopSize,n_objectives): Cell array that stores the evaluations of all the objectives
+                                                     for all the individuals in every generation
+ AllSelFunVals{maxgen} = FunVals(PopSize,n_objectives): Cell array that stores the evaluations of all the objectives
+                                                     for the selected  individuals in every generation
+  OUTPUT
+  S: Amount of selection at each generation k&gt;1
+  Example:
+  for i=1:ngen, auxr{1,i} = Cache{4,i}; auxs{1,i} = Cache{5,i}; end,
+  [S] = Amount_of_selection(auxr,auxs)
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/ScriptsMateda/AnalysisScripts/FitnessMeasuresComp.html" class="code" title="">FitnessMeasuresComp</a>	%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</li><li><a href="Realized_heritability.html" class="code" title="function[b] = Realized_heritability(AllFunVals,AllSelFunVals)">Realized_heritability</a>	[b] = Realized_heritability(AllFunVals,AllSelFunVals)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[S] = Amount_of_selection(AllFunVals,AllSelFunVals) </a>
+0002 <span class="comment">% [S] = Amount_of_selection(AllFunVals,AllSelFunVals)</span>
+0003 <span class="comment">% Response_to_selection: Computes the amount of selection for every</span>
+0004 <span class="comment">%                        objective $S(t) = \bar{f}_{s}(t) -\bar{f}(t+1)$.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% INPUT</span>
+0007 <span class="comment">% AllFunVals{maxgen} = FunVals(PopSize,n_objectives): Cell array that stores the evaluations of all the objectives</span>
+0008 <span class="comment">%                                                     for all the individuals in every generation</span>
+0009 <span class="comment">% AllSelFunVals{maxgen} = FunVals(PopSize,n_objectives): Cell array that stores the evaluations of all the objectives</span>
+0010 <span class="comment">%                                                     for the selected  individuals in every generation</span>
+0011 <span class="comment">%  OUTPUT</span>
+0012 <span class="comment">%  S: Amount of selection at each generation k&gt;1</span>
+0013 <span class="comment">%  Example:</span>
+0014 <span class="comment">%  for i=1:ngen, auxr{1,i} = Cache{4,i}; auxs{1,i} = Cache{5,i}; end,</span>
+0015 <span class="comment">%  [S] = Amount_of_selection(auxr,auxs)</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0018 
+0019 k = size(AllFunVals,2);                <span class="comment">% Number of generations</span>
+0020 n_objectives = size(AllFunVals{1},2);  <span class="comment">% Number of objectives</span>
+0021 PopSize =  size(AllFunVals{1},1);      <span class="comment">% Population size</span>
+0022 
+0023 <span class="keyword">for</span> i=2:k,
+0024   S{i} = mean(AllFunVals{i}) - mean(AllSelFunVals{i-1});
+0025 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

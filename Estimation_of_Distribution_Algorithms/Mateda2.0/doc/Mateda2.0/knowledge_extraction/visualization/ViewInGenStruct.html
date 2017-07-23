@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ViewInGenStruct</title>
+  <meta name="keywords" content="ViewInGenStruct">
+  <meta name="description" content="[results] = ViewInGenStruct(run_structures,viewparams)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">knowledge_extraction</a> &gt; <a href="index.html">visualization</a> &gt; ViewInGenStruct.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction/visualization&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ViewInGenStruct
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[results] = ViewInGenStruct(run_structures,viewparams)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[results] = ViewInGenStruct(run_structures,viewparams) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [results] = ViewInGenStruct(run_structures,viewparams)
+ ViewInGenStruct:      Shows images where each edge has a color
+                       proportional (relative to nruns)  to the times it has been present in the structures
+                       learned in those generations included in viewparams{2}.
+                       There is one figure for each generation.
+ INPUT
+ run_structures: Contain the data structures with all the structures
+ learned by the probability models in every run and generation (see
+ program ReadStructures.m for details.
+ viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the  images. fs: Font size for the images                       
+ viewparams{2} : Vector with the generations to inspect. For showing all the generations, set viewparams{2}=[1:ngen]. 
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="ShowImage.html" class="code" title="function[] = ShowImage(pcolors,fs,matrix)">ShowImage</a>	[] = ShowImage(pcolors,fs,matrix)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[results] = ViewInGenStruct(run_structures,viewparams)</a>
+0002 <span class="comment">% [results] = ViewInGenStruct(run_structures,viewparams)</span>
+0003 <span class="comment">% ViewInGenStruct:      Shows images where each edge has a color</span>
+0004 <span class="comment">%                       proportional (relative to nruns)  to the times it has been present in the structures</span>
+0005 <span class="comment">%                       learned in those generations included in viewparams{2}.</span>
+0006 <span class="comment">%                       There is one figure for each generation.</span>
+0007 <span class="comment">% INPUT</span>
+0008 <span class="comment">% run_structures: Contain the data structures with all the structures</span>
+0009 <span class="comment">% learned by the probability models in every run and generation (see</span>
+0010 <span class="comment">% program ReadStructures.m for details.</span>
+0011 <span class="comment">% viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the  images. fs: Font size for the images</span>
+0012 <span class="comment">% viewparams{2} : Vector with the generations to inspect. For showing all the generations, set viewparams{2}=[1:ngen].</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0015 
+0016 
+0017 results = [];
+0018 
+0019 
+0020 
+0021 AllContactMatrix = run_structures{4};
+0022 
+0023 pcolors = viewparams{1}(1); <span class="comment">% Range of  colors</span>
+0024 fs = viewparams{1}(2);      <span class="comment">% Fontsize for the figures</span>
+0025 
+0026 
+0027 <span class="keyword">for</span> j = 1:size(viewparams{2},2)    
+0028   i = viewparams{2}(j); <span class="comment">% Generation to view the sum of structures</span>
+0029   <a href="ShowImage.html" class="code" title="function[] = ShowImage(pcolors,fs,matrix)">ShowImage</a>(pcolors,fs,AllContactMatrix{i});
+0030 <span class="keyword">end</span>,</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of CreateRandomFunctions</title>
+  <meta name="keywords" content="CreateRandomFunctions">
+  <meta name="description" content="[Table] = CreateRandomFunctions(ListFactors,Card)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">generators</a> &gt; CreateRandomFunctions.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/generators&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>CreateRandomFunctions
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Table] = CreateRandomFunctions(ListFactors,Card)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [Table] = CreateRandomFunctions(ListFactors,Card) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Table] = CreateRandomFunctions(ListFactors,Card)
+ CreateRandomFunctions:    Generates random values for the table entries of the structure defined in ListFactors 
+ INPUTS
+ ListFactors: Each  row i stores the variables in the factor
+ Card: Cardinalities of the variables
+ OUTPUTS
+ Tables{i}: Contains the values for each of the configurations of factor i 
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/ScriptsMateda/OptimizationScripts/EBNA_PLS_MPC_NKRandom.html" class="code" title="">EBNA_PLS_MPC_NKRandom</a>	EXAMPLE 16:</li><li><a href="AllNKInstances.html" class="code" title="function  AllNKInstances(NumberVar,k,Number_Inst,nam)">AllNKInstances</a>	AllNKInstances(NumberVar,k,Number_Inst,nam)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Table] = CreateRandomFunctions(ListFactors,Card)</a>
+0002 <span class="comment">% [Table] = CreateRandomFunctions(ListFactors,Card)</span>
+0003 <span class="comment">% CreateRandomFunctions:    Generates random values for the table entries of the structure defined in ListFactors</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% ListFactors: Each  row i stores the variables in the factor</span>
+0006 <span class="comment">% Card: Cardinalities of the variables</span>
+0007 <span class="comment">% OUTPUTS</span>
+0008 <span class="comment">% Tables{i}: Contains the values for each of the configurations of factor i</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0011 
+0012 totfactors = size(ListFactors,2);
+0013 
+0014 <span class="keyword">for</span> i=1:totfactors
+0015  sizeTable = 1;
+0016  <span class="keyword">for</span> j=1:size(ListFactors{i},2)
+0017   sizeTable = sizeTable * Card(ListFactors{i}(j)); 
+0018   Table{i} = rand(1,sizeTable); <span class="comment">%Random between 0 and 1 values are assigned to the entries</span>
+0019  <span class="keyword">end</span>,
+0020 <span class="keyword">end</span>,</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

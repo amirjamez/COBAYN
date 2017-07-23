@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ComputeDistanceToPoint</title>
+  <meta name="keywords" content="ComputeDistanceToPoint">
+  <meta name="description" content="[Val] = ComputeDistanceToPoint(Pop,point)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">knowledge_extraction</a> &gt; <a href="index.html">Pareto-approximations</a> &gt; ComputeDistanceToPoint.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction/Pareto-approximations&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ComputeDistanceToPoint
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Val] = ComputeDistanceToPoint(Pop,point)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Val] = ComputeDistanceToPoint(Pop,point) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Val] = ComputeDistanceToPoint(Pop,point) 
+ ComputeDistanceToPoint: Computes the average quadratic distance between vectors
+                         in  Pop and a given point.
+ INPUTS
+ Pop: Each row corresponds to a vector
+ point: Vector taken as a reference
+ OUTPUT
+ Val: Average square difference between vectors and point
+
+ Last version 2/26/2009. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Val] = ComputeDistanceToPoint(Pop,point) </a>
+0002 <span class="comment">% [Val] = ComputeDistanceToPoint(Pop,point)</span>
+0003 <span class="comment">% ComputeDistanceToPoint: Computes the average quadratic distance between vectors</span>
+0004 <span class="comment">%                         in  Pop and a given point.</span>
+0005 <span class="comment">% INPUTS</span>
+0006 <span class="comment">% Pop: Each row corresponds to a vector</span>
+0007 <span class="comment">% point: Vector taken as a reference</span>
+0008 <span class="comment">% OUTPUT</span>
+0009 <span class="comment">% Val: Average square difference between vectors and point</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Last version 2/26/2009. Roberto Santana (roberto.santana@ehu.es)</span>
+0012 
+0013  Val = 0;
+0014  
+0015  [PopSize,n] = size(Pop);
+0016 
+0017  <span class="keyword">for</span> i=1:PopSize,
+0018     Val = Val + sum((Pop(i,:)-point).^2); 
+0019  <span class="keyword">end</span>
+0020  
+0021  Val = Val/PopSize;</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

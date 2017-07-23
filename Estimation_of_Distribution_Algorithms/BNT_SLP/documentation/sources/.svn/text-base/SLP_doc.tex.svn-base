@@ -1,0 +1,1006 @@
+\documentclass[a4paper,10pt,titlepage]{article}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage[all]{xy}
+\usepackage{geometry}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage{boxedminipage}
+%\usepackage{colortbl}
+\usepackage{ltugcomn}
+
+\newcommand{\Filet}{\rule[-1mm]{0mm}{4mm}}
+\newcommand{\mabox}[3]{\vspace*{.5\baselineskip}{\noindent\hspace*{\textwidth}\hspace*{-35pt}\begin{boxedminipage}[c]{35pt}\begin{center}\texttt{#1}\end{center}\end{boxedminipage}\vspace*{-1.4pt}\\}
+                      {\noindent\begin{boxedminipage}[c]{\textwidth}\texttt{\vspace*{10pt}\textbf{#2}\\#3}\end{boxedminipage}}}
+
+\newtheorem{Th}{Theorem} %[section]
+\newtheorem{lem}[Th]{Lemma}
+\newtheorem{de}{Definition}
+\newtheorem{prop}[Th]{Proposition}
+\newtheorem{pte}[Th]{Property}
+\newtheorem{cor}[Th]{Corollary}
+\newtheorem{ex}{Example}
+\newtheorem{rem}{Remarque}
+\newtheorem{nota}{Notation}
+
+\title{BNT Structure Learning Package : \\Documentation and Experiments}
+\author{\\%\begin{tabular}[t]{c@{\extracolsep{8em}}c}
+Philippe Leray, Olivier Francois\\
+%\end{tabular}
+\vspace*{\baselineskip}\\
+%\today{}, Version 1.3
+%\vspace*{\baselineskip}\\
+\textsc{TECHNICAL REPORT}\\
+Laboratoire PSI - INSA Rouen- FRE CNRS 2645\\
+BP 08 - Av. de l'Universit\'e, 76801 St-Etienne du Rouvray Cedex\\
+\{Philippe.Leray, Olivier.Francois\}@insa-rouen.fr\\
+\vspace*{\baselineskip}\\
+}
+%\date{}
+\date{\today{}, Version 1.3\\~\\~\\\includegraphics*[scale=0.7]{fig/logoPSI.eps}}
+
+\begin{document}
+\thispagestyle{empty}
+\maketitle
+
+\vspace*{2\baselineskip}
+
+\subsection*{Abstract}
+\emph{
+Bayesian networks are a formalism for probabilistic reasoning that have grown increasingly popular for tasks such as classification in data-mining.
+In some situations, the structure of the Bayesian network can be given by an expert. If not, retrieving it automatically from a database of cases is a NP-hard problem; notably because of the complexity of the search space.
+In the last decade, numerous methods have been introduced to learn the network's structure automatically, by simplifying the search space (augmented naive bayes, K2) or by using an heuristic in the search space (greedy search). Most methods deal with completely observed data, but some can deal with incomplete data (SEM, MWST-EM).\\~\\
+The \emph{Bayes Net Toolbox} for Matlab, introduced by \cite{BNT01}, offers functions for both using and learning Bayesian Networks.
+But this toolbox is not 'state of the art' as regards structural learning methods. This is why we propose the SLP package.}
+
+%We have experimented most of the main methods with two series of tests. The first experiment tries to evaluate their precision in graph retrieval. The results enable us to study the robustness of these methods in weak relation detection, or to study their behavior according to the number of examples. The last experiment consists in studying their effectiveness in several classification problems.
+%We also study the initialisation problem that appears in most of those methods and propose a solution to simplify it.}
+
+\vspace*{3\baselineskip}
+
+\subsection*{Keywords}
+{\emph{Bayesian Networks, Structure Learning, Classification.}}
+\newpage
+
+%=========================================================================================================
+\section{Introduction}
+%=========================================================================================================
+
+\normalsize
+Bayesian networks are probabilistic graphical models introduced by \cite{Kim87}, \\\cite{Lau88}, \cite{Jen96}, \cite{Jor98b}.
+%They can be defined as follows.
+\begin{de}\label{rbdef}\hspace*{-6pt}\textbf{.}
+$\mathcal{B}=(\mathcal{G},\theta)$ is a Bayesian network if $\mathcal{G}=(X,E)$ is a directed acyclic graph (\textsc{dag}) where the set of nodes represents a set of random variables $X=\{X_1,\cdots ,X_n\}$, and if $\theta_i=[\mathbb{P}(X_i/X_{Pa(X_i)})]$ is the matrix containing the conditional probability of node $i$ given the state of its parents $Pa(X_i)$.
+\end{de}
+A Bayesian network $\mathcal{B}$ represents a probability distribution over $X$ which admits the following joint distribution decomposition:
+\begin{equation}
+\mathbb{P}(X_1,X_2,\cdots,X_n) = \prod_{i=1}^{n} \mathbb{P}(X_i/X_{Pa(X_i)})
+\label{equ1}
+\end{equation}
+This decomposition allows the use of some powerful inference algorithms for which Bayesian networks became simple modeling and reasoning tools when the situation is uncertain or the data are incomplete.
+Then Bayesian networks are also practical for classification problems when interactions between features can be modelized with conditional probabilities.
+When the network structure is not given (by an expert), it is possible to learn it automatically from data.
+This learning task is hard, because of the complexity of the search space.
+\vspace*{\baselineskip}
+
+\noindent Many softwares deal with Bayesian networks, for instance :
+\begin{enumerate}[-]
+\item Hugin \cite{HUGIN}
+\item Netica \cite{NETICA}
+\item Bayesia Lab \cite{BAYESIA}
+\item TETRAD \cite{TETRAD}
+\item DEAL \cite{DEAL}
+\item LibB %\cite{LibB}
+\item the Matlab Bayes Net Toolbox \cite{BNT01}
+\end{enumerate}
+
+\noindent For our experiments, we use Matlab with the Bayes Net Toolbox \cite{BNT01} and the \textit{Structure Learning Package} we develop and propose over our website \cite{INSA}.
+\vspace{\baselineskip}
+
+This paper is organized as follows. 
+We introduce some general concepts concerning Bayesian network structures, how to evaluate these structures and some interesting properties of scoring functions.
+In section 3, we describe the common methods used in structure learning; from causality search to heuristic searches in the Bayesian network space. We also discuss the initialization problems of such methods.
+In section 4, we compare these methods using two series of tests. In the first series, we try to retrieve a known structure while the other tests aim at obtaining a good Bayesian network for classification tasks.
+We then conclude on the respective advantages and drawbacks of each method or family of methods before discussing future relevant research.
+\vspace{\baselineskip}
+
+\noindent We describe the syntax of a function as follows.
+
+\mabox{Ver}{[out1, out2] = function(in1, in2)}{
+Brief description of the function.\\
+'Ver', in the top-right corner, specifies the function location : BNT if it is a native function of the BNT toolbox, or v1.3 if it can be found in the latest version of the SLP package\\~\\
+The following fields are optionals :\\
+INPUTS : \\
+\hspace*{20pt}in1 - description of the input argument in1\\
+\hspace*{20pt}in2 - description of the input argument in2\\
+OUTPUTS :\\
+\hspace*{20pt}out1 - description of the output argument out1\\
+\hspace*{20pt}out2 - description of the output argument out2\vspace*{0.5\baselineskip}\\
+e.g., out = function(in), a sample of the calling syntax.
+}\vspace{\baselineskip}
+
+%=========================================================================================================
+\section{Preliminaries}
+%=========================================================================================================
+
+\subsection{Exhaustive search and score decomposability}
+
+The first (but naive) idea as to finding the best network structure is the exploration and evaluation of all possible graphs in order to choose the best structure.
+Robinson \cite{rob77} has proven that $r(n)$, the number of different structures for a Bayesian network with $n$ nodes, is given by the recursive formula of equation \ref{robform}.
+
+\begin{equation}
+r(n)=\sum_{i=1}^{n}(-1)^{i+1}\binom{n}{i}2^{i(n-i)}r(n-i)=n^{2^{\mathcal{O}{(n)}}}
+\label{robform}
+\end{equation}
+This equation gives $r(2)=3,\,r(3)=25,\,r(5)=29281,\,r(10)\simeq 4,2\times 10^{18}$.
+
+\mabox{BNT}{Gs = mk\_all\_dags(n, order)}{generates all DAGs with n nodes according to the optional ordering}
+\vspace{\baselineskip}
+
+Since equation \ref{robform} is super exponential, it is impossible to perform an exhaustive search in a decent time as soon as the node number exceeds $7$ or $8$. So, structure learning methods often use search heuristics.
+
+In order to explore the \textsc{dag}s space, we use operators like \emph{arc-insertion} or \emph{arc-deletion}. In order to make this search effective, we have to use a local score to limit the computation to the score variation between two neighboring \textsc{dag}s.
+
+\begin{de}\hspace*{-6pt}\textbf{.}
+A score S is said to be \emph{decomposable} if it can be written as the sum or the product of functions that depend only of one vertex and its parents.
+If $n$ is the numbers of vertices in the graph, a decomposable score S must be the sum of \emph{local scores} $s$:
+ $$S(\mathcal{B})=\sum_{i=1}^n s(X_i,pa(X_i))
+\text{~~or~~}S(\mathcal{B})=\prod_{i=1}^n s(X_i,pa(X_i))$$ 
+\end{de}
+
+\subsection{Markov equivalent set and Completed-\textsc{pdag}s}
+
+\begin{de}\label{equim}\hspace*{-6pt}\textbf{.}
+Two \textsc{dag}s are said to be \emph{equivalent} (noted $\equiv$) if they imply the same set of conditional (in)dependencies (\emph{i.e.} they have the same joint distribution).
+The \emph{Markov equivalent classes set} (named $\mathcal{E}$) is defined as $\mathcal{E} = $\Large\sfrac{$\mathcal{A}$}{$\equiv$} \normalsize 
+where we named $\mathcal{A}$ the \textsc{dag}s' set.
+\end{de}
+
+\begin{de}\label{cpdag}\hspace*{-6pt}\textbf{.}
+An arc is said to be \emph{reversible} if its reversion leads to a graph which is \emph{equivalent} to the first one.
+The space of Completed-PDAGs (\textsc{cpdag}s or also named essential graphs) is defined as the set of Partially Directed Acyclic Graphs (\textsc{pdag}s) that have only undirected arcs and \emph{unreversible} directed arcs.
+\end{de}
+
+\noindent For instance, as Bayes' rule gives\\
+\small $\mathbb{P}(A,B,C)=\mathbb{P}(A)\mathbb{P}(B|A)\mathbb{P}(C|B)=\mathbb{P}(A|B)\mathbb{P}(B)\mathbb{P}(C|B)=\mathbb{P}(A|B)\mathbb{P}(B|C)\mathbb{P}(C)$ \normalsize \\
+those structures, 
+\scriptsize $\xymatrix @C=15pt{*+[o][F]{A} \ar[r] & *+[o][F]{B} \ar[r] & *+[o][F]{C}}\equiv$
+$\xymatrix @C=15pt{*+[o][F]{A} & *+[o][F]{B} \ar[l] \ar[r] & *+[o][F]{C}}\equiv$
+$\xymatrix @C=15pt{*+[o][F]{A} & *+[o][F]{B} \ar[l] & *+[o][F]{C} \ar[l]}$ \normalsize 
+, are equivalent (they all imply $A\perp C|B$). \\
+Then, they can be schematized by the \textsc{cpdag} 
+\scriptsize $\xymatrix @C=15pt{*+[o][F]{A} \ar@{-}[r] & *+[o][F]{B} \ar@{-}[r] & *+[o][F]{C}}$ \normalsize without ambiguities.
+
+\noindent But they are not equivalent to
+\scriptsize $\xymatrix @C=15pt{*+[o][F]{A} \ar[r] & *+[o][F]{B} & *+[o][F]{C} \ar[l]}$ \normalsize
+(where \small $\mathbb{P}(A,B,C)=\mathbb{P}(A)\mathbb{P}(B|A,C)\mathbb{P}(C)$ \normalsize )
+for which the corresponding \textsc{cpdag} is the same graph, which is named a \textbf{V-structure}.
+
+\cite{Ver90} have proven that \textsc{dag}s are \emph{equivalent} if, and only if, they have the same skeleton (\emph{i.e.} the same edge support) and the same set of V-structures (like \scriptsize$\xymatrix@C=10pt{*+[o][F]{A}\ar[r] & *+[o][F]{B} & *+[o][F]{C}\ar[l]}$\normalsize).
+Furthermore, we make the analogy between the Markov equivalence classes set ($\mathcal{E}$) and the set of Completed-PDAGs as they share a natural one-to-one relationship.
+
+\noindent\cite{Dor92} proposes a method to construct a consistent extension of a \textsc{dag}.
+
+\mabox{v1.3}{dag = pdag\_to\_dag(pdag)}{gives an instantiation of a \textsc{pdag} in the \textsc{dag} space whenever it is possible.}
+\vspace{\baselineskip}
+
+\noindent\cite{Chi96} introduces a method for finding a \textsc{dag} which instantiates a \textsc{cdpag} and also proposes the method which permits to find the \textsc{cdpag} representing the equivalence classe of a \textsc{dag}.
+
+\mabox{v1.3}{cpdag = dag\_to\_cpdag(dag)}{gives the complete \textsc{pdag} of a \textsc{dag} (also works with a cell array of cpdags, returning a cell array of dags).}
+
+\mabox{v1.3}{dag = cpdag\_to\_dag(cpdag)}{gives an instantiation of a \textsc{cpdag} in the \textsc{dag} space (also works with a cell array of cpdags, returning a cell array of dags).}
+\vspace{.5\baselineskip}
+
+\subsection{Score equivalence and dimensionality}
+
+\begin{de}\hspace*{-6pt}\textbf{.}
+A score is said to be \emph{equivalent} if it returns the same value for equivalent \textsc{dag}s.
+\end{de}
+
+For instance, the \textsc{bic} score is \emph{decomposable} and \emph{equivalent}.
+It is derived from principles stated in \cite{Sch78} and has the following formulation:
+\begin{equation}
+BIC(\mathcal{B},D)=\log \mathbb{P}(D|\mathcal{B},\theta^{ML})-\frac{1}{2}Dim(\mathcal{B})\log N
+\end{equation}
+where $D$ is the dataset,
+$\theta^{ML}$ are the parameter values obtained by \emph{likelihood maximisation}, and where the network dimension $Dim(\mathcal{B})$ is defined as follows.
+
+As we need $r_i-1$ parameters to describe the conditional probability distribution
+$\mathbb{P}(X_i/Pa(X_i)=pa_i)$ ,
+where $r_i$ is the size of $X_i$ and $pa_i$ a specific value of $X_i$ parents, 
+we need $Dim(X_i,\mathcal{B})$ ~parameters
+to describe $\mathbb{P}(X_i/Pa(X_i))$ ~with
+
+\begin{equation}Dim(X_i,\mathcal{B})=(r_i-1) q_i
+\text{~~~where~~~}
+q_i = \prod_{X_j\in Pa(X_i)}r_j\end{equation}
+And the dimension $Dim(\mathcal{B})$ of the Bayesian network is defined by
+\begin{equation}Dim(\mathcal{B})=\sum_{i=1}^n Dim(X_i,\mathcal{B})\end{equation}
+
+\vspace*{-\baselineskip}
+\mabox{v1.3}{D = compute\_bnet\_nparams(bnet)}{gives the number of parameters of the Bayesian network bnet}
+\vspace{\baselineskip}
+
+The \textsc{bic}-score is the sum of a likelihood term and a penalty term which penalizes complex networks.
+As two equivalent graphs have the same likelihood and the same complexity, the \textsc{bic}-score is \emph{equivalent}.
+
+Using scores with these properties, it becomes possible to perform structure learning in Markov equivalent space (\emph{i.e.} $\mathcal{E} = $\Large\sfrac{$\mathcal{A}$}{$\equiv$}\normalsize). This space has good properties: since a algorithm using a score over the \textsc{dag}s space can happen to cycle on equivalent networks, the same method with the same score on the $\mathcal{E}$ space will progress (in practice, such a method will manipulate \textsc{cpdag}s).
+
+\mabox{v1.3}{score = score\_dags(Data, ns, G)}{
+compute the score ('Bayesian' by default or 'BIC' score) of a dag G\\
+This function exists in BNT, but the new version available in the Structure Package uses a cache to avoid recomputing all the local score in the score\_family sub-function when we compute a new global score.\\~\\
+INPUTS :\\
+\hspace*{20pt}Data\{i,m\} - value of node i in case m (can be a cell array).\\
+\hspace*{20pt}ns(i)       - size of node i.\\
+\hspace*{20pt}dags\{g\}   - g'th dag\vspace*{0.5\baselineskip}\\
+The following optional arguments can be specified in the form of ('name',value) pairs : [default value in brackets]\vspace*{0.5\baselineskip}\\
+\hspace*{20pt}scoring\_fn - 'Bayesian' or 'bic' ['Bayesian'] currently, \\
+  \hspace*{40pt}only networks with all tabular nodes support Bayesian scoring.\\
+\hspace*{20pt}type        - type\{i\} is the type of CPD to use for node i, where the type is a\\
+  \hspace*{40pt}string of the form 'tabular', 'noisy\_or', 'gaussian', etc.\\
+  \hspace*{40pt}[all cells contain 'tabular']\\
+\hspace*{20pt}params      - params\{i\} contains optional arguments passed to the CPD\\
+  \hspace*{40pt}constructor for node i, or [] if none.\\
+  \hspace*{40pt}[all cells contain \{'prior', 1\}, meaning use uniform Dirichlet priors]\\
+\hspace*{20pt}discrete    - the list of discrete nodes [1:N]\\
+\hspace*{20pt}clamped     - clamped(i,m) = 1 if node i is clamped in case m\\
+  \hspace*{40pt}[zeros(N, ncases)]\\
+\hspace*{20pt}cache       - data structure used to memorize local score computations
+  \hspace*{40pt}(cf. SCORE\_INIT\_CACHE function) [ [] ]\vspace*{0.5\baselineskip}\\
+OUTPUT :\\
+\hspace*{20pt}score(g) is the score of the i'th dag\vspace*{0.5\baselineskip}\\
+e.g., score = score\_dags(Data, ns, mk\_all\_dags(n), 'scoring\_fn', 'bic',
+  \hspace*{40pt}'params', [],'cache',cache);
+}\vspace{1.5\baselineskip}
+
+\noindent In particular, \textsc{cpdag}s can be evaluated by
+
+\mabox{v1.3}{score = score\_dags(Data, ns, cpdag\_to\_dag(CPDAGs), 'scoring\_fn', 'bic')\vspace*{-1.5\baselineskip}}{}\vspace{\baselineskip}
+
+As the global score of a \textsc{dag} is the product (or the summation is our case as we take the logarithm) of local scores, 
+caching previously computed local scores can prove to be judicious.\\
+We can do so by using a cache matrix.
+
+\mabox{v1.3}{cache = score\_init\_cache(N,S);}{
+INPUTS:\\
+\hspace*{20pt}N - the number of nodes\\
+\hspace*{20pt}S - the lentgh of the cache\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}cache - entries are the parent set, the son node, the score of the\\
+  \hspace*{40pt}familly, and the scoring method
+}
+
+\subsection{discretization}
+
+Most structure learning implementations work solely with \texttt{tabular nodes}.
+Therefore, the SLP package comprises a discretizing function.
+This function, proposed in \cite{Col94}, returns an optimal discretization.
+
+\mabox{v1.3}{[n,edges,nbedges,xechan] = hist\_ic(ContData,crit)}{
+Optimal Histogram based on IC information criterion bins the elements of ContData into an optimal number of bins according to a cost function based on Akaike's Criterion.\vspace*{0.5\baselineskip}\\
+INPUTS:\\
+\hspace*{20pt}ContData(m,i) - case m for the node i\\
+\hspace*{20pt}crit - different penalty terms (1,2,3) for AIC criterion or can ask the
+  \hspace*{40pt}function to return the initial histogram (4) [3]\vspace*{0.5\baselineskip}\\
+OUTPUTS:\\
+\hspace*{20pt}n - cell array containing the distribution of each column of X\\
+\hspace*{20pt}edges - cell array containing the bin edges of each column of X\\
+\hspace*{20pt}nbedges - vector containing the number of bin edges for each column of X\\
+\hspace*{20pt}xechan - discretized version of ContData\\
+}
+
+\noindent When the bin \texttt{edges} are given, then the discretization can be performed directly.
+
+\mabox{v1.3}{[n,xechan] = histc\_ic(ContData,edges)}{
+Counts the number of values in ContData that fall between the elements in the edges vector\vspace*{0.5\baselineskip}\\
+INPUTS:\\
+\hspace*{20pt}ContData(m,i) - case m for the node i\\
+\hspace*{20pt}edges - cell array containing the bin edges of each column of X\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}n - cell array containing these counts\\
+\hspace*{20pt}xechan - discretized version of ContData
+}%\vspace{\baselineskip}
+
+\begin{comment}
+\noindent This is an exemple for treating a learning dataset and a test dataset where missing value are coded by \texttt{-9999} and continuous nodes are in \texttt{Continuous}.
+
+\mabox{v1.3}{\vspace{-9.5pt}[n, edges, nbedges, learning\_xechan] = }{
+\hspace*{20pt}hist\_ic(learningData(Continuous,Complete\_cases)');\\
+{[}n2learn, learning\_xechan] = histc\_ic(learningData(Continuous,:)', edges);\\
+{[}n2test, test\_xechan] = histc\_ic(testData(Continuous,:), edges);\\
+{[}I J]=find(learningData(Continuous,:)==-9999);\\
+{[}I2 J2]=find(testData(Continuous,:)==-9999);\\
+for i = 1:length(Continuous)\\
+\hspace*{20pt}learningData(Continuous(i),:) = learning\_xechan(:,i);\\
+\hspace*{20pt}testData(Continuous(i),:) = test\_xechan(:,i);\\
+end\\
+for k=1:length(I)\\
+\hspace*{20pt}learningData(I(k),J(k))=-9999;\\
+end\\
+for l=1:length(I2)\\
+\hspace*{20pt}testData(I2(k),J2(k))=-9999;\\
+end
+}
+
+\noindent Faire une fonction qui fait ca tout seul ???
+\end{comment}
+
+
+%=========================================================================================================
+\section{Algorithms and implementation}
+%=========================================================================================================
+
+The algorithms we use in the following experiments are:  PC (causality search), MWST (maximum weight spanning tree), K2 (with two random initializations), K2+T (K2 with MWST initialization), K2-T (K2 with MWST \textit{inverse} initialization), GS (starting from an empty structure), GS+T (GS starting from a MWST-initialized structure), GES (greedy search in the space of equivalent classes) and SEM (greedy search dealing with missing values, starting from an empty structure). We also use NB (Naive Bayes) and TANB (Tree Augmented Naive Bayes) for classification tasks.
+
+In the following, the term \texttt{n} represents the number of nodes of the expected Bayesian network and the number of attributes in the dataset \texttt{Data}.
+Then the size of the dataset is \texttt{[n,m]} where \texttt{m} is the number of cases.
+
+\subsection{Dealing with complete data}
+%========================================
+\subsubsection{A causality search algorithm}
+
+A statistical test can be used to evaluate the conditional dependencies between variables and then use the results to build the network structure.
+
+The PC algorithm has been introduced by \cite{Spi00} (\cite{Pea91} also proposed a similar algorithm (IC) at the same time).\\
+These functions already exist in BNT \cite{BNT01}.
+They need an external function to compute conditional independence tests.
+
+\noindent We propose to use \texttt{cond\_indep\_chisquare}.
+
+\mabox{v1.3}{[CI Chi2] = cond\_indep\_chisquare(X, Y, S, Data, test, alpha, ns)}{
+This boolean function perfoms either a Pearson's Chi2 Test or a G2 Likelyhood Ration test\vspace*{0.5\baselineskip}\\
+INPUTS :\\
+\hspace*{20pt}Data - data matrix, n cols * m rows\\
+\hspace*{20pt}X - index of variable X in Data matrix\\
+\hspace*{20pt}Y - index of variable Y in Data matrix\\
+\hspace*{20pt}S - indexes of variables in set S\\
+\hspace*{20pt}alpha - significance level [0.01]\\
+\hspace*{20pt}test - 'pearson' for Pearson's chi2 test, 'LRT' for G2 test ['LRT']\\
+\hspace*{20pt}ns - node size [max(Data')]\vspace*{0.5\baselineskip}\\
+OUTPUTS :\\
+\hspace*{20pt}CI - test result (1=conditional independency, 0=no)\\
+\hspace*{20pt}Chi2 - chi2 value (-1 if not enough data to perform the test --> CI=0)
+}\vspace{\baselineskip}
+
+Remark that this algorithm does not give a \textsc{dag} but a completed \textsc{pdag} which only contains unreversible arcs.
+
+\mabox{BNT}{PDAG = learn\_struct\_pdag\_pc('cond\_indep', n, n-2, Data);}{
+INPUTS:\\
+\hspace*{20pt}cond\_indep - boolean function that perfoms statistical tests and that can\\
+  \hspace*{40pt}be called as follows : feval(cond\_indep\_chisquare, x, y, S, ...)\\
+\hspace*{20pt}n - number of node\\
+\hspace*{20pt}k - upper bound on the fan-in\\
+\hspace*{20pt}Data\{i,m\} - value of node i in case m (can be a cell array).\vspace*{0.5\baselineskip}\\
+OUTPUT :\\
+\hspace*{20pt}PDAG is an adjacency matrix, in which\\
+\hspace*{40pt}PDAG(i,j) = -1 if there is an i->j edge\\
+\hspace*{40pt}PDAG(i,j) = P(j,i) = 1 if there is an undirected edge i <-> j\\~\\
+Then to have a DAG, the following operation is needed :\\
+\hspace*{40pt}DAG  = cpdag\_to\_dag(PDAG);
+}\vspace*{\baselineskip}
+
+The IC* algorithm learns a latent structure associated with a set of observed variables.
+The latent structure revealed is the projection in which every latent variable is:
+\begin{enumerate}[1)]
+\item a root node
+\item linked to exactly two observed variables.
+\end{enumerate}
+Latent variables in the projection are represented using a bidirectional graph, and thus remain implicit.
+
+\mabox{BNT}{PDAG = learn\_struct\_pdag\_ic\_star('cond\_indep\_chisquare', n, n-2, Data);}{
+INPUTS:\\
+\hspace*{20pt}cond\_indep - boolean function that perfoms statistical tests and that can\\
+  \hspace*{40pt}be called as follows : feval(cond\_indep\_chisquare, x, y, S, ...)\\
+\hspace*{20pt}n - number of node\\
+\hspace*{20pt}k - upper bound on the fan-in\\
+\hspace*{20pt}Data\{i,m\} - value of node i in case m (can be a cell array).\vspace*{0.5\baselineskip}\\
+OUTPUTS :\\
+\hspace*{20pt}PDAG is an adjacency matrix, in which\\
+\hspace*{40pt}PDAG(i,j) = -1 if there is either a latent variable L such that\\
+  \hspace*{60pt}i <-L-> j OR there is a directed edge from i->j.\\
+\hspace*{40pt}PDAG(i,j) = -2 if there is a marked directed i-*>j edge.\\
+\hspace*{40pt}PDAG(i,j) = PDAG(j,i) = 1 if there is and undirected edge i--j\\
+\hspace*{40pt}PDAG(i,j) = PDAG(j,i) = 2 if there is a latent variable L such that\\
+  \hspace*{60pt}i<-L->j.
+}\vspace{\baselineskip}
+
+A recent improvement of PC named BN-PC-B has been introduced by \cite{Che02}.
+
+\mabox{v1.3}{DAG = learn\_struct\_bnpc(Data);}{
+The following arguments (in this order) are optionnal:\\
+\hspace*{20pt}ns - a vector containing the nodes sizes [max(Data')]\\
+\hspace*{20pt}epsilon - value uses for the probabilistic tests [0.05]\\
+\hspace*{20pt}mwst - 1 to use learn\_struct\_mwst instead of Phase\_1 [0]\\
+\hspace*{20pt}star - 1 to use try\_to\_separate\_B\_star instead of try\_to\_separate\_B, more
+  \hspace*{40pt}accurate but more complexe [0]
+}
+
+%========================================
+\subsubsection{Maximum weight spanning tree}
+
+\cite{Cho68} have proposed a method derived from the \emph{maximum weight spanning tree} algorithm (MWST).
+This method associates a weigth to each edge. This weight can be either the \emph{mutual information} between the two variables \cite{Cho68} or the score variation when one node becomes a parent of the other \cite{Hec94}.
+When the weight matrix is created, a usual MWST algorithm (Kruskal or Prim's ones) gives an undirected tree that can be oriented given a chosen root.
+
+\mabox{v1.3}{T = learn\_struct\_mwst(Data, discrete, ns, node\_type, score, root);}{
+INPUTS:\\
+\hspace*{20pt}Data(i,m) is the node i in the case m,\\
+\hspace*{20pt}discrete - 1 if discret-node 0 if not\\
+\hspace*{20pt}ns - arity of nodes (1 if gaussian node)\\
+\hspace*{20pt}node\_type - tabular or gaussian\\
+\hspace*{20pt}score - BIC or mutual\_info (only tabular nodes)\\
+\hspace*{20pt}root - root-node of the result tree T\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}T - a \textbf{\textrm{sparse matrix}} that represents the result tree
+}
+
+%========================================
+\subsubsection{Naive bayes structure and augmented naive bayes}
+
+The naive bayes classifier is a well-known classifier related to Bayesian networks. Its structure contains only edges from the class node $C$ to the other observations in order to simplify the joint distribution as 
+$\mathbb{P}(C,X_1,...,X_n)=\mathbb{P}(C)\mathbb{P}(X_1|C)...\mathbb{P}(X_n|C)$
+
+\mabox{v1.3}{DAG = mk\_naive\_struct(n,C)}{where n is the number of nodes and C the class node}
+\vspace{\baselineskip}
+
+The naive bayes structure supposes that observations are independent given the class, but this hypothesis can be overridden using an \emph{augmented naive bayes} classifier \cite{Keo99,Fri97b}. Precisely, we use a tree-augmented structure, where the best tree relying all the observations is obtained by the MWST algorithm \cite{Gei92}.
+
+\mabox{v1.3}{DAG = learn\_struct\_tan(Data, C, root, ns, scoring\_fn);}{
+INPUTS :\\
+\hspace*{20pt}Data - data(i,m) is the m$^{st}$ observation of node i\\
+\hspace*{20pt}C - number of the class node\\
+\hspace*{20pt}root - root of the tree built on the observation node (root$\neq$C)\\
+\hspace*{20pt}ns - vector containing the size of nodes, 1 if gaussian node\\
+\hspace*{20pt}scoring\_fn - (optional) 'bic' (default value) or 'mutual\_info'\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - TAN structure
+}
+
+%========================================
+\subsubsection{K2 algorithm}
+
+The main idea of the K2 algorithm is to maximize the structure probability given the data.
+To compute this probability, we can use the fact that:
+
+$$\frac{\mathbb{P}(\mathcal{G}_{1}/D)}{\mathbb{P}(\mathcal{G}_{2}/D)}=\frac{\frac{\mathbb{P}(\mathcal{G}_{1},D)}{P(D)}}{\frac{\mathbb{P}(\mathcal{G}_{2},D)}{P(D)}}=\frac{\mathbb{P}(\mathcal{G}_{1},D)}{\mathbb{P}(\mathcal{G}_{2},D)}$$ 
+and the following result given by \cite{Coo92a} :
+\begin{Th}\label{Tbay}
+let D the dataset, N the number of examples, and $\mathcal{G}$ the network structure on X.
+If $pa_{ij}$ is the $j^{th}$ instantiation of $Pa(X_i)$, $N_{ijk}$ the number of data where $X_i$ has the value $x_{ik}$ and $Pa(X_i)$ is instantiated in $pa_{ij}$ and $Nij=\sum_{k=1}^{r_i} N_{ijk}$ then
+\begin{equation}
+\mathbb{P}(\mathcal{G},D)=\mathbb{P}(\mathcal{G})\mathbb{P}(D|\mathcal{G})
+\text{~~~with~~~}
+\mathbb{P}(D|\mathcal{G})=\prod_{i=1}^{n} \prod_{j=1}^{q_i} \frac{(r_i-1)!}{(N_{ij}+r_i-1)!} \prod_{k=1}^{r_i} N_{ijk}!
+\label{mbay}
+\end{equation}
+where $\mathbb{P}(\mathcal{G})$ is the prior probability of the structure $\mathcal{G}$.
+\end{Th}
+
+Equation \ref{mbay} can be interpreted as a quality mesure of the network given the data and is named the \emph{Bayesian mesure}.
+
+Given an uniform prior on structures, the quality of a node $X$ and its parent set can be evaluated by the local score described in equation \ref{scoreK2}.
+\begin{equation}
+s(X_i,Pa(X_i))=\prod_{j=1}^{q_i} \frac{(r_i-1)!}{(N_{ij}+r_i-1)!} \prod_{k=1}^{r_i} N_{ijk}!
+\label{scoreK2}
+\end{equation}
+
+We can reduce the size of the search space using a topological order over the nodes \cite{Coo92a}. According to this order, a node can only be the parent of lower-ordered nodes. The search space thus becomes the subspace of all the \textsc{dag}s admitting this very topological order.
+
+The K2 algorithm tests parent insertion according to a specific order. The first node can't have any parent while, as for other nodes, we choose the parents sets (among admitable ones) that leads to the best score upgrade.
+
+\cite{Hec94} has proven that the \emph{Bayesian mesure} is not \emph{equivalent} and has proposed the BDe score (\emph{Bayesian mesure} with a specific prior on parameters) to make it so.
+
+It is also possible to use the BIC score or the MDL score \cite{Bou93} in the K2 algorithm which are both \emph{score equivalent}.
+
+
+\mabox{BNT}{DAG = learn\_struct\_k2(Data, ns, order);}{
+INPUTS:\\
+\hspace*{20pt}Data         - Data(i,m) = value of node i in case m (can be a cell array)\\
+\hspace*{20pt}ns           - ns(i) is the size of node i\\
+\hspace*{20pt}order        - order(i) is the i'th node in the topological ordering\vspace*{0.5\baselineskip}\\
+The following optional arguments can be specified in the form of ('name',value) pairs : [default value in brackets]\vspace*{0.5\baselineskip}\\
+\hspace*{20pt}max\_fan\_in - this the largest number of parents we allow per node [N]\\
+\hspace*{20pt}scoring\_fn  - 'Bayesian' or 'bic', currently, only networks with all\\
+  \hspace*{40pt}tabular nodes support Bayesian scoring ['Bayesian']\\
+\hspace*{20pt}type         - type\{i\} is the type of CPD to use for node i, where the type is a\\
+  \hspace*{40pt}string of the form 'tabular', 'noisy\_or', 'gaussian', etc.\\
+  \hspace*{40pt}[all cells contain 'tabular']\\
+\hspace*{20pt}params       - params\{i\} contains optional arguments passed to the CPD\\
+  \hspace*{40pt}constructor for node i, or [] if none.\\
+  \hspace*{40pt}[all cells contain {'prior', 1}, meaning use uniform Dirichlet priors]\\
+\hspace*{20pt}discrete     - the list of discrete nodes [1:N]\\
+\hspace*{20pt}clamped      - clamped(i,m) = 1 if node i is clamped in case m\\
+  \hspace*{40pt}[zeros(N, ncases)]\\
+\hspace*{20pt}verbose      - 'yes' means display output while running ['no']\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - The learned DAG which respect with the enumeration order\vspace*{0.5\baselineskip}\\
+e.g., dag = learn\_struct\_K2(data,ns,order,'scoring\_fn','bic','params',[])
+}
+
+%========================================
+\subsubsection{Markov Chain Monte Carlo}
+
+We can use a Markov Chain Monte Carlo (MCMC) algorithm called Metropolis-Hastings (MH) to search the space of all DAGs \cite{Mur01b}.
+The basic idea is to use the MH algorithm to draw samples from $\mathbb{P}(\mathbf{D}|\mathcal{G})$ (cf equ. \ref{mbay}) after a burn-in time.
+Then a new graph $\mathcal{G}'$ is kept if a uniform variable take a value greater than the bayes factor
+\large $\frac{\mathbb{P}(\mathbf{D}|\mathcal{G}')}{\mathbb{P}(\mathbf{D}|\mathcal{G})}$ \normalsize (or a ponderated bayes factor).
+Remark that this method is not deterministic.
+
+\mabox{BNT}{[sampled\_graphs, accept\_ratio, num\_edges] = learn\_struct\_mcmc(Data, ns);}{
+Monte Carlo Markov Chain search over DAGs assuming fully observed data (modified by Sonia Leach)\vspace*{0.5\baselineskip}\\
+INPUTS:\\
+\hspace*{20pt}Data         - Data(i,m) = value of node i in case m (can be a cell array)\\
+\hspace*{20pt}ns           - ns(i) is the size of node i\\
+The following optional arguments can be specified in the form of ('name',value) pairs : [default value in brackets]\vspace*{0.5\baselineskip}\\
+\hspace*{20pt}scoring\_fn  - 'Bayesian' or 'bic', currently, only networks with all\\
+  \hspace*{40pt}tabular nodes support Bayesian scoring ['Bayesian']\\
+\hspace*{20pt}type         - type\{i\} is the type of CPD to use for node i, where the type is a\\
+  \hspace*{40pt}string of the form 'tabular', 'noisy\_or', 'gaussian', etc.\\
+  \hspace*{40pt}[all cells contain 'tabular']\\
+\hspace*{20pt}params       - params\{i\} contains optional arguments passed to the CPD\\
+  \hspace*{40pt}constructor for node i, or [] if none.\\
+  \hspace*{40pt}[all cells contain {'prior', 1}, meaning use uniform Dirichlet priors]\\
+\hspace*{20pt}discrete     - the list of discrete nodes [1:N]\\
+\hspace*{20pt}clamped      - clamped(i,m) = 1 if node i is clamped in case m\\
+  \hspace*{40pt}[zeros(N, ncases)]\\
+\hspace*{20pt}nsamples     - number of samples to draw from the chain after burn-in  100*N]
+\hspace*{20pt}burnin       - number of steps to take before drawing samples [5*N]\\
+\hspace*{20pt}init\_dag    - starting point for the search [zeros(N,N)]\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}sampled\_graphs{m} = the m'th sampled graph\\
+\hspace*{20pt}accept\_ratio(t)   = acceptance ratio at iteration t\\
+\hspace*{20pt}num\_edges(t)      = number of edges in model at iteration t\vspace*{0.5\baselineskip}\\
+e.g., samples = learn\_struct\_mcmc(data, ns, 'nsamples', 1000);
+}
+
+%========================================
+\subsubsection{Greedy search}
+
+The greedy search is a well-known optimisation heuristic.
+It takes an initial graph, defines a neighborhood, computes a score for every graph in this neighborhood, and chooses the one which maximises the score for the next iteration.
+
+With Bayesian networks, we can define the neighborhood as the set of graphs that differ only by one insertion, reversion or deletion of an arc from our current graph.
+
+As this method is complex in computing time, it is recommended to use a cache.
+
+\mabox{v1.3}{DAG = learn\_struct\_gs2(Data, ns, seeddag, 'cache', cache);}{
+This is an improvement of \texttt{learn\_struct\_gs} which was written by Gang Li.\\
+As this algorithm computes the score for every graphs in the neighborhood (created with \texttt{mk\_nbrs\_of\_dag\_topo} developped by Wei Hu instead of \texttt{mk\_nbrs\_of\_dag}), we have to use a \emph{decomposable score} to make this computation efficient and then recover some local scores in \texttt{cache}.\vspace*{0.5\baselineskip}\\
+INPUT:\\
+\hspace*{20pt}Data - training data, data(i,m) is the m obsevation of node i\\
+\hspace*{20pt}ns - the size array of different nodes\\
+\hspace*{20pt}seeddag - initial DAG of the search, optional\\
+\hspace*{20pt}cache - data structure used to memorize local score computations\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - the final structure matrix
+}
+
+%========================================
+\subsubsection{Greedy search in the Markov equivalent space}
+
+Recent works have shown the interest of searching in the Markov equivalent space (see definition \ref{equim}).
+\cite{Mun01} have proved that a greedy search in this space (with an equivalent score) is more likely to converge than in the DAGs space.
+These concepts have been implemented by \cite{Chi02,Cas02,Auv02} in new structure learning methods.
+\cite{Chi02c} has proposed the \emph{Greedy Equivalent Search} (GES) which used \textsc{cpdag}s to \emph{represent} Markov equivalent classes.
+This method works in two steps. First, it starts with an empty graph and adds arcs until the score cannot be improved, and then it tries to suppress some irrelevant arcs.
+
+\mabox{v1.3}{DAG = learn\_struct\_ges(Data, ns,'scoring\_fn','bic','cache',cache);}{
+Like most of others methods, this function can simply be calling as \texttt{learn\_struct\_ges(Data, ns)} but this calling does not take advantages of the caching implementation.\vspace*{0.5\baselineskip}\\
+INPUTS:\\
+\hspace*{20pt}Data - training data, data(i,m) is the m obsevation of node i\\
+\hspace*{20pt}ns - the size vector of different nodes\vspace*{0.5\baselineskip}\\
+The following optional arguments can be specified in the form of ('name',value) pairs : [default value in brackets]\vspace*{0.5\baselineskip}\\
+\hspace*{20pt}cache - data structure used to memorize local scores [ [] ]\\
+\hspace*{20pt}scoring\_fn  - 'Bayesian' or 'bic' ['Bayesian']\\
+\hspace*{20pt}verbose - to display learning information ['no']\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - the final structure matrix
+}
+
+%========================================
+\subsubsection{Initialization problems}
+
+Most of the previous methods have some initialization problems.
+For instance, the run of the K2 algorithm depends on the given enumeration order.
+As \cite{Hec94} propose, we can use the oriented tree obtained with the MWST algorithm to generate this order.
+We just have to initialize the MWST algorithm with a root node, which can either be the class node (as in in our tests) or randomly chosen.
+Then we can use the topological order of the tree in order to initializ K2.
+Let us name "K2+T", the algorithm using this order with the class node as root.
+\vspace{-.6\baselineskip}
+
+\mabox{v1.3}{\vspace{-9.5pt}dag = learn\_struct\_mwst(Data, ones(n,1), ns, node\_type, 'mutual\_info', class);}{
+       order = topological\_sort(full(dag));\\
+       dag = learn\_struct\_K2(Data, ns, order);
+}\vspace{.8\baselineskip}
+
+With this order, where the class node is the root node of the tree, the class node can be interpreted as a cause instead of a consequence. That's why we also propose to use the reverse order. We name this method "K2-T".
+\vspace{-.3\baselineskip}
+
+\mabox{v1.3}{\vspace{-9.5pt}dag = learn\_struct\_mwst(Data, ones(n,1), ns, node\_type, 'mutual\_info', class);}{
+       order = topological\_sort(full(dag)); 
+       order = order(n:-1:1)\\
+       dag = learn\_struct\_K2(Data, ns, order);
+}\vspace{.8\baselineskip}
+
+Greedy search can also be initialized with a specific \textsc{dag}. If this \textsc{dag} is not given by an expert, we also propose to use the tree given by the MSWT algorithm to initialize the greedy search instead of an empty network and name this algorithm "GS+T".
+\vspace{-.3\baselineskip}
+
+\mabox{v1.3}{\vspace{-9.5pt}seeddag = full(learn\_struct\_mwst(Data, ones(n,1), ns, node\_type));}{
+       cache = score\_init\_cache(n,cache\_size);\\
+       dag = learn\_struct\_gs2(Data, ns, seeddag, 'cache', cache);
+}
+
+
+\subsection{Dealing with incomplete data}
+%========================================
+\subsubsection{Structural-EM algorithm}
+
+Friedman \cite{Fri98b} first introduced this method for structure learning with incomplete data. This method is based on the \emph{Expectation-Maximisation} principle \cite{Dem77} and deals with incomplete data without adding a new modality to each node which is not fully observed.
+
+This is an iterative method, which convergence has been proven by \cite{Fri98b}.
+It starts from an initial structure and estimates the probability distribution of variables which data are missing with the EM algorithm.
+Then it computes the expectation of the score for each graph of the neighborhood and chooses the one which maximises the score.
+%An improvement of this method was proposed by \cite{Pen01}.
+
+\mabox{BNT}{bnet = learn\_struct\_EM(bnet, Data, max\_loop);}{
+INPUTS:\\
+\hspace*{20pt}bnet - this function manipulates the baysesian network \texttt{bnet} instead of
+  \hspace*{40pt}only a \emph{DAG} as it learns the parameters in each iteration\\
+\hspace*{20pt}Data - training data, data(i,m) is the m obsevation of node i\\
+\hspace*{20pt}max\_loop - as this method has a big complexity, the maximum loop number
+  \hspace*{40pt}must be specify\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - the final structure matrix
+}
+
+\subsubsection{MWST-EM algorithm}
+
+under construction ...
+
+%=========================================================================================================
+\section{Experimentation}
+%=========================================================================================================
+
+\subsection{Retrieving a known structure}
+\subsubsection{Test networks and evaluation techniques}
+
+We used two well-known network structures. The first, \textsc{asia}, was introduced by Lauritzen and Spiegelhalter \cite{Lau88} (cf figure~\ref{orig}.a).
+All its nodes are binary nodes. We can notice that concerning the edge between $A$ et $T$, the  \emph{a priori} probability of $A$ is small, and the influence of $A$ on $T$ is weak.
+The second network we use is \textsc{insurance} with $27$ nodes (cf figure \ref{orig}.b) and is available in \cite{BNR97}.
+
+Data generation has been performed for different sample sizes in order to test the influence of this size over the results of the various structure learning methods.
+To generate a sample, we draw the parent node values randomly and choose the son node values according to the Bayesian network parameters.
+These datasets are also randomly cleared of $20\%$ of their values to test the SEM algorithm.
+Remark that this algorithm is equivalent to the greedy search when the dataset is complete.
+
+\begin{figure}[!ht]
+\centering\begin{tabular}{ll}\hspace*{1cm}
+\begin{minipage}{6cm}
+\hspace*{-150pt}
+{\xymatrix@C=4pt @R=9pt{*+[F]{A} \ar[d] & & & *+[F]{S} \ar[dl] \ar[dr] \\ *+[F]{T} \ar[dr] &  & *+[F]{L} \ar[dl] &  & *+[F]{B} \ar[ddll] \\ & *+[F]{E} \ar[dl] \ar[dr] \\ *+[F]{X} & & *+[F]{D}}} 
+\end{minipage} & %\hspace*{2cm} &
+\hspace*{-240pt}
+\begin{minipage}{6cm}
+ \includegraphics[width=110mm, height=110mm]{fig/insurance.eps}
+\end{minipage}\\
+\hspace*{-80pt}(a) & \hspace*{-80pt} (b)
+\end{tabular}
+\caption{Original networks : (a) \textsc{asia} and (b) \textsc{insurance}}
+\label{orig}
+\end{figure}
+
+\begin{figure*}
+%\footnotesize
+\centering
+\begin{tabular}{|r|ccccccc|}
+\hline
+\underline{\textsc{\textbf{Asia}}}~~ & 250 & 500 & 1000 & 2000 & 5000 & 10000 & 15000 \\\hline
+\textsc{mwst~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-42-00-dag-asia250-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-13-48-14-dag-asia500-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/19-Feb-2003-16-04-58-dag-asia1000-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/19-Feb-2003-16-04-58-dag-asia2000-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/19-Feb-2003-16-04-58-dag-asia5000-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/19-Feb-2003-16-04-58-dag-asia10000-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/19-Feb-2003-16-04-58-dag-asia15000-MSWT-RES.eps} \\
+& 9;-68837 & 10;-69235 & 8;-68772 & 6;-68704 & 7;-68704 & 3;-68694 & 3; -68694 \\\hline
+\textsc{pc~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-27-53-dag-asia250-PC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-06-42-dag-asia500-PC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-06-42-dag-asia1000-PC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-06-42-dag-asia2000-PC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-06-42-dag-asia5000-PC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-06-42-dag-asia10000-PC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-06-42-dag-asia15000-PC-RES.eps} \\
+& 8;-55765 & 7;-66374 & 6;-61536 & 7;-56386 & 6;-63967 & 5;-63959 & 6;-70154\\\hline
+\textsc{bnpc~} &
+\includegraphics[width=15mm, height=11mm]{fig/21-Apr-2004-11-40-41-dag-asia250-BNPC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/21-Apr-2004-11-40-41-dag-asia500-BNPC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/21-Apr-2004-11-40-41-dag-asia1000-BNPC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/21-Apr-2004-11-40-41-dag-asia2000-BNPC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/21-Apr-2004-14-28-55-dag-asia5000-BNPC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/21-Apr-2004-14-33-28-dag-asia10000-BNPC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/21-Apr-2004-14-33-28-dag-asia15000-BNPC-RES.eps} \\
+& 5;-72798 & 5;-68492 & 5;-72516 & 4;-67961 & 4;-67964 & 5;-68023 & 5;-68023\\\hline
+\textsc{k2~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-28-11-dag-asia250-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-51-45-dag-asia500-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia1000-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia2000-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia5000-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia10000-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia15000-K2-RES.eps} \\
+& 8;-68141 & 7;-67150 & 6;-67152 & 6;-67147 & 6;-67106 & 6;-67106 & 6;-67106\\\hline
+\textsc{k2(2)~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-47-35-dag-asia250-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-59-43-dag-asia500-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia1000-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia2000-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia5000-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia10000-K2-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia15000-K2-RES.eps} \\
+& 11;-68643 & 11;-68089 & 11;-67221 & 10-67216; & 9;-67129 & 9;-67129 & 9;-67129\\\hline
+\textsc{k2+t~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-28-11-dag-asia250-K2+MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-51-45-dag-asia500-K2+MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia1000-K2+MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia2000-K2+MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia5000-K2+MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia10000-K2+MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-40-53-dag-asia15000-K2+MSWT-RES.eps} \\
+& 10;-68100 & 8;-68418 & 9;-67185 & 8;-67317 & 8;-67236 & 10;-67132 & 10;-67132\\\hline
+\textsc{k2-t~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-47-35-dag-asia250-K2-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-14-59-43-dag-asia500-K2-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia1000-K2-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia2000-K2-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia5000-K2-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia10000-K2-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Mar-2003-18-46-18-dag-asia15000-K2-MSWT-RES.eps} \\
+& 7;-68097 & 6;-67099 & 6;-67112 & 7;-67105 & 6;-67091 & 5;-67091 & 5;-67091\\\hline
+\textsc{mcmc~} &
+\includegraphics[width=15mm, height=11mm]{fig/16-Apr-2004-14-45-14-dag-asia250-MCMC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/16-Apr-2004-14-46-16-dag-asia500-MCMC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/16-Apr-2004-14-46-16-dag-asia1000-MCMC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/16-Apr-2004-14-46-16-dag-asia2000-MCMC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/16-Apr-2004-14-46-16-dag-asia5000-MCMC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/16-Apr-2004-14-46-16-dag-asia10000-MCMC-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/16-Apr-2004-14-46-16-dag-asia15000-MCMC-RES.eps} \\
+& 12;-67338 & 11;-68428 & 9;-67103 & 7;-67115 & 11;-67132 & 11;-67107 & 11;-67112 \\\hline
+\textsc{gs~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-39-38-dag-asia250-GS-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-15-08-57-dag-asia500-GS-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia1000-GS-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia2000-GS-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia5000-GS-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia10000-GS-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia15000-GS-RES.eps} \\
+& 4;-67961 & 9;-68081 & 2;-67093 & 5;-67096 & 7;-67128 & 9;-67132 & 8;-67104 \\\hline
+\textsc{gs+t~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-39-38-dag-asia250-GS-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-15-08-57-dag-asia500-GS-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia1000-GS-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia2000-GS-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia5000-GS-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia10000-GS-MSWT-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/26-Feb-2003-16-33-13-dag-asia15000-GS-MSWT-RES.eps} \\
+& 9;-68096 & 6;-68415 & 2;-67093 & 7;-67262 & 2;-67093 & 2;-67093 & 1;-67086 \\\hline
+\textsc{ges~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-14-43-10-dag-asia250-GES-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-13-36-32-dag-asia500-GES-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/28-Jul-2003-17-49-38-dag-asia1000-GES-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/28-Jul-2003-17-49-38-dag-asia2000-GES-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/28-Jul-2003-17-49-38-dag-asia5000-GES-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/28-Jul-2003-17-49-38-dag-asia10000-GES-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/28-Jul-2003-17-49-38-dag-asia15000-GES-RES.eps} \\
+& 4;-68093 & 6;-68415 & 5;-67117 & 2;-67094 & 0;-67086 & 0;-67086 & 0;-67086 \\\hline
+\textsc{sem~} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Sep-2003-15-01-29-dag-asia250-SEM-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/11-Aug-2003-15-18-25-dag-asia500-SEM-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/12-Mar-2003-08-44-11-dag-asia1000-SEM-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/12-Mar-2003-08-44-11-dag-asia2000-SEM-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/12-Mar-2003-08-44-11-dag-asia5000-SEM-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/12-Mar-2003-08-44-11-dag-asia10000-SEM-RES.eps} &
+\includegraphics[width=15mm, height=11mm]{fig/12-Mar-2003-08-44-11-dag-asia15000-SEM-RES.eps} \\
+& 10;-83615 & 9;-81837 & 2;-67093 & 8;-67384 & 4;-67381 & 5;-67108 & 4;-67381 \\\hline
+\end{tabular}
+%\vspace*{5pt}
+\caption{Editing measures, networks and BIC scores obtained with different methods (in row) for several dataset lengths (in column).}
+\label{asia}
+\end{figure*}
+
+\begin{figure*}
+\centering
+\begin{tabular}{|l|ccccccc|}\hline
+\underline{\textsc{\textbf{Insurance}}} & 250 & 500 & 1000 & 2000 & 5000 & 10000 & 15000\\\hline
+\textsc{mwst} & \,37;-3373\, & \,34;-3369\, & \,36;-3371\, & \,35;-3369\, & \,34;-3369\, & \,34;-3369\, & \,34;-3369\, \\\hline
+\textsc{k2}   & 56,-3258 & 62;-3143 & 60;-3079 & 64;-3095 & 78;-3092 & 82;-3080 & 85;-3085 \\
+\textsc{k2(2)}& 26;-3113 & 22;-2887 & 20;-2841 & 21;-2873 & 21;-2916 & 18;-2904 & 22;-2910 \\
+\textsc{k2+t} & 42;-3207 & 40;-3009 & 42;-3089 & 44;-2980 & 47;-2987 & 51;-2986 & 54;-2996 \\
+\textsc{k2-t} & 55;-3298 & 57;-3075 & 57;-3066 & 65;-3007 & 70;-2975 & 72;-2968 & 73;-2967 \\\hline
+%\textsc{mcmc} & 55;-3152 & 44;-2901 & 48;-2940 & 41;-2848 & 64;-2915 & 44;-2890 & 56;-2915 \\\hline
+%\textsc{mcmc} & 48;-3163 & 48;-2961 & 43;-2988 & 43;-2870 & 58;-2922 & 48;-2861 & 54;-2890 \\\hline
+%\textsc{mcmc} & 52;-3245 & 50;-3075 & 41;-2859 & 40;-2925 & 41;-2895 & 54;-2866 & 48;-2894 \\\hline
+%\textsc{mcmc} & 48;-3206 & 31;-2876 & 52;-2938 & 48;-2900 & 38;-2851 & 52;-2966 & 57;-2880 \\\hline
+%\textsc{mcmc} & 45;-3174 & 46;-3020 & 48;-2921 & 30;-2867 & 47;-2943 & 55;-2906 & 53;-2880 \\\hline
+\textsc{mcmc}$^*$ & 50;-3188 & 44;-2967 & 46;-2929 & 40;-2882 & 50;-2905 & 51;-2898 & 54;2892 \\\hline
+\textsc{gs}   & 37;-3228 & 39;-3108 & 30;-2944 & 33;-2888 & 29;-2859 & 25;-2837 & 28;-2825 \\
+\textsc{gs+t} & 43;-3255 & 35;-3074 & 28;-2960 & 26;-2906 & 33;-2878 & 19;-2828 & 21;-2820 \\\hline
+\textsc{ges}  & 43;-2910 & 41;-2891 & 39;-2955 & 41;-2898 & 38;-2761 & 38;-2761 & 38;-2752 \\\hline
+\textsc{sem}  & 50;-4431 & 57;-4262 & 61;-4396 & 61;-4092 & 69;-4173 & 63;-4105 & 63;-3978 \\\hline
+\end{tabular}
+\caption{Editing measures and BIC scores, divided by 100 and rounded, obtained with different methods (in row) for several dataset lengths (in column) ($^*$ As the method MCMC is not deterministic, the results are meaned over five runs).}
+\label{resinsur}
+\end{figure*}
+\normalsize
+
+In order to compare the results obtained by the different algorithms we tested, we use an 'editing measure' defined by the length of the minimal sequence of operators needed to transform the original graph into the resulting one (operators are edge-insertion, edge-deletion and edge-reversal, note that the edge-reversal is considered as a independent operator and not as the deletion and insertion of the opposite edge).
+
+The BIC score of networks is also precised in a comparative way (computed from additional datasets of $30000$ cases for \textsc{asia} and $20000$ cases for \textsc{insurance}).
+
+\subsubsection{Results and interpretations}
+~\\\textit{Dataset length influence}~\\
+Figure \ref{asia} shows us that MWST algorithm appears to be quite insensitive to the length of the dataset.
+It always gives a graph close to the original one, although the search space is the tree space which is poorer than the \textsc{dag}s-space .
+
+The PC also gives good results with a  small number of \textit{wrong} edges.
+
+The K2 method is very fast and is frequently used in the literature but presents the drawback of being very sensitive to its initial enumeration order.
+Figure \ref{asia} shows the results of K2 on \textsc{asia} data with 2 different orders ("\textsc{elbxasdt}" and "\textsc{taldsxeb}").
+We can notice that the results are constant for a given initialization order, but two different initialization orders will lead to very different solutions.
+This phenomenon can also be observed in figure \ref{resinsur} with the \textsc{insurance} data sets.
+
+The results given by the BNPC algorithm are good in arc retrieval but do not have great scores.\footnote{As this method performs statistical tests it can retrieve dependencies that cannot be modelized by a \text{dag} then the last step which consists or orienting edges cannot be performed systematically (maybe this problem is due to our actual implementation).}
+
+The MCMC based method permit to obtain good results whatever the dataset length. In all runs, this method has given similar results from a scoring point of view but there was significant differences among the editing distances.
+
+The GS algorithm is robust to dataset length variation, especially when this algorithm is initialized with \textsc{mwst} tree.
+
+The GES method has given good results whatever the dataset length.
+Given an significant amount of data, the networks issued from this method return better scores than those found by a classical greedy search.
+But for the more complex \textsc{insurance} network, the results are significantly better as for the scoring function than those obtained with a greedy search in the \textsc{dag}s space but are worse in terms of editing distances.
+
+Whatever the dataset length, SEM method always gives identical results on \textsc{asia} data and very similar results on \textsc{insurance} data.
+Notice that this method obtains bad editing measures because it retrieves a bad oriented \textsc{asia} structure.
+Automatically distinguishing if a bad orientation is a real mistake (by breaking a V-structure for instance) or not is difficult. We are currently working on an editing distance that takes into account this problem by working into Markov equivalent classes.
+
+~\\\textit{Weak dependance recovering}~\\
+Most of the tested methods have not recovered the $A$--$T$ edge of the \textsc{asia} structure. Only the simple method MWST, PC and K2 initialised with MWST structure retrieve this edge when the dataset is big enough.
+This can be explained for all the scoring methods: this edge-insertion does not lead to a score increase because the likelihood increase is counterbalanced by the penalty term increase.
+
+
+\subsection{Learning Efficient Bayesian Network for Classification}
+\label{classif}
+
+\subsubsection{Datasets and evaluation criterion}
+~\\\textbf{\textsc{asia}}~\\
+We reuse the dataset previously generated with $2000$ instances for the learning phase and the one with $1000$ instances for testing.
+~\\\textbf{\textsc{heart}}~\\
+This dataset, available from Statlog project \cite{Sut92,Mic94}, is a medical diagnosis dataset with $14$ attributes (continuous attributes have been discretized).
+This dataset is made of $270$ cases which we split into two sets of respectively $189$ cases as learning data and $81$ cases as test data.
+~\\\textbf{\textsc{australian}}~\\
+This dataset, which is available on \cite{Mic94}, consists in a credit offer evaluation granted to an Australian customer evaluate considering $14$ attributes.
+It contains $690$ cases which have been separated into $500$ instances for learning and $190$ for testing.
+~\\\textbf{\textsc{letter}}~\\
+This dataset from \cite{Mic94} is the only one we tested which doesn't consist in a binary classificiation: the arity of the class variable being of $26$.
+It has been created from handwritten letter recognition and contains $16$ attributes like position or height of a letter but also means or variances of the pixels over the $x$ and the $y$ axis.
+It contains $15000$ samples for learning and $5000$ samples for testing.
+~\\\textbf{\textsc{thyroid}}~\\
+This dataset, available at \cite{UCI98}, is a medical diagnosis dataset. We use $22$ attributes (among the $29$ original ones): $15$ discrete attributes, $6$ continuous attributes that have been discretised and one (binary) class node. This dataset is made of $2800$ learning data cases and $972$ test data cases.
+~\\\textbf{\textsc{chess}}~\\
+This dataset is also available at \cite{UCI98} (Chess -- King+Rook versus King+Pawn). It is a chess prediction task: determining if white can win the game according to the current position described by $36$ attributes (the class is the $37^{th}$). This dataset is made of $3196$ data cases we decompose into $2200$ learning data cases and $996$ test data cases.
+
+%\pagebreak
+~\\\textit{Evaluation}~\\
+The evaluation criterion is the good classification percentage on test data, with an $\alpha\%$ confidence interval proposed by \cite{Ben96} (cf eq. \ref{bennani}).
+
+\begin{equation}
+I(\alpha,N)=\frac{T+\frac{Z_\alpha^2}{2N}\pm Z_\alpha\sqrt{\frac{T(1-T)}{N}+\frac{Z_\alpha^2}{4N^2}}}{1+\frac{Z_\alpha^2}{N}}
+\label{bennani}
+\end{equation}
+where $N$ is the sample size, $T$ is the classifier good classification percentage and $Z_\alpha=1.96$ for $\alpha=95\%$.
+
+\begin{table*}[ht]
+\begin{center}
+\small
+\begin{tabular}{|@{\hspace{1pt}}l@{\hspace{0.5pt}}||@{\hspace{2pt}}c@{\hspace{0.5pt}}|@{\hspace{2pt}}c@{\hspace{0.5pt}}|@{\hspace{2pt}}c@{\hspace{0.5pt}}|@{\hspace{2pt}}c@{\hspace{0.5pt}}|@{\hspace{2pt}}c@{\hspace{0.5pt}}|@{\hspace{2pt}}c@{\hspace{0.5pt}}|}
+\hline
+ & \small\textsc{asia} & \small\textsc{heart} & \small\textsc{autralian} & \small\textsc{letter} & \small\textsc{thyroid} & \small\textsc{chess}\\\hline
+att, L, T & 8, 2000, 1000      & 14, 189, 81         &  15, 500, 190        & 17, 15000, 5000     & 22, 2800, 972      &   37, 2200, 996   \\\hline\hline
+NB       & 86.5\%\scriptsize[84.2;88.5]   & 87.6\%\scriptsize[78.7;93.2]   & 87.9\%\scriptsize[82.4;91.8]    & 73.5\%\scriptsize[72.2;74.7]   & 95.7\%\scriptsize[94.2;96.9]  & 86.6\%\scriptsize[84.3;88.6] \\
+TANB     & 86.5\%\scriptsize[84.2;88.5]   & 81.5\%\scriptsize[71.6;88.5]   & 86.3\%\scriptsize[80.7;90.5]    & 85.3\%\scriptsize[84.3;86.3]   & 95.4\%\scriptsize[93.8;96.6]  & 86.4\%\scriptsize[84.0;88.4] \\\hline
+MWST-\textsc{bic} & 86.5\%\scriptsize[84.2;88.5] & 86.4\%\scriptsize[77.3;92.3] & 87.4\%\scriptsize[81.8;91.4] & 74.1\%\scriptsize[72.9;75.4] & 96.8\%\scriptsize[95.4;97.8]  & 89.5\%\scriptsize[87.3;91.3] \\
+MWST-\textsc{mi}  & 86.5\%\scriptsize[84.2;88.5] & 82.7\%\scriptsize[73.0;89.5] & 85.8\%\scriptsize[80.1;90.1] & 74.9\%\scriptsize[73.6;76.1] & 96.1\%\scriptsize[94.6;97.2]  & 89.5\%\scriptsize[87.3;91.3] \\\hline
+PC       & 84.6\%\scriptsize[82.2;86.8]   & 85.2\%\scriptsize[75.7;91.3]   & 86.3\%\scriptsize[80.7;90.5]    & memory crash        & memory crash       & memory crash      \\\hline
+%BNPC     & 86.5\%\scriptsize[84.2;88.5]   &    & memory crash    & memory crash  & memory crash  & memory crash \\
+K2       & 86.5\%\scriptsize[84.2;88.5]   & 83.9\%\scriptsize[74.4;90.4]   & 83.7\%\scriptsize[77.8;88.3]    & 74.9\%[73.6;76.1]   & 96.3\%\scriptsize[94.9;97.4]  & 92.8\%\scriptsize[90.9;94.3] \\
+K2+T     & 86.5\%\scriptsize[84.2;88.5]   & 81.5\%\scriptsize[71.6;88.5]   & 84.2\%\scriptsize[78.3;88.8]    & 74.9\%\scriptsize[73.6;76.1]   & 96.3\%\scriptsize[94.9;97.4]  & 92.6\%\scriptsize[90.7;94.1] \\
+K2-T     & 86.5\%\scriptsize[84.2;88.5]   & 76.5\%\scriptsize[66.2;84.5]   & 85.8\%\scriptsize[80.1;90.1]    & 36.2\%\scriptsize[34.9;37.6]   & 96.1\%\scriptsize[94.6;97.2]  & 93.0\%\scriptsize[91.2;94.5] \\\hline
+%MCMC     & 86.2  [83.9 -88.2 ]   & 86.42 [77.30-92.24]   & 80.00 [73.74-85.07]    & 64.26 [62.92-65.58]   & 96.19 [94.80-97.23]  & 95.98 [94.58-97.04] \\
+%MCMC     & 86.50 [84.24-88.48]   & 87.65 [78.74-93.15]   & 80.00 [73.74-85.07]    & 75.36 [74.15-76.53]   & 95.99 [94.56-97.05]  & 93.17 [91.43-94.58] \\
+%MCMC     & 86.50 [84.24-88.48]   & 80.25 [70.30-87.46]   & 80.00 [73.74-85.07]    & 73.42 [72.18-74.63]   & 96.09 [94.68-97.14]  & 96.99 [95.73-97.88] \\
+%MCMC     & 86.50 [84.24-88.48]   & 83.95 [74.45-90.37]   & 80.00 [73.74-85.07]    & 76.46 [75.26-77.62]   & 96.40 [95.03-97.40]  & 94.48 [92.88-95.73] \\
+%MCMC     & 86.50 [84.24-88.48]   & 82.72 [73.05-89.42]   & 80.00 [73.74-85.07]    & 75.28 [74.07-76.46]   & 96.19 [94.80-97.23]  & 97.49 [92.43-95.38] \\
+MCMC$^*$ & 86.44\%  & 84.20\%  &  80.00\%   & 72.96\%   & 96.17\%  & 95.62\% \\
+GS       & 86.5\%\scriptsize[84.2;88.5]   & 85.2\%\scriptsize[75.8;91.4]   & 86.8\%\scriptsize[81.3;91.0]    & 74.9\%\scriptsize[73.6;76.1]   & 96.2\%\scriptsize[94.7;97.3]  & 94.6\%\scriptsize[93.0;95.9] \\
+GS+T     & 86.2\%\scriptsize[83.9;88.3]   & 82.7\%\scriptsize[73.0;89.5]   & 86.3\%\scriptsize[80.7;90.5]    & 74.9\%\scriptsize[73.6;76.1]   & 95.9\%\scriptsize[94.4;97.0]  & 92.8\%\scriptsize[90.9;94.3] \\\hline
+GES      & 86.5\%\scriptsize[84.2;88.5]   & 85.2\%\scriptsize[75.8;91.4]   & 84.2\%\scriptsize[78.3;88.8]    & 74.9\%\scriptsize[73.6;76.1]   & 95.9\%\scriptsize[94.4;97.0]  & 93.0\%\scriptsize[91.2;94.5] \\\hline
+SEM      & 86.5\%\scriptsize[84.2;88.5]   & 80.2\%\scriptsize[70.2;87.5]   & 74.2\%\scriptsize[67.5;80.0]    & memory crash        & 96.2\%\scriptsize[94.7;97.3]  & 89.2\%\scriptsize[87.1;91.0] \\\hline
+\hline
+kNN      & 86.5\%\scriptsize[84.2;88.5]   & 85.2\%\scriptsize[75.8;91.4]   & 80.5\%\scriptsize[74.3;85.6]    & 94.8\%\scriptsize[94.2;95.5]   & 98.8\%\scriptsize[97.8;99.4]  & 94.0\%\scriptsize[92.3;95.4] \\\hline
+\end{tabular}
+\end{center}
+\caption{\small Good classification percentage on test data and $95\%$ confidence interval for classifiers obtained with several structure learning algorithms (Naive Bayes, Tree Augmented Naive Bayes with Mutual Information score, Maximum Weight Spanning Tree with Mutual Information or BIC score, PC, K2 initialisate with [class node , observation nodes with numerous order] or with MWST or \textit{inverse} MWST initialisation, MCMC ($^*$ As this method is not deternimistic the results are meaned over five runs), Greedy Search starting with an empty graph or with MWST tree, Gready Equivalent Search and Structural EM dealing with $20\%$ of missing data. These results are compared with a k-nearest-neighbour classifier ($k=9$).}
+\label{class}
+\end{table*}
+\normalsize
+
+
+\subsubsection{Results and interpretations}
+
+Classifier performances and confidence intervals corresponding to several structure learning algorithms are given table \ref{class}.
+These results are compared with a k-nearest-neighbour classifier ($k=9$).
+
+Notice that the \textit{memory crash} obtained with PC algorithm on medium-sized datasets is due to the actual implementation of this method.
+\cite{Spi00} proposes a heuristic that can be used on bigger datasets than the actual implementation can.
+
+For simple classification problems like \textsc{asia}, a naive bayes classifier gives as good results as complex algorithms or as the KNN methods.
+We can also point up that the tree search method (MWST) gives similar or better results than naive bayes for our datasets. 
+It appears judicious to use this simple technic instead of the naive structure.
+Contrary to our intuition the TANB classifier gives little worse results that the naive bayes classifier except on \textsc{heart} dataset where the results are much worse and on \textsc{letter} problem where it has given the best recognition rate (except if we consider the KNN).
+Even if this method permits to relax the conditional independencies between the observations, it also increases the network complexity, and then the number of parameters that we have to estimate is too big for our dataset length.
+
+For more complex problems like \textsc{chess}, structure learning algorithms obtain better performances than naive bayes classifier.
+
+Differing to the previous structure search experience, the several initialisations we use with the K2 algorithm do not lead to an improvement of the classification rate.
+Nevertheless, using another method to choose the initial order permits to stabilize the method.
+
+% BNPC
+
+The MCMC method gives poor results for problems with a small number of nodes but seems to be able to find very good structures as the number of nodes increases.
+
+Surprisingly, the Greedy Search does not find a structure with a better classification rate, although this method parses the entire \textsc{dag}s space.
+It can be explained by the size of the dag space and the great number of local optima in it.
+
+In theory, the Greedy Equivalent Search is the most advanced score based method of those we tested.
+In the previous experiments, it lead to the finding of high-scoring structures.
+But over our classification problems, its results are out-performed by those obtained by a classical greedy search.
+
+On the other hand, Structural EM successfully manages to deal with incomplete datasets and obtains results similar to other methods with $20\%$ of missing data.
+
+The methods we used do not give better results than the k-nearest neighbor classifier.
+But we can notice that the resulting Bayesian network can also be used in many ways.
+For instance by infering on other nodes than the class one, by interpretating the structure or by dealing with missing data.
+
+
+\section{Conclusions and future work}
+
+Learning Bayesian network structure from data is a difficult problem for which we reviewed the main existing methods.
+
+Our first experiment allowed us to evaluate the precision of these methods retrieving a known graph. Results show us that finding weak relations between attributes is difficult when the sample size is too small.
+For most methods, random initializations can be replaced effectively by initializations issued from a simple algorithm like MWST.
+
+Our second experiment permited to evaluate the effectiveness of these methods for classification tasks. Here, we have shown that a good structure search can lead to results similar to the k-NN method but can also be used in other ways (structure interpretating, inference on other nodes and dealing with incomplete data).
+Moreover, simple methods like Naive Bayes or MWST give results as good as more complex methods on simple problems (\emph{i.e. with few nodes}).
+
+Recent works show that parsing the Markov equivalent space (cf definition \ref{equim}) instead of the \textsc{dag}s space leads to optimal results.
+Munteanu \emph{et al.} \cite{Mun01} proved that this space has better properties and \cite{Chi02,Cas02} propose a new structure learning in this space.
+Moreover \cite{Chi02} proved the optimality of his GES method.
+In our experiments, this method has returned the best results regarding the scoring function,
+but if we consider the editing distance or the classification rate, the results are not so satisfying.
+
+Adapting existing methods to deal with missing data is very important while dealing with realistic problems.
+The SEM algorithm performs a greedy search in the \textsc{dag}s space but the same principle could be used with other algorithms (MWST for instance) in order to quickly find a good structure with incomplete data. Some initialization problems are also yet to be solved. Finally, the final step could consist in adapting the Structural EM principle to Markov equivalent search methods.
+
+\section*{Acknowledgements}
+This work was supported in part by the IST Programme of the European Community, under the PASCAL Network of Excellence, IST-2002-506778. This publication only reflects the authors' views.
+\nocite{Fra04}
+\bibliographystyle{pf2003}
+\bibliography{biblio}
+\end{document}

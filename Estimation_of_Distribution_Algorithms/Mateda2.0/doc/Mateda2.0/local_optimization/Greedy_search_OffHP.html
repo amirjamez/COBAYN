@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Greedy_search_OffHP</title>
+  <meta name="keywords" content="Greedy_search_OffHP">
+  <meta name="description" content="[NewPop,NumbEvals] =  Greedy_search_OffHP(k,Pop,FunVal,local_opt_params)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">local_optimization</a> &gt; Greedy_search_OffHP.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/local_optimization&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>Greedy_search_OffHP
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[NewPop,NumbEvals] =  Greedy_search_OffHP(k,Pop,FunVal,local_opt_params)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[NewPop,NewFunVal,NumbEvals] =  Greedy_search_OffHP(k,Pop,FunVal,local_opt_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [NewPop,NumbEvals] =  Greedy_search_OffHP(k,Pop,FunVal,local_opt_params)
+ Greedy_search_OffHP: Greedy  local optimization method for the Off
+ lattice HP model
+ INPUT
+ k: Current generation
+ Pop: Population
+ FunVal: Function values for each individual in the population
+ trials:  = cell2num(local_opt_params{1}(1)) number of local optimization
+         moves for each solution
+ OUTPUT:
+ NewPop: Population after local search
+ NewFunVal: Function values for the population optimized
+ NumbEvals: Number of evaluations made during the local optimization step</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/functions/protein/EvaluateOffHPProtein.html" class="code" title="function[Evals] =  EvaluateOffHPProtein(Pop)">EvaluateOffHPProtein</a>	[Evals] =  EvaluateOffHPProtein(Pop)</li><li><a href="../../Mateda2.0/repairing/Trigom_repairing.html" class="code" title="function[NewPop] =  Trigom_repairing(Pop,RangeValues,repairing_params)">Trigom_repairing</a>	[NewPop] =  Trigomn_repairing(Pop,RangeValues,repairing_params)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[NewPop,NewFunVal,NumbEvals] =  Greedy_search_OffHP(k,Pop,FunVal,local_opt_params)</a>
+0002 <span class="comment">% [NewPop,NumbEvals] =  Greedy_search_OffHP(k,Pop,FunVal,local_opt_params)</span>
+0003 <span class="comment">% Greedy_search_OffHP: Greedy  local optimization method for the Off</span>
+0004 <span class="comment">% lattice HP model</span>
+0005 <span class="comment">% INPUT</span>
+0006 <span class="comment">% k: Current generation</span>
+0007 <span class="comment">% Pop: Population</span>
+0008 <span class="comment">% FunVal: Function values for each individual in the population</span>
+0009 <span class="comment">% trials:  = cell2num(local_opt_params{1}(1)) number of local optimization</span>
+0010 <span class="comment">%         moves for each solution</span>
+0011 <span class="comment">% OUTPUT:</span>
+0012 <span class="comment">% NewPop: Population after local search</span>
+0013 <span class="comment">% NewFunVal: Function values for the population optimized</span>
+0014 <span class="comment">% NumbEvals: Number of evaluations made during the local optimization step</span>
+0015 
+0016 trials = cell2num(local_opt_params{1}(1));
+0017 
+0018 N = size(Pop,1);
+0019 NumbVar = size(Pop,2);
+0020 NumbEvals = 0;
+0021 <span class="keyword">for</span> i=1:N
+0022  BestX = Pop(i,:);
+0023  BestV = FunVal(i,1);
+0024  <span class="keyword">for</span> j=1:trials,
+0025     NewX = BestX;
+0026     pos_a = fix(NumbVar*rand) + 1;
+0027     pos_b = fix(NumbVar*rand) + 1;
+0028     <span class="comment">%inc_a  = pi*((fix(90*rand)+1)/90);</span>
+0029     <span class="comment">%inc_b  = pi*((fix(90*rand)+1)/90);</span>
+0030     <span class="comment">%NewX(pos_a) = BestX(pos_a) + (1 + 2*(fix(2*rand)-1))*inc_a;</span>
+0031     <span class="comment">%NewX(pos_b) = BestX(pos_b) + (1 + 2*(fix(2*rand)-1))*inc_b;</span>
+0032     NewX(pos_a) = 2*pi*rand;
+0033     NewX(pos_b) = 2*pi*rand;
+0034     NewV = <a href="../../Mateda2.0/functions/protein/EvaluateOffHPProtein.html" class="code" title="function[Evals] =  EvaluateOffHPProtein(Pop)">EvaluateOffHPProtein</a>(NewX);
+0035     <span class="comment">%if(NewV &gt;= BestV)</span>
+0036     <span class="keyword">if</span>( (NewV - BestV) &gt; -0.01)
+0037       BestV = NewV;
+0038       BestX = NewX;
+0039       <span class="comment">%[i,j,BestV]</span>
+0040     <span class="keyword">end</span>
+0041  <span class="keyword">end</span>,
+0042  <span class="comment">%[i,FunVal(i,1),BestV]</span>
+0043  NewPop(i,:) = BestX;
+0044  NewFunVal(i,1) = BestV;
+0045  NumbEvals = NumbEvals + trials;
+0046 <span class="keyword">end</span>,
+0047 RangeValues =  [zeros(1,NumbVar);2*pi*ones(1,NumbVar)];
+0048 [NewPop] =   <a href="../../Mateda2.0/repairing/Trigom_repairing.html" class="code" title="function[NewPop] =  Trigom_repairing(Pop,RangeValues,repairing_params)">Trigom_repairing</a>(NewPop,RangeValues,{});
+0049 
+0050 
+0051</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

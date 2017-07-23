@@ -1,0 +1,93 @@
+\documentclass[twoside,11pt]{article}
+\usepackage{entete}
+\usepackage{jmlr2e}
+% {volume}{year}{pages}{submitted}{published}{author-full-names}
+\jmlrheading{?}{2008}{1-??}{4/08}{??/08}{Olivier Fran\c{c}ois and Philippe Leray}
+\ShortHeadings{\textsc{BNT Structure Learning Package}}{Fran\c{c}ois and Leray}
+\firstpageno{1}
+\begin{document}
+\title{\textsc{BNT Structure Learning Package} : \\Documentation and Experiments}
+\author{%
+\name Olivier \textsc{c.h. Francois}
+\email \url{Francois.Olivier.C.H@gmail.com}\\%[6pt]
+\addr Sustainable Urban Environments Research Division, URS building, Room 3n38,\\
+Whiteknights, PO Box 219, Reading, RG6 6AW, UK\\
+\url{http://ofrancois.tuxfamily.org}
+\AND
+\name Philippe \textsc{Leray}
+\email \url{Philippe.Leray@univ-nantes.fr}\\%[6pt]
+\addr Ecole Polytechnique de l'Université de Nantes,\\
+Laboratoire d'Informatique de Nantes Atlantique,\\
+Rue\,Christian\,Pauc,\,BP\,50609,\,44306\,Nantes\,Cedex\,3\\
+\url{http://www.polytech.univ-nantes.fr/COD/?Pages_personnelles:Philippe_Leray}\vspace*{-\baselineskip}
+}
+\editor{?? Leslie Pack Kaelbling ??\vspace*{-\baselineskip}}
+\maketitle
+\begin{abstract}%
+Bayesian networks are a formalism for probabilistic reasoning that have grown increasingly popular for tasks such as classification in data-mining.
+In some situations, the structure of the Bayesian network can be given by an expert. If not, retrieving it automatically from a database of cases is a NP-hard problem; notably because of the complexity of the search space.
+In the last decade, numerous methods have been introduced to learn the network's structure automatically, by simplifying the search space or by using an heuristic in the search space. Most methods deal with completely observed data, but some can deal with incomplete data.
+The \emph{Bayes Net Toolbox} for Matlab, introduced by \cite{BNT04}, offers functions for both using and learning Bayesian Networks.
+But this toolbox is not 'state of the art' as regards structural learning methods. This is why we propose the SLP package.
+\end{abstract}
+\begin{keywords}
+  Bayesian Networks, Structure Learning, Classification
+\end{keywords}
+\everymath{\displaystyle\color{coulmath}}
+\normalsize
+
+%================================================================
+\section{Introduction}
+
+\input{intro}
+
+%================================================================
+\section{Preliminaries}
+
+\input{prelim}
+
+%================================================================
+\section{Algorithms and implementation}
+
+\input{algo}
+
+%================================================================
+\section{Experimentation}
+
+\input{expe}
+
+%================================================================
+\section{Conclusions and future work}
+
+Learning Bayesian network structure from data is a difficult problem for which we reviewed the main existing methods.
+
+Our first experiment allowed us to evaluate the precision of these methods retrieving a known graph. Results show us that finding weak relations between attributes is difficult when the sample size is too small.
+For most methods, random initializations can be replaced effectively by initializations issued from a simple algorithm like MWST.
+
+Our second experiment permited to evaluate the effectiveness of these methods for classification tasks. Here, we have shown that a good structure search can lead to results similar to the k-NN method but can also be used in other ways (structure interpretating, inference on other nodes and dealing with incomplete data).
+Moreover, simple methods like Naive Bayes or MWST give results as good as more complex methods on simple problems (\emph{i.e. with few nodes}).
+
+Recent works show that parsing the Markov equivalent space (cf definition \ref{equim}) instead of the \textsc{dag}s space leads to optimal results.
+Munteanu \emph{et al.} \cite{Mun01} proved that this space has better properties and \cite{Chi02,Cas02} propose a new structure learning in this space.
+Moreover \cite{Chi02} proved the optimality of his GES method.
+In our experiments, this method has returned the best results regarding the scoring function,
+but if we consider the editing distance or the classification rate, the results are not so satisfying.
+
+The EM algorithm, which is very often used, don't seems to give good results regarding those that are obtained using pairwise deletion. The two estimation technics leads to different results.
+When we want to interpret the structure, we should use EM, and when we want to perform classification or simulation task, we should prefer using ACA.
+
+Adapting existing methods to deal with missing data is very important while dealing with realistic problems.
+The SEM algorithm performs a greedy search in the \textsc{dag}s space but the same principle could be used with other algorithms (MWST for instance) in order to quickly find a good structure with incomplete data. Some initialization problems are also yet to be solved. Finally, the final step could consist in adapting the Structural EM principle to Markov equivalent search methods.
+
+In future work, we should study sensitivity of all structure learning algorithms to the fitting function that is optimised.
+In this study, we have used the BIC criterion, but we could also use MDL or BDe criterion for instances.
+
+%\section*{Acknowledgements}
+%This work was supported in part by the IST Programme of the European Community, under the PASCAL Network of Excellence, IST-2002-506778. This publication only reflects the authors' views.
+
+%\pagebreak
+\section*{Bibliographie}
+
+\nocite{Fra06T,Meg06,Fra06}
+\bibliography{bibliographie}
+\end{document}

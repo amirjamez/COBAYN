@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of LearnTreeModel</title>
+  <meta name="keywords" content="LearnTreeModel">
+  <meta name="description" content="[model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">learning</a> &gt; LearnTreeModel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/learning&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>LearnTreeModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)
+ LearnTreeModel: A maximum weighted tree is learned from the matrix of mutual information between the variables
+ INPUTS
+ k: Current generation
+ NumbVar: Number of variables
+ Card: Vector with the dimension of all the variables. 
+ SelPop:  Population from which the model is learned 
+ AuxFunVal: Evaluation of the data set (required for some learning algorithms, not for this one)
+ learning_params{1}(1) = {}
+ OUTPUTS
+ model: Structure containing the tree structure (model{1} = Cliques)
+        and the parameters (model{2} = Tables)
+
+ Last version 5/6/2009. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="CreateTreeStructure.html" class="code" title="function [Cliques] = CreateTreeStructure(MI)">CreateTreeStructure</a>	[Cliques] = CreateTreeStructure(MI)</li><li><a href="FindMargProb.html" class="code" title="function[UnivProb,BivProb]=FindMargProb(SelPop,NumbVar,Card)">FindMargProb</a>	[UnivProb,BivProb]=FindMargProb(SelPop,NumbVar,Card)</li><li><a href="../../Mateda2.0/otherfiles/IntMutualInfFromMargProb.html" class="code" title="function[MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb)">IntMutualInfFromMargProb</a>	[MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</a>
+0002 <span class="comment">% [model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</span>
+0003 <span class="comment">% LearnTreeModel: A maximum weighted tree is learned from the matrix of mutual information between the variables</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% k: Current generation</span>
+0006 <span class="comment">% NumbVar: Number of variables</span>
+0007 <span class="comment">% Card: Vector with the dimension of all the variables.</span>
+0008 <span class="comment">% SelPop:  Population from which the model is learned</span>
+0009 <span class="comment">% AuxFunVal: Evaluation of the data set (required for some learning algorithms, not for this one)</span>
+0010 <span class="comment">% learning_params{1}(1) = {}</span>
+0011 <span class="comment">% OUTPUTS</span>
+0012 <span class="comment">% model: Structure containing the tree structure (model{1} = Cliques)</span>
+0013 <span class="comment">%        and the parameters (model{2} = Tables)</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Last version 5/6/2009. Roberto Santana (roberto.santana@ehu.es)</span>
+0016  
+0017   N = size(SelPop,1);
+0018   Cliques =  [];   
+0019 
+0020       <span class="comment">% Univariate and Bivariate probabilities are learned</span>
+0021         [UnivProb,BivProb]= <a href="FindMargProb.html" class="code" title="function[UnivProb,BivProb]=FindMargProb(SelPop,NumbVar,Card)">FindMargProb</a>(SelPop,NumbVar,Card);
+0022        
+0023        <span class="comment">% The Matrix of Mutual information is learned</span>
+0024          MI = <a href="../../Mateda2.0/otherfiles/IntMutualInfFromMargProb.html" class="code" title="function[MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb)">IntMutualInfFromMargProb</a>(NumbVar,Card,UnivProb,BivProb);
+0025          
+0026        <span class="comment">% The tree is extracted from the matrix of mutual information</span>
+0027          [Cliques] = <a href="CreateTreeStructure.html" class="code" title="function [Cliques] = CreateTreeStructure(MI)">CreateTreeStructure</a>(MI);
+0028        
+0029       <span class="keyword">for</span> i=1:NumbVar
+0030         nparent = Cliques(i,1);        
+0031         <span class="keyword">if</span>  nparent== 0 <span class="comment">% The variable has no parent</span>
+0032          Tables{i} = (UnivProb{i}*N + 1) ./ ( (N + Card(i))*ones(1,Card(i)));
+0033         <span class="keyword">else</span> 
+0034          parent = Cliques(i,3);
+0035          <span class="comment">%[i,parent,Card(i),Card(parent)]</span>
+0036          <span class="keyword">if</span> parent&lt;i
+0037            a = BivProb{parent,i};
+0038            <span class="comment">%AuxBivProb = reshape(a',Card(parent),Card(i))</span>
+0039            AuxBivProb = reshape(a',Card(i),Card(parent))';
+0040          <span class="keyword">else</span>
+0041            a = BivProb{i,parent};
+0042            AuxBivProb = reshape(a',Card(parent),Card(i));
+0043            
+0044          <span class="keyword">end</span>
+0045             aux = repmat(UnivProb{parent}',1,Card(i));
+0046             auxcard = repmat(Card(i),Card(parent),Card(i));
+0047             CondBivProb =  (AuxBivProb*N +1) ./ (aux*N + auxcard);  <span class="comment">% Laplace Estimator</span>
+0048             Tables{i} = CondBivProb;
+0049         <span class="keyword">end</span>
+0050         
+0051        <span class="keyword">end</span>
+0052       
+0053      model{1} = Cliques;
+0054      model{2} = Tables;
+0055      
+0056      <span class="keyword">return</span>;
+0057      
+0058      
+0059</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

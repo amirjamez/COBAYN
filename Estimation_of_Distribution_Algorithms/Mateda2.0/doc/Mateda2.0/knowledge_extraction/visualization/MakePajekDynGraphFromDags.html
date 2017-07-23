@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of MakePajekDynGraphFromDags</title>
+  <meta name="keywords" content="MakePajekDynGraphFromDags">
+  <meta name="description" content="MakePajekDynGraphFromDags(listdags,pajekfilename)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">knowledge_extraction</a> &gt; <a href="index.html">visualization</a> &gt; MakePajekDynGraphFromDags.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction/visualization&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>MakePajekDynGraphFromDags
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>MakePajekDynGraphFromDags(listdags,pajekfilename)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function  MakePajekDynGraphFromDags(listdags,pajekfilename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> MakePajekDynGraphFromDags(listdags,pajekfilename)
+ MakePajekDynGraphFromDags:  Creates a dynamic graph in .tin format (to be read by
+ Pajek program http://vlado.fmf.uni-lj.si/pub/networks/pajek/ ) of the Bayesian networks 
+ structure learned at each step of an EDA that learns Bayesian networks
+ Pajek allows sophisticated network analysis and visualization 
+ INPUTS
+ listdag: List of Bayesian network structures. listdags{i} is the dag
+ learned at generation i
+ pajekfilename: Name of the pajek file containing the structure of the
+ network
+
+
+ EXAMPLE
+for i=1:size(Cache,2),
+listdags{i} = Cache{3,i}
+end
+ MakePajekDynGraphFromDags(listdags,'EDAstructures.tin')
+
+ Last version 3/9/2009. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function  MakePajekDynGraphFromDags(listdags,pajekfilename)</a>
+0002 <span class="comment">% MakePajekDynGraphFromDags(listdags,pajekfilename)</span>
+0003 <span class="comment">% MakePajekDynGraphFromDags:  Creates a dynamic graph in .tin format (to be read by</span>
+0004 <span class="comment">% Pajek program http://vlado.fmf.uni-lj.si/pub/networks/pajek/ ) of the Bayesian networks</span>
+0005 <span class="comment">% structure learned at each step of an EDA that learns Bayesian networks</span>
+0006 <span class="comment">% Pajek allows sophisticated network analysis and visualization</span>
+0007 <span class="comment">% INPUTS</span>
+0008 <span class="comment">% listdag: List of Bayesian network structures. listdags{i} is the dag</span>
+0009 <span class="comment">% learned at generation i</span>
+0010 <span class="comment">% pajekfilename: Name of the pajek file containing the structure of the</span>
+0011 <span class="comment">% network</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% EXAMPLE</span>
+0015  <span class="comment">%for i=1:size(Cache,2),</span>
+0016   <span class="comment">%listdags{i} = Cache{3,i}</span>
+0017  <span class="comment">%end</span>
+0018 <span class="comment">% MakePajekDynGraphFromDags(listdags,'EDAstructures.tin')</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% Last version 3/9/2009. Roberto Santana (roberto.santana@ehu.es)</span>
+0021 
+0022 
+0023 ndags = size(listdags,2);
+0024 n = size(listdags{1}.dag,1);
+0025 
+0026 Pos(:,1) = [0:1/n:1];
+0027 Pos(:,2) = 0.5;
+0028 
+0029 
+0030 
+0031 fid = fopen(pajekfilename,<span class="string">'wt'</span>);
+0032         fprintf(fid,<span class="string">'*Vertices %d \n'</span>, n); 
+0033         fprintf(fid,<span class="string">'*Events \n'</span>);
+0034      
+0035         fprintf(fid,<span class="string">'TI = 1 \n'</span>);
+0036         <span class="keyword">for</span> i=1:n,
+0037           auxstr = [<span class="string">'&quot;v'</span>,num2str(i),<span class="string">'&quot;'</span>];   
+0038           auxstr1 = <span class="string">'ellipse ic Black fos 20'</span>;
+0039           fprintf(fid,<span class="string">'AV %d %s %d %d %s \n'</span>,i,auxstr,Pos(i,1),Pos(i,2),auxstr1);
+0040         <span class="keyword">end</span>,
+0041          
+0042    <span class="keyword">for</span> t=1:ndags
+0043     <span class="keyword">if</span>(t&gt;1)
+0044       <span class="keyword">for</span> i=1:n,
+0045        <span class="keyword">for</span> j=1:n,   
+0046          <span class="keyword">if</span> listdags{t-1}.dag(i,j)==1
+0047              fprintf(fid,<span class="string">'DA %d %d \n'</span>,i,j);
+0048          <span class="keyword">end</span>
+0049        <span class="keyword">end</span>
+0050       <span class="keyword">end</span>
+0051     <span class="keyword">end</span>
+0052       <span class="keyword">for</span> i=1:n,
+0053        <span class="keyword">for</span> j=1:n,   
+0054          <span class="keyword">if</span> listdags{t}.dag(i,j)==1
+0055              fprintf(fid,<span class="string">'AA %d %d \n'</span>,i,j);
+0056              fprintf(fid,<span class="string">'SA %d %d \n'</span>,i,j);
+0057          <span class="keyword">end</span>
+0058        <span class="keyword">end</span>
+0059       <span class="keyword">end</span>
+0060       fprintf(fid,<span class="string">'TE %d \n'</span>,t);
+0061       <span class="keyword">if</span> t&lt;ndags
+0062         fprintf(fid,<span class="string">'TI %d \n'</span>,t+1);
+0063       <span class="keyword">end</span>
+0064    <span class="keyword">end</span>     
+0065       
+0066   fclose(fid)
+0067</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

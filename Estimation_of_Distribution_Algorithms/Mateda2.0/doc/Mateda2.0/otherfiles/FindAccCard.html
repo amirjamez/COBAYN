@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FindAccCard</title>
+  <meta name="keywords" content="FindAccCard">
+  <meta name="description" content="[AccCard] = FindAccCard(length,Card)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">otherfiles</a> &gt; FindAccCard.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/otherfiles&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>FindAccCard
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[AccCard] = FindAccCard(length,Card)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [AccCard] = FindAccCard(length,Card) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [AccCard] = FindAccCard(length,Card)
+
+ FindAccCard:  Finds the accumulative cardinality of a set of variables
+ whose cardinality is in Card.
+ INPUT:
+ length: length of the vector
+ Card: Cardinality of the variables
+ OUTPUT: 
+ AccCard: The product of cardinalities of previous  variables, 
+          where the first variable is  the first one to the left.
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/learning/LearnFDAParameters.html" class="code" title="function[Tables] = LearnFDAParameters(Cliques,SelPop,NumbVar,Card)">LearnFDAParameters</a>	[Tables] = LearnFDAParameters(Cliques,SelPop,NumbVar,Card)</li><li><a href="../../Mateda2.0/learning/LearnMOAParameters.html" class="code" title="function[Tables] = LearnMOAParameters(Cliques,SelPop,NumbVar,Card)">LearnMOAParameters</a>	[Tables] = LearnMOAParameters(Cliques,SelPop,NumbVar,Card)</li><li><a href="../../Mateda2.0/learning/LearnMOAProb.html" class="code" title="function [Tables] = LearnMOAProb(Cliques,SelPop,NumbVar,N,Card)">LearnMOAProb</a>	[Tables] = LearnMOAProb(Cliques,SelPop,NumbVar,N,Card)</li><li><a href="FindListCard.html" class="code" title="function [ListFactorsCard] = FindListCard(ListFactors,Card)">FindListCard</a>	[ListFactorsCard] = FindListCard(ListFactors,Card)</li><li><a href="FindListCliqAccCard.html" class="code" title="function[ListCliqAccCard] = FindListCliqAccCard(totcliq,ListCliques,Card)">FindListCliqAccCard</a>	[ListCliqAccCard] = FindListCliqAccCard(totcliq,ListCliques,Card)</li><li><a href="../../Mateda2.0/sampling/Find_kMPEs.html" class="code" title="function[k_solutions,k_probvalues] =  Find_kMPEs(bnet,k,Card)">Find_kMPEs</a>	[k_solutions,k_probvalues] =  Find_kMPEs(bnet,k,Card)</li><li><a href="../../Mateda2.0/sampling/MNGibbsGenerateIndividual.html" class="code" title="function [NewIndividual] = MOAGenerateIndividual(OldIndividual,Cliques,Tables,Card,GibbSteps)">MNGibbsGenerateIndividual</a>	[NewIndividual] = MOAGenerateIndividual(OldIndividual,Cliques,Tables,Card,GibbSteps)</li><li><a href="../../Mateda2.0/sampling/MOAGenerateIndividual.html" class="code" title="function [NewIndividual] = MOAGenerateIndividual(OldIndividual,Cliques,Tables,Card,GibbSteps)">MOAGenerateIndividual</a>	[NewIndividual] = MOAGenerateIndividual(OldIndividual,Cliques,Tables,Card,GibbSteps)</li><li><a href="../../Mateda2.0/sampling/SampleFDA.html" class="code" title="function [NewPop] = SampleFDA(NumbVar,model,Card,AuxPop,AuxFunVal,sampling_params)">SampleFDA</a>	[NewPop] = SampleFDA(NumbVar,model,Card,AuxPop,AuxFunVal,sampling_params)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [AccCard] = FindAccCard(length,Card)</a>
+0002 <span class="comment">% [AccCard] = FindAccCard(length,Card)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% FindAccCard:  Finds the accumulative cardinality of a set of variables</span>
+0005 <span class="comment">% whose cardinality is in Card.</span>
+0006 <span class="comment">% INPUT:</span>
+0007 <span class="comment">% length: length of the vector</span>
+0008 <span class="comment">% Card: Cardinality of the variables</span>
+0009 <span class="comment">% OUTPUT:</span>
+0010 <span class="comment">% AccCard: The product of cardinalities of previous  variables,</span>
+0011 <span class="comment">%          where the first variable is  the first one to the left.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0014 
+0015 
+0016  AccCard(length) = 1;
+0017 
+0018 <span class="keyword">for</span> i=length-1:-1:1
+0019     AccCard(i)=AccCard(i+1)*Card(i+1);
+0020  <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,227 @@
+\subsection{Retrieving a known structure}
+\subsubsection*{Test networks and evaluation techniques}
+
+We used two well-known network structures. The first, \textsc{asia}, was introduced by \cite{Lau88} (cf figure~\ref{orig}.a).
+All its nodes are binary nodes. We can notice that concerning the edge between $A$ et $T$, the  \emph{a priori} probability of $A$ is small, and the influence of $A$ on $T$ is weak.
+The second network we use is \textsc{insurance} with $27$ nodes (cf figure \ref{orig}.b) and is available in \cite{BNR97}.
+
+Data generation has been performed for different sample sizes in order to test the influence of this size over the results of the various structure learning methods.
+To generate a sample, we draw the parent node values randomly and choose the son node values according to the Bayesian network parameters.
+\vspace*{-\baselineskip}
+
+\begin{figure}[!ht]
+\centering\begin{tabular}{ll}\hspace*{1cm}
+\begin{minipage}{6cm}
+\hspace*{-195pt}\vspace*{-175pt}
+%{\xymatrix@C=4pt @R=9pt{*+[F]{A} \ar[d] & & & *+[F]{S} \ar[dl] \ar[dr] \\ *+[F]{T} \ar[dr] &  & *+[F]{L} \ar[dl] &  & *+[F]{B} \ar[ddll] \\ & *+[F]{E} \ar[dl] \ar[dr] \\ *+[F]{X} & & *+[F]{D}}} 
+ \includegraphics[width=55mm, height=52mm]{fig/asia2}
+\end{minipage} & %\hspace*{2cm} &
+\hspace*{-240pt}
+\begin{minipage}{6cm}
+ \includegraphics[width=110mm, height=110mm]{fig/insurance}
+\end{minipage}\\
+\hspace*{-80pt}(a) & \hspace*{-80pt} (b)
+\end{tabular}
+\caption{Original networks : (a) \textsc{asia} and (b) \textsc{insurance}}
+\label{orig}
+\end{figure}
+
+\input{asiafig}
+\normalsize
+
+In order to compare the results obtained by the different algorithms we tested, we use an 'editing measure' defined by the length of the minimal sequence of operators needed to transform the original graph into the resulting one (operators are edge-insertion, edge-deletion and edge-reversal, note that the edge-reversal is considered as a independent operator and not as the deletion and insertion of the opposite edge).
+
+The BIC score of networks is also precised in a comparative way (computed from additional datasets of $30000$ cases for \textsc{asia} and $20000$ cases for \textsc{insurance}).
+
+\subsubsection*{Results and interpretations}
+~\\\textit{Dataset length influence}~\\
+Figure \ref{asia} shows us that MWST algorithm appears to be quite insensitive to the length of the dataset.
+It always gives a graph close to the original one, although the search space is the tree space which is poorer than the \textsc{dag}s-space .
+
+The PC also gives good results with a  small number of \textit{wrong} edges.
+
+The K2 method is very fast and is frequently used in the literature but presents the drawback of being very sensitive to its initial enumeration order.
+Figure \ref{asia} shows the results of K2 on \textsc{asia} data with 2 different orders ("\textsc{elbxasdt}" and "\textsc{taldsxeb}").
+We can notice that the results are constant for a given initialization order, but two different initialization orders will lead to very different solutions.
+This phenomenon can also be observed in figure \ref{resinsur} with the \textsc{insurance} data sets.
+
+The results given by the BNPC algorithm are good in arc retrieval but do not have great scores.%\footnote{As this method performs statistical tests it can retrieve dependencies that cannot be modelized by a \text{dag} then the last step which consists or orienting edges cannot be performed systematically (maybe this problem is due to our actual implementation).}
+
+The MCMC based method permit to obtain good results whatever the dataset length. In all runs, this method has given similar results from a scoring point of view but there was significant differences among the editing distances.
+
+The GS algorithm is robust to dataset length variation, especially when this algorithm is initialized with \textsc{mwst} tree.
+
+The GES method has given good results whatever the dataset length.
+Given an significant amount of data, the networks issued from this method return better scores than those found by a classical greedy search.
+But for the more complex \textsc{insurance} network, the results are significantly better as for the scoring function than those obtained with a greedy search in the \textsc{dag}s space but are worse in terms of editing distances.
+
+~\\\textit{Weak dependance recovering}~\\
+Most of the tested methods have not recovered the $A$--$T$ edge of the \textsc{asia} structure. Only the simple method MWST, PC and K2 initialised with MWST structure retrieve this edge when the dataset is big enough.
+This can be explained for all the scoring methods: this edge-insertion does not lead to a score increase because the likelihood increase is counterbalanced by the penalty term increase.
+
+
+\subsection{Learning Efficient Bayesian Network for Classification\label{classif}}
+
+\subsubsection*{Datasets and evaluation criterion}
+%~\\
+\textbf{\textsc{asia}}~\\
+We reuse the dataset previously generated with $2000$ instances for the learning phase and the one with $1000$ instances for testing.
+~\\\textbf{\textsc{heart}}~\\
+This dataset, available from Statlog project \cite{Sut92,Mic94}, is a medical diagnosis dataset with $14$ attributes (continuous attributes have been discretized).
+This dataset is made of $270$ cases which we split into two sets of respectively $189$ cases as learning data and $81$ cases as test data.
+~\\\textbf{\textsc{australian}}~\\
+This dataset, which is available on \cite{Mic94}, consists in a credit offer evaluation granted to an Australian customer evaluate considering $14$ attributes.
+It contains $690$ cases which have been separated into $500$ instances for learning and $190$ for testing.
+~\\\textbf{\textsc{letter}}~\\
+This dataset from \cite{Mic94} is the only one we tested which doesn't consist in a binary classificiation: the arity of the class variable being of $26$.
+It has been created from handwritten letter recognition and contains $16$ attributes like position or height of a letter but also means or variances of the pixels over the $x$ and the $y$ axis.
+It contains $15000$ samples for learning and $5000$ samples for testing.
+~\\\textbf{\textsc{thyroid}}~\\
+This dataset, available at \cite{UCI}, is a medical diagnosis dataset. We use $22$ attributes (among the $29$ original ones): $15$ discrete attributes, $6$ continuous attributes that have been discretised and one (binary) class node. This dataset is made of $2800$ learning data cases and $972$ test data cases.
+~\\\textbf{\textsc{chess}}~\\
+This dataset is also available at \cite{UCI} (Chess -- King+Rook versus King+Pawn). It is a chess prediction task: determining if white can win the game according to the current position described by $36$ attributes (the class is the $37^{th}$). This dataset is made of $3196$ data cases we decompose into $2200$ learning data cases and $996$ test data cases.
+\pagebreak
+
+\vspace*{-2\baselineskip}
+
+~\\\textit{Evaluation}~\\
+The evaluation criterion is the good classification percentage on test data, with an $\alpha\%$ confidence interval proposed by \cite{Ben96} (cf eq. \ref{bennani}).
+
+\begin{equ}
+I(\alpha,N)=\frac{T+\frac{Z_\alpha^2}{2N}\pm Z_\alpha\sqrt{\frac{T(1-T)}{N}+\frac{Z_\alpha^2}{4N^2}}}{1+\frac{Z_\alpha^2}{N}}
+\label{bennani}
+\end{equ}
+where $N$ is the sample size, $T$ is the classifier good classification percentage and $Z_\alpha=1.96$ for $\alpha=95\%$.
+
+\input{tabUCIcomp}
+
+\subsubsection*{Results and interpretations}
+
+Classifier performances and confidence intervals corresponding to several structure learning algorithms are given table \ref{class}.
+These results are compared with a k-nearest-neighbour classifier ($k=9$).
+
+Notice that the \textit{memory crash} obtained with PC algorithm on medium-sized datasets is due to the actual implementation of this method.
+\cite{Spi00} proposes a heuristic that can be used on bigger datasets than the actual implementation can.
+
+For simple classification problems like \textsc{asia}, a naive bayes classifier gives as good results as complex algorithms or as the KNN methods.
+We can also point up that the tree search method (MWST) gives similar or better results than naive bayes for our datasets. 
+It appears judicious to use this simple technic instead of the naive structure.
+Contrary to our intuition the TANB classifier gives little worse results that the naive bayes classifier except on \textsc{heart} dataset where the results are much worse and on \textsc{letter} problem where it has given the best recognition rate (except if we consider the KNN).
+Even if this method permits to relax the conditional independencies between the observations, it also increases the network complexity, and then the number of parameters that we have to estimate is too big for our dataset length.
+
+For more complex problems like \textsc{chess}, structure learning algorithms obtain better performances than naive bayes classifier.
+%
+Differing to the previous structure search experience, the several initialisations we use with the K2 algorithm do not lead to an improvement of the classification rate.
+Nevertheless, using another method to choose the initial order permits to stabilize the method.
+% BNPC
+The MCMC method gives poor results for problems with a small number of nodes but seems to be able to find very good structures as the number of nodes increases.
+%
+Surprisingly, the Greedy Search does not find a structure with a better classification rate, although this method parses the entire \textsc{dag}s space.
+It can be explained by the size of the dag space and the great number of local optima in it.
+%
+In theory, the Greedy Equivalent Search is the most advanced score based method of those we tested.
+In the previous experiments, it lead to the finding of high-scoring structures.
+But over our classification problems, its results are out-performed by those obtained by a classical greedy search.
+
+Bayesian networks outperform the k-nearest neighbor classifier on \textsc{australian} dataset and kNN outperforms on \textsc{letter} dataset.
+But we can notice that the resulting Bayesian network can also be used in many ways.
+For instance by infering on other nodes than the class one, by interpretating the structure.
+
+\subsection{Retrieving a known structure from incomplete datasets}
+
+\subsubsection*{Test networks and evaluation techniques}
+
+For these experiments, we have used the \textsc{asia} network of figure~\ref{orig}.a \cite{Lau88} to generate full datasets by MCMC simulation of various sizes (500, 1000, 2000, 5000, 10000).
+These datasets are randomly cleared of the third ($33.33\%$) of their values to test learning algorithms from incomplete datasets.
+These structure learning algorithms are equivalent to greedy searches in tree space, in \textsc{dag} space and in \textsc{cpdag} space.
+
+\subsubsection*{Results and interpretations}
+
+Results are shown in table \ref{inc1}.
+\input{asiafiginc}
+First look at figures shows that using pairwise deletion leads to high number of arcs whilst the use of the EM algorithm leads to low number of arcs.
+These differences don't apply for MWST, and one could see MWST-ACA gives better results than MWST-EM.
+Note that MWST-ACA is the only 'direct' algorithm, and it is very time efficient for such quality of results.
+
+Differences between GS-ACA and SEM (GS-EM) one one side and GES-ACA and GES-EM on the other side are very close.
+SEM and GES-EM find too few edges when dataset size is small and tend too give good results for bigger datasets.
+Surprisingly GS-ACA ang GES-ACA give very good results when we care about the BIC score.
+Even if the results are very complexe ones, they really capture the distribution of data (without overfitting as BIC score should be low).
+But structures from these methods could not be interprete as they are too complexe.
+On the other side, SEM and GES-EM give interpretable structure but with lower scores.
+
+Then results from EM methods are better to understand while results from ACA seems to be better for classification or simulation tasks.
+In the next section we will see if it is true for classification task.
+
+\subsection{Learning Efficient Bayesian Network classifier from incomplete datasets}
+
+\subsubsection*{Test datasets and evaluation techniques}
+
+The experiment stage aims at evaluating the Tree Augmented Naive Bayes classifier on incomplete datasets from \cite{UCI}: \texttt{Hepatitis}, \texttt{Horse}, \texttt{House}, \texttt{Mushrooms} and \texttt{Thyroid}.
+
+The \textsc{tan-em} method we proposed here is compared to the Naive Bayes classifier with \textsc{em} parameters learning.
+We also indicate the classification rate obtained by three methods: \textsc{mwst-em}, \textsc{sem} initialised with a random chain %as proposed by \cite{Hec95} 
+and \textsc{sem} initialised with the tree given by \textsc{mwst-em} (\textsc{sem+t}).
+The first two methods are dedicated to classification tasks while the others do not consider the class node as a specific variable.
+We also give an $95\%$-confidence interval based on equation \ref{bennani} for each classification rate.
+
+\subsubsection*{Results and interpretations}
+
+\input{tabUCI}
+
+The results are summed up in table \ref{tabUCI}.
+First, we could see that even if the Naive Bayes classifier often gives good results, the other tested methods allow to obtain better classification rates.
+Whislt all runs of \textsc{nb} and ACA methods give same results, EM methods do not always give same results because of the first parameters estimation random initialisation.
+We have also noticed (not reported here) that \textsc{tan-em} seems the most stable method concerning the evaluated classification rate while \textsc{mwst-em} seems to be the less stable of EM methods.
+
+The method \textsc{gs-em} could obtain very good structures with a good initialisation. Then, initialising it with the results of \textsc{mwst-em} gives stabler results (see \cite{Ler05} for a more specific study of this point).
+
+In our tests, except for \texttt{Hepatits} dataset (that have only 90 learning samples), \textsc{tan-em} and \textsc{tan-aca} always obtain structures that lead to better classification rates in comparison with the other structure learning methods.
+
+Remark that \textsc{mwst} methods could occasionaly give good classification rates even if the class node is connected to a maximum of two other attributes. In that case, it could be a good hint for most relevant attributs to the class node.
+
+Regarding the log-likelihood reported in table \ref{tabUCI}, we see that \textsc{gs-aca} give best results while \textsc{tan} methods finds structures that can also lead to a good approximation of the underlying probability distribution of the data, even with a strong constraint on the graph structure.
+
+\begin{figure}[!b]
+\hspace*{20mm}\vspace*{-\baselineskip}
+\includegraphics[scale=0.40]{fig/X21}
+\includegraphics[scale=0.38]{fig/X22}
+\caption{Histogram of $\chi^2$ value of parameters tested from
+  generated samples and Zoom of the flat part on the right.\label{X21}}
+\end{figure}
+
+In these experiments, we could confirm that ACA methods could outperform EM methods on classification for \textsc{GS} and \textsc{GES} learning methods but not systematicaly.
+Results are similar for \textsc{mwst} and \textsc{tan} methods.
+
+Finally, the table \ref{tabUCI} illustrates that \textsc{tan-em} and \textsc{mwst-em} have about the same complexity (regarding the computational time) and are a good compromise between \textsc{nb} and greedy searches in \textsc{dag} and\textsc{cpdag} spaces.
+
+\subsection{Generating incomplete datasets}
+
+For the experimentation stage, we have used our formalism to generate
+datasets from randomly generated Bayesian networks (between 4 and 13
+nodes).
+Those networks have been used to gener MAR incomplete
+datasets with $10000$ samples with a percentage of missingness which is randomly chosen
+between $15\%$ and $40\%$ (results on MCAR datasets are similar).
+Then we pick up different parameters which model the
+percentage of missingness of an attribute in a specific context for
+each incomplete dataset generative Bayesian network.
+We then calculate the $\chi^2$ critical value that
+this parameter has if we test it on the corresponding generated dataset.
+
+In figure \ref{X21}, an histogram of Chi-square values of parameters
+tested on generated datasets is shown.
+
+As we could see on figure \ref{X21}, the distribution
+of Chi-square values is high for small values (\emph{i.e.} $<0.05$)
+and arround $65\%$ of the parameters tested have a Chi-square value
+smaller than $0.01$.
+
+On figure \ref{X21}, we could see that arround $0.02\%$ of tested
+parameters could have a fixed Chi-square value higher than $0.3$.
+Those values are reach for parameters that lead to a small number of
+samples in the datasets.
+Then the tests are not reliable in this case as the number of
+corresponding samples is often smaller than $20$ samples.
+
+

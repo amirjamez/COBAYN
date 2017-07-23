@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ReadBNStructures</title>
+  <meta name="keywords" content="ReadBNStructures">
+  <meta name="description" content="[run_structures,maxgen,nruns] = ReadBNStructures(n, maxgen,">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">knowledge_extraction</a> &gt; <a href="index.html">visualization</a> &gt; ReadBNStructures.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction/visualization&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ReadBNStructures
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[run_structures,maxgen,nruns] = ReadBNStructures(n, maxgen,</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[run_structures,maxgen,nruns] = ReadBNStructures(n, maxgen, nruns,AllModels) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [run_structures,maxgen,nruns] = ReadBNStructures(n, maxgen,
+ nruns,AllModels)
+ ReadBNStructures:   Given the BN models learned during the execution of
+                     Mateda (saved in Cache{k,:}. Extract information
+                     ready for analysis and visualization
+ INPUTS
+ n: Number of variables
+ mangen: maximum number of generations
+ nruns: number of runs of the algorithm
+ AllModels: Cell array containing in each row all the BN models saved during
+            one run of LearnBN, i.e. AllModels{i} = Cache{3,:} where Cache
+            is the output of the EDA that learns BNs
+ OUTPUTS
+ run_structures{1} = indexmatrix(n,n): Associates an index to each possible edge in the network.
+ e.g. indexmatrix(1,2) = 1, number of edges m = n*(n+1)/2;
+ run_structures{2} = AllBigMatrices{nruns}(m,maxgen}: For each run contains whether the edge i appeared in generation j
+ run_structures{3} = AllSumMatrices(m,maxgen): = \sum_i^nruns AllBigMatrices{i},
+ i.e. the number of runs that each edge i appeared in generation j 
+ run_structures{4} = AllContactMatrix{maxgen}(n,n): The number of runs in which edge i,j
+ was present in generation k.
+ run_structures{5} = SumAllContactMatrix(n,n): = \sum_k^maxgen AllContactMatrix{k}. 
+ i.e. Total number of times edge i,j was present in all the structures
+ learned in all generations of all runs.
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="Find_indexmatrix.html" class="code" title="function[m,indexmatrix] = Find_indexmatrix(n)">Find_indexmatrix</a>	[m,indexmatrix] = Find_indexmatrix(n)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[run_structures,maxgen,nruns] = ReadBNStructures(n, maxgen, nruns,AllModels)</a>
+0002 <span class="comment">% [run_structures,maxgen,nruns] = ReadBNStructures(n, maxgen,</span>
+0003 <span class="comment">% nruns,AllModels)</span>
+0004 <span class="comment">% ReadBNStructures:   Given the BN models learned during the execution of</span>
+0005 <span class="comment">%                     Mateda (saved in Cache{k,:}. Extract information</span>
+0006 <span class="comment">%                     ready for analysis and visualization</span>
+0007 <span class="comment">% INPUTS</span>
+0008 <span class="comment">% n: Number of variables</span>
+0009 <span class="comment">% mangen: maximum number of generations</span>
+0010 <span class="comment">% nruns: number of runs of the algorithm</span>
+0011 <span class="comment">% AllModels: Cell array containing in each row all the BN models saved during</span>
+0012 <span class="comment">%            one run of LearnBN, i.e. AllModels{i} = Cache{3,:} where Cache</span>
+0013 <span class="comment">%            is the output of the EDA that learns BNs</span>
+0014 <span class="comment">% OUTPUTS</span>
+0015 <span class="comment">% run_structures{1} = indexmatrix(n,n): Associates an index to each possible edge in the network.</span>
+0016 <span class="comment">% e.g. indexmatrix(1,2) = 1, number of edges m = n*(n+1)/2;</span>
+0017 <span class="comment">% run_structures{2} = AllBigMatrices{nruns}(m,maxgen}: For each run contains whether the edge i appeared in generation j</span>
+0018 <span class="comment">% run_structures{3} = AllSumMatrices(m,maxgen): = \sum_i^nruns AllBigMatrices{i},</span>
+0019 <span class="comment">% i.e. the number of runs that each edge i appeared in generation j</span>
+0020 <span class="comment">% run_structures{4} = AllContactMatrix{maxgen}(n,n): The number of runs in which edge i,j</span>
+0021 <span class="comment">% was present in generation k.</span>
+0022 <span class="comment">% run_structures{5} = SumAllContactMatrix(n,n): = \sum_k^maxgen AllContactMatrix{k}.</span>
+0023 <span class="comment">% i.e. Total number of times edge i,j was present in all the structures</span>
+0024 <span class="comment">% learned in all generations of all runs.</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0027 
+0028  
+0029 [m,indexmatrix] = <a href="Find_indexmatrix.html" class="code" title="function[m,indexmatrix] = Find_indexmatrix(n)">Find_indexmatrix</a>(n);
+0030 
+0031 
+0032 <span class="comment">% The matrices containing the occurrence of edges at each generation are constructed</span>
+0033 AllSumMatrices = zeros(m,maxgen);
+0034  
+0035  <span class="keyword">for</span> j=1:maxgen  
+0036   AllContactMatrix{j}= zeros(n,n);
+0037  <span class="keyword">end</span>
+0038   
+0039 <span class="keyword">for</span> i=1:nruns,
+0040  bnets = AllModels{i};
+0041  BigMatrix = zeros(m,maxgen);
+0042   <span class="keyword">for</span> j=1:size(bnets,2)      
+0043       bnet = bnets{j};
+0044       sim_dag = (bnet.dag' + bnet.dag);
+0045       AllContactMatrix{j} = AllContactMatrix{j} + sim_dag;
+0046       edgeindex =   indexmatrix(find(sim_dag==1));
+0047       <span class="keyword">if</span> ~isempty(edgeindex)
+0048         BigMatrix(edgeindex,j) = 1;       
+0049       <span class="keyword">end</span>
+0050   <span class="keyword">end</span>
+0051   AllBigMatrices{i} = BigMatrix;
+0052   AllSumMatrices = AllSumMatrices + BigMatrix;
+0053 <span class="keyword">end</span>
+0054 
+0055 SumAllContactMatrix = zeros(n,n);
+0056 <span class="keyword">for</span> j=1:maxgen  
+0057   SumAllContactMatrix  =  SumAllContactMatrix  + AllContactMatrix{j};
+0058 <span class="keyword">end</span>
+0059 
+0060 run_structures{1} = indexmatrix;
+0061 run_structures{2} = AllBigMatrices;
+0062 run_structures{3} = AllSumMatrices;
+0063 run_structures{4} = AllContactMatrix;
+0064 run_structures{5} = SumAllContactMatrix;
+0065 
+0066 
+0067 
+0068</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

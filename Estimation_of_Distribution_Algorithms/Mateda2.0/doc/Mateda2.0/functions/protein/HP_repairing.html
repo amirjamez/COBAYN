@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of HP_repairing</title>
+  <meta name="keywords" content="HP_repairing">
+  <meta name="description" content="[NewPop] =  HP_repairing(Pop,Card,repairing_params)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; HP_repairing.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>HP_repairing
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[NewPop] =  HP_repairing(Pop,Card,repairing_params)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[NewPop] =  HP_repairing(Pop,Card,repairing_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [NewPop] =  HP_repairing(Pop,Card,repairing_params)
+ HP_repairing:   Modifies a sequence configuration to avoid self-intersections
+ INPUTS
+ Pop: Population in which each vector corresponds to a relative position of a residue 
+      in a grid 
+ Card: Cardinality of the variables
+ repairing_params: Repairing params are not used
+ OUTPUTS
+ s:  Sequence of residues repaired (without self-intersections) 
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="HP_newrepairing.html" class="code" title="function[solutionFound,s,Pos] =   HP_newrepairing(sizeChain,Pos,pos,moves,s,vector)">HP_newrepairing</a>	HP_newrepairing:        An auxiliary function that modifies a sequence configuration to avoid self-intersections</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[NewPop] =  HP_repairing(Pop,Card,repairing_params)</a>
+0002 <span class="comment">% [NewPop] =  HP_repairing(Pop,Card,repairing_params)</span>
+0003 <span class="comment">% HP_repairing:   Modifies a sequence configuration to avoid self-intersections</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% Pop: Population in which each vector corresponds to a relative position of a residue</span>
+0006 <span class="comment">%      in a grid</span>
+0007 <span class="comment">% Card: Cardinality of the variables</span>
+0008 <span class="comment">% repairing_params: Repairing params are not used</span>
+0009 <span class="comment">% OUTPUTS</span>
+0010 <span class="comment">% s:  Sequence of residues repaired (without self-intersections)</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0013 <span class="keyword">global</span> HPInitConf;
+0014 
+0015 PopSize = size(Pop,1);
+0016 sizeChain = size(Pop,2);
+0017 
+0018 <span class="keyword">for</span> j=1:PopSize
+0019  Pos = zeros(sizeChain,2);
+0020 
+0021  Pos(1,1) = 0;  <span class="comment">%Position for the initial molecule</span>
+0022  Pos(1,2) = 0;
+0023   
+0024  Pos(2,1) = 1;  <span class="comment">%Position for the second molecule</span>
+0025  Pos(2,2) = 0;
+0026 
+0027   <span class="keyword">for</span> i=1:sizeChain
+0028    moves(i,:) = randperm(3)-1;
+0029   <span class="keyword">end</span>
+0030   moves = [Pop(j,:)',moves];
+0031   s = [];
+0032 
+0033   [SolutionFound,NewPop(j,:)] = <a href="HP_newrepairing.html" class="code" title="function[solutionFound,s,Pos] =   HP_newrepairing(sizeChain,Pos,pos,moves,s,vector)">HP_newrepairing</a>(sizeChain,Pos,1,moves,s,Pop(j,:));
+0034   <span class="comment">%NewPop(j,[1,2]) = [0,0];</span>
+0035   clear moves;
+0036 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

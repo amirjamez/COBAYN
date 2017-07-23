@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EBNA_MultiObj_SAT</title>
+  <meta name="keywords" content="EBNA_MultiObj_SAT">
+  <meta name="description" content="% EXAMPLE 2: MULTIO-OBJECTIVE MAXSAT">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">OptimizationScripts</a> &gt; EBNA_MultiObj_SAT.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/OptimizationScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>EBNA_MultiObj_SAT
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>% EXAMPLE 2: MULTIO-OBJECTIVE MAXSAT</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">% EXAMPLE 2: MULTIO-OBJECTIVE MAXSAT
+Bayesian network based EDA  for multi-objective 3-SAT
+For details on the EDA application to the multi-objective 3-SAT problem, see (Santana_et_al:2009)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li><li><a href="../../../Mateda2.0/functions/sat/LoadRandom3SAT.html" class="code" title="function [Formulas] = loadSAT(n, num_i, Formulas)">LoadRandom3SAT</a>	[Formulas] = loadSAT(n, mum_i)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%% EXAMPLE 2: MULTIO-OBJECTIVE MAXSAT</span>
+0002 <span class="comment">%Bayesian network based EDA  for multi-objective 3-SAT</span>
+0003 <span class="comment">%For details on the EDA application to the multi-objective 3-SAT problem, see (Santana_et_al:2009)</span>
+0004 
+0005 PopSize = 1000; n = 20;
+0006 cache  = [0,0,1,1,1];
+0007 Card = 2*ones(1, n);
+0008 maxgen = 15;
+0009 
+0010 <span class="keyword">global</span> Formulas; 
+0011 Formulas = <a href="../../../Mateda2.0/functions/sat/LoadRandom3SAT.html" class="code" title="function [Formulas] = loadSAT(n, num_i, Formulas)">LoadRandom3SAT</a>(n, 1, Formulas); 
+0012 Formulas = <a href="../../../Mateda2.0/functions/sat/LoadRandom3SAT.html" class="code" title="function [Formulas] = loadSAT(n, num_i, Formulas)">LoadRandom3SAT</a>(n, 2, Formulas);
+0013 Formulas = <a href="../../../Mateda2.0/functions/sat/LoadRandom3SAT.html" class="code" title="function [Formulas] = loadSAT(n, num_i, Formulas)">LoadRandom3SAT</a>(n, 3, Formulas);
+0014 F = <span class="string">'EvaluateSAT'</span>; <span class="comment">% 3-SAT function</span>
+0015 selparams(1:2) = {0.5,<span class="string">'ParetoRank_ordering'</span>};
+0016 BN_params(1:6) = {<span class="string">'k2'</span>,3,0.05,<span class="string">'pearson'</span>,<span class="string">'bayesian'</span>,<span class="string">'no'</span>};
+0017 edaparams{1} = {<span class="string">'stop_cond_method'</span>,<span class="string">'max_gen'</span>,{maxgen}};
+0018 edaparams{2} = {<span class="string">'learning_method'</span>,<span class="string">'LearnBN'</span>,BN_params};
+0019 edaparams{3} = {<span class="string">'selection_method'</span>,<span class="string">'truncation_selection'</span>,selparams};
+0020 edaparams{4} = {<span class="string">'replacement_method'</span>,<span class="string">'best_elitism'</span>,{<span class="string">'ParetoRank_ordering'</span>}};
+0021 <span class="comment">% Launch EDA</span>
+0022 [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,n,F,Card,cache,edaparams)</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

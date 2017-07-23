@@ -1,0 +1,75 @@
+Bayesian networks are probabilistic graphical models introduced by
+\cite{Kim87}, \cite{Lau88}, \cite{Jen96}, \cite{Jor98b}.
+\begin{de}\label{rbdef}\hspace*{-6pt}\textbf{.}
+$\mathcal{B}=(\mathcal{G},\theta)$ is a \emph{discrete} bayesian network (or belief
+network) if
+$\mathcal{G}=(X,E)$ is a directed acyclic graph (\textsc{dag}) where
+the set of nodes represents a set of random variables $X=\{X_1,\cdots
+,X_n\}$, and if $\theta_i=[\mathbb{P}(X_i/X_{Pa(X_i)})]$ is the matrix
+containing the conditional probability of node $i$ given the state of
+its parents $Pa(X_i)$.
+\end{de}
+A Bayesian network $\mathcal{B}$ represents a probability distribution over $X$ which admits the following joint distribution decomposition:
+\begin{equ}
+\mathbb{P}(X_1,X_2,\cdots,X_n) = \prod_{i=1}^{n} \mathbb{P}(X_i/X_{Pa(X_i)})
+\label{equ1}
+\end{equ}
+This decomposition allows the use of some powerful inference algorithms for which Bayesian networks became simple modeling and reasoning tools when the situation is uncertain or the data are incomplete.
+Bayesian networks are also practical for classification problems when interactions between features can be modelized with conditional probabilities.
+When the network structure is not given (by an expert), it is possible to learn it automatically from data.
+This learning task is hard, because of the complexity of the search space.
+Many softwares deal with Bayesian networks, for instance :
+%\small
+\vspace*{-.75\baselineskip}
+\begin{multicols}{2}
+\begin{itemize}
+\item gR \index{Logiciels!gR} \cite{gR}%: Le projet \emph{Graphical models in R} regroupe plusieurs projets consistant en la mise en \oe uvre de modèles graphiques avec le langage R. Par exemple, l'implémentation de DEAL \cite{DEAL} fait partie de gR.
+
+\item BNT \index{Logiciels!BNT} \cite{BNT04}%: La \emph{Bayes Net Toolbox} pour Matlab, est issue du travail de Kevin Murphy. Elle propose de nombreuses fonctions pour utiliser les réseaux bayésiens, et en particulier les réseaux bayésiens dynamiques.
+\item PNL \index{Logiciels!PNL} \cite{PNL}%: La \emph{Probabilistic Network Library} est un projet \emph{open source} mené par la société Intel. Cette bibliothèque contient de nombreuses fonctions dans le langage C, certaines sont des traductions des fonctions de la \emph{bayes Net Toolbox}.
+\item BNJ \index{Logiciels!BNJ} \cite{BNJ}%: Le \emph{Bayesian Network tools in Java} est un projet Java sous licence GPL.
+
+\item TETRAD \index{Logiciels!Tetrad} \cite{TETRAD}%: Il s'agit d'un projet de l'équipe de Peter Spirtes.
+\item Causal explorer\index{Logiciels!Causal explorer} \cite{Tsa05}%: Une toolbox pour Matlab.
+\item LibB \index{Logiciels!LibB} \cite{LibB}%: Il s'agit d'un projet de l'équipe de Nir Friedman.
+\item BNPC \index{Logiciels!BNPC} \cite{BNPC}%: Il s'agit d'un projet de l'équipe de Jie Cheng.
+\item Web WeavR \index{Logiciels!Web WeavR} \cite{WEBWEAVER}%: Il s'agit d'un projet de l'équipe de  Yang Xian.
+\item JavaBayes \index{Logiciels!JavaBayes} \cite{JAVABAYES}%: Il s'agit d'un projet de l'équipe de Fabio Gagliardi Cozman.
+
+\item ProBayes \index{Logiciels!Probayes} \cite{PROBAYES}%: Produit issu des travaux de l'équipe d'\,\'Emmanuel Mazer.
+\item BayesiaLab \index{Logiciels!BayesiaLab} \cite{BAYESIA}%: Produit issu des travaux de l'équipe de Paul Munteanu.
+\item Hugin \index{Logiciels!Hugin} \cite{HUGIN}%: Depuis 1989, \emph{Hugin Expert A/S} est une des sociétés phares proposant un logiciel permettant de manipuler les réseaux bayésiens.
+\item Netica \index{Logiciels!Netica} \cite{NETICA}%: \emph{Norsys Software Corp.} est la concurente directe de Hugin depuis 1995.
+\item BayesWare \index{Logiciels!BayesWare} \cite{BAYESWARE}%: Produit de la société \emph{Bayesware}.
+
+\item MSBNx \index{Logiciels!MSBNx} \cite{MSBN}%: Un projet gratuit de l'équipe de \emph{Microsoft Research}.
+\item B-Course \index{Logiciels!B-Course} \cite{BCOURSE}%: Permet d'avoir accès à des outils de recherche de structure de réseaux bayésiens directement en pages ouèbes.
+\item Bayes Builder \index{Logiciels!Bayes Builder} \cite{BAYESBUILDER}%: Le moteur d'inférence utilisé pour le projet PROMEDAS (\emph{PRObabilistic MEdical Diagnostic Advisory System}).
+\end{itemize}
+\end{multicols}
+\normalsize
+\vspace*{-.4\baselineskip}
+
+For experiments, we have used Matlab with the Bayes Net Toolbox \cite{BNT04} and the \textit{Structure Learning Package} we develop and propose over our website \cite{INSA}.
+This paper is organized as follows. 
+We introduce some general concepts concerning Bayesian network structures, how to evaluate these structures and some interesting properties of scoring functions.
+In section 3, we describe the common methods used in structure learning; from causality search to heuristic searches in the Bayesian network space. We also discuss the initialization problems of such methods.
+In section 4, we compare these methods using two series of tests. In the first series, we try to retrieve a known structure while the other tests aim at obtaining a good Bayesian network for classification tasks.
+We then conclude on the respective advantages and drawbacks of each method or family of methods before discussing future relevant research.
+We describe the syntax of a function as follows.
+\vspace*{-\baselineskip}
+
+\mabox{Ver}{[out1, out2] = function(in1, in2)}{
+Brief description of the function.\\
+'Ver', in the top-right corner, specifies the function location : BNT if it is a native function of the BNT, or v1.5 if it can be found in the SLP package\\
+The following fields are optionals :\\
+INPUTS : \\
+\hspace*{20pt}in1 - description of the input argument in1\\
+\hspace*{20pt}in2 - description [default value in brackets for optional arguments]\\
+OUTPUTS :\\
+\hspace*{20pt}out1 - description of the output argument out1\\[5pt]
+%\hspace*{20pt}out2 - description of the output argument out2
+%\vspace*{0.5\baselineskip}\\
+e.g., out = function(in), a sample of the calling syntax.
+}
+%\vspace{\baselineskip}

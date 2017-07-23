@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of AllNKInstances</title>
+  <meta name="keywords" content="AllNKInstances">
+  <meta name="description" content="AllNKInstances(NumberVar,k,Number_Inst,nam)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">generators</a> &gt; AllNKInstances.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/generators&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>AllNKInstances
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>AllNKInstances(NumberVar,k,Number_Inst,nam)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function  AllNKInstances(NumberVar,k,Number_Inst,nam) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> AllNKInstances(NumberVar,k,Number_Inst,nam)
+ AllNKInstances:   Generates Number_Inst instances of a random landscape model with
+                   NumberVars variables and k random neighbors for each variable
+                   The structure and function of the instances are saved
+                   in files beginning with 'nam'
+ We assume all nodes have cardinality 2
+ INPUTS
+ NumbVar: Number of variables 
+ k: Number of neighbors (0&lt;k&lt;NumbVar)
+ Number_Inst: Number of instances to be generated
+ nam: prefix name for the files that will store the structure and values
+ of the functions
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="CreateListFactorsNK.html" class="code" title="function [ListFactors] =  CreateListFactorsNK(NumberVar,k)">CreateListFactorsNK</a>	[ListFactors] =  CreateListFactorsNK(NumberVar,k)</li><li><a href="CreateRandomFunctions.html" class="code" title="function [Table] = CreateRandomFunctions(ListFactors,Card)">CreateRandomFunctions</a>	[Table] = CreateRandomFunctions(ListFactors,Card)</li><li><a href="SaveFunctionStructure.html" class="code" title="function SaveFunctionStructure(filename,NumberVar,ListFactors,Card)">SaveFunctionStructure</a>	SaveFunctionStructure(filename,NumberVar,ListFactors,Card)</li><li><a href="SaveFunctionValues.html" class="code" title="function []  = SaveFunctionValues(filename,NumberVar,ListFactors,Table)">SaveFunctionValues</a>	[]  = SaveFunctionValues(filename,NumberVar,ListFactors,Table)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function  AllNKInstances(NumberVar,k,Number_Inst,nam)</a>
+0002 <span class="comment">% AllNKInstances(NumberVar,k,Number_Inst,nam)</span>
+0003 <span class="comment">% AllNKInstances:   Generates Number_Inst instances of a random landscape model with</span>
+0004 <span class="comment">%                   NumberVars variables and k random neighbors for each variable</span>
+0005 <span class="comment">%                   The structure and function of the instances are saved</span>
+0006 <span class="comment">%                   in files beginning with 'nam'</span>
+0007 <span class="comment">% We assume all nodes have cardinality 2</span>
+0008 <span class="comment">% INPUTS</span>
+0009 <span class="comment">% NumbVar: Number of variables</span>
+0010 <span class="comment">% k: Number of neighbors (0&lt;k&lt;NumbVar)</span>
+0011 <span class="comment">% Number_Inst: Number of instances to be generated</span>
+0012 <span class="comment">% nam: prefix name for the files that will store the structure and values</span>
+0013 <span class="comment">% of the functions</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0016 
+0017 Card = 2*ones(1,NumberVar);
+0018 
+0019 <span class="keyword">for</span> i=1:Number_Inst
+0020  [ListFactors] =  <a href="CreateListFactorsNK.html" class="code" title="function [ListFactors] =  CreateListFactorsNK(NumberVar,k)">CreateListFactorsNK</a>(NumberVar,k)
+0021  extfilename = [nam,<span class="string">'_str_N'</span>,num2str(NumberVar),<span class="string">'_k'</span>,num2str(k),<span class="string">'Inst_'</span>,num2str(i),<span class="string">'.txt'</span>];
+0022  <a href="SaveFunctionStructure.html" class="code" title="function SaveFunctionStructure(filename,NumberVar,ListFactors,Card)">SaveFunctionStructure</a>(extfilename,NumberVar,ListFactors,Card);
+0023  [Table] = <a href="CreateRandomFunctions.html" class="code" title="function [Table] = CreateRandomFunctions(ListFactors,Card)">CreateRandomFunctions</a>(ListFactors,Card)
+0024   extfilename = [nam,<span class="string">'_fnt_N'</span>,num2str(NumberVar),<span class="string">'_k'</span>,num2str(k),<span class="string">'Inst_'</span>,num2str(i),<span class="string">'.txt'</span>];
+0025  <a href="SaveFunctionValues.html" class="code" title="function []  = SaveFunctionValues(filename,NumberVar,ListFactors,Table)">SaveFunctionValues</a>(extfilename,NumberVar,ListFactors,Table);
+0026 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

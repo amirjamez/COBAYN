@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ObjectiveDistribution</title>
+  <meta name="keywords" content="ObjectiveDistribution">
+  <meta name="description" content="[] = ObjectiveDistribution(AllFunVals,objs,gens)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">knowledge_extraction</a> &gt; ObjectiveDistribution.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ObjectiveDistribution
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[] = ObjectiveDistribution(AllFunVals,objs,gens)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[] = ObjectiveDistribution(AllFunVals,objs,gens) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [] = ObjectiveDistribution(AllFunVals,objs,gens) 
+ ObjectiveDistribution: Displays the fitness distribution for  given 
+                        subsets of objectives and generations
+
+ INPUT
+ AllFunVals{maxgen} = FunVals(PopSize,n_objectives): Cell array that stores the evaluations of all the objectives
+                                                     for all the individuals in every generation
+ objs:    Selected objectives
+ gens:    Selected generations, for all generations gens = [1:maxgen];
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/ScriptsMateda/AnalysisScripts/FitnessMeasuresComp.html" class="code" title="">FitnessMeasuresComp</a>	%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[] = ObjectiveDistribution(AllFunVals,objs,gens) </a>
+0002 <span class="comment">% [] = ObjectiveDistribution(AllFunVals,objs,gens)</span>
+0003 <span class="comment">% ObjectiveDistribution: Displays the fitness distribution for  given</span>
+0004 <span class="comment">%                        subsets of objectives and generations</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% INPUT</span>
+0007 <span class="comment">% AllFunVals{maxgen} = FunVals(PopSize,n_objectives): Cell array that stores the evaluations of all the objectives</span>
+0008 <span class="comment">%                                                     for all the individuals in every generation</span>
+0009 <span class="comment">% objs:    Selected objectives</span>
+0010 <span class="comment">% gens:    Selected generations, for all generations gens = [1:maxgen];</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0013 
+0014 k = size(AllFunVals,2);                <span class="comment">% Number of generations</span>
+0015 n_objectives = size(AllFunVals{1},2);  <span class="comment">% Number of objectives</span>
+0016 PopSize =  size(AllFunVals{1},1);      <span class="comment">% Population size</span>
+0017 
+0018 <span class="keyword">for</span> i=1:size(objs,2),
+0019  <span class="keyword">for</span> j=1:size(gens,2)
+0020   figure
+0021   hist(AllFunVals{i,j});
+0022  <span class="keyword">end</span>
+0023 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

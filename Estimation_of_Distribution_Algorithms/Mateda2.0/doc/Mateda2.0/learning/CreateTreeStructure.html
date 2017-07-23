@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of CreateTreeStructure</title>
+  <meta name="keywords" content="CreateTreeStructure">
+  <meta name="description" content="[Cliques] = CreateTreeStructure(MI)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">learning</a> &gt; CreateTreeStructure.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/learning&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>CreateTreeStructure
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[Cliques] = CreateTreeStructure(MI)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Cliques] = CreateTreeStructure(MI) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Cliques] = CreateTreeStructure(MI)
+ CreateTreeStructure: A maximum weighted tree is learned from the matrix of mutual information between the variables
+ INPUTS
+ MI: Matrix of mutual information
+ OUTPUTS
+    Cliques: Structure of the model in a list of cliques that defines the neighborhood 
+    Each row of Cliques is a clique. The first value is the number of parents for variable i (1 in the case of a tree). 
+    The second, is the number of new variables (one new variable, i).
+    Then, parent variables are listed and  finally new variables (variable i) are listed
+
+ Last version 5/6/2009. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="LearnTreeModel.html" class="code" title="function [model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)">LearnTreeModel</a>	[model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Cliques] = CreateTreeStructure(MI)</a>
+0002 <span class="comment">% [Cliques] = CreateTreeStructure(MI)</span>
+0003 <span class="comment">% CreateTreeStructure: A maximum weighted tree is learned from the matrix of mutual information between the variables</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% MI: Matrix of mutual information</span>
+0006 <span class="comment">% OUTPUTS</span>
+0007 <span class="comment">%    Cliques: Structure of the model in a list of cliques that defines the neighborhood</span>
+0008 <span class="comment">%    Each row of Cliques is a clique. The first value is the number of parents for variable i (1 in the case of a tree).</span>
+0009 <span class="comment">%    The second, is the number of new variables (one new variable, i).</span>
+0010 <span class="comment">%    Then, parent variables are listed and  finally new variables (variable i) are listed</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Last version 5/6/2009. Roberto Santana (roberto.santana@ehu.es)</span>
+0013  
+0014 threshold = 10^-4;
+0015 
+0016 NumbVar = size(MI,1);
+0017 Cliques = zeros(NumbVar,4);
+0018 shuffle = randperm(NumbVar); <span class="comment">% This is used to  avoid bias when the mutual information  is the same for many couple of variables</span>
+0019 
+0020 Cliques(:,2) =  1;  <span class="comment">% In every clique only a new variable is added;</span>
+0021 Tree = [1:NumbVar]; <span class="comment">% Index of the parent for every variable</span>
+0022 
+0023 
+0024 <span class="comment">%root = shuffle(fix(rand*NumbVar)+1);  % The root of the tree is randomly selected</span>
+0025 
+0026 [a,b] = find(MI==max(max(MI)));
+0027 root = a(1); <span class="comment">% The root corresponds to the link with highest mutual information</span>
+0028 
+0029 Cliques(root,:) = [0,1,root,-1]; <span class="comment">% The root has zero parents</span>
+0030 Tree(root) = -1; 
+0031 
+0032                         
+0033     <span class="keyword">for</span> i=1:NumbVar-1  
+0034         maxval=-10;
+0035         <span class="keyword">for</span> j=1:NumbVar
+0036          <span class="keyword">for</span> k=1:NumbVar
+0037              auxm = MI(shuffle(j),shuffle(k));
+0038              <span class="keyword">if</span>(Tree(shuffle(j))==shuffle(j) &amp;&amp; Tree(shuffle(k))~=shuffle(k) &amp;&amp; auxm&gt;maxval)
+0039                       maxsonindex = shuffle(j);
+0040                       maxfatherindex = shuffle(k);
+0041                       maxval=auxm;
+0042              <span class="keyword">end</span>
+0043          <span class="keyword">end</span>
+0044         <span class="keyword">end</span> 
+0045         <span class="keyword">if</span> (maxval &gt; threshold)
+0046          Tree(maxsonindex)=maxfatherindex;
+0047          Cliques(maxsonindex,:) = [1,1,maxfatherindex,maxsonindex];
+0048          Weight(maxsonindex) = maxval;
+0049         <span class="keyword">else</span>
+0050           Tree(maxsonindex) = -1;
+0051           Cliques(maxsonindex,:) = [0,1,maxsonindex,-1];
+0052           Weight(maxsonindex) = 0;
+0053         <span class="keyword">end</span> 
+0054     <span class="keyword">end</span>
+0055      
+0056   <span class="keyword">return</span>;
+0057</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

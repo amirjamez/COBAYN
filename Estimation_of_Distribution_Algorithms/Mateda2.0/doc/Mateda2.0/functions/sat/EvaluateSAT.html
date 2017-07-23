@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EvaluateSAT</title>
+  <meta name="keywords" content="EvaluateSAT">
+  <meta name="description" content="[valfun] = EvaluateSAT(solution)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">sat</a> &gt; EvaluateSAT.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/sat&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>EvaluateSAT
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[valfun] = EvaluateSAT(solution)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[valfun] = EvaluateSAT(solution) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [valfun] = EvaluateSAT(solution)  
+ EvaluateSAT: Evaluates a solution on a set of 3-SAT formulas contained in the
+              global variable Formulas. The output is a multi-objective
+              solution, one component corresponds to the evaluation of one
+              formula.
+
+ INPUTS
+ solution: Binary vector
+ Formulas{i,j}: Contains the clause j in the formula i. A clause is six
+                component vector. The first three components are the numbers of the
+                variables in the clause. The rest three component indicate whether the
+                literal is negated (0) or not (1).
+ OUTPUTS
+ valfun: A vector of m components. valfun(i) is the number of clauses
+ satisfied in formula i.
+
+ Last version 2/17/2009. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[valfun] = EvaluateSAT(solution) </a>
+0002 <span class="comment">% [valfun] = EvaluateSAT(solution)</span>
+0003 <span class="comment">% EvaluateSAT: Evaluates a solution on a set of 3-SAT formulas contained in the</span>
+0004 <span class="comment">%              global variable Formulas. The output is a multi-objective</span>
+0005 <span class="comment">%              solution, one component corresponds to the evaluation of one</span>
+0006 <span class="comment">%              formula.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% INPUTS</span>
+0009 <span class="comment">% solution: Binary vector</span>
+0010 <span class="comment">% Formulas{i,j}: Contains the clause j in the formula i. A clause is six</span>
+0011 <span class="comment">%                component vector. The first three components are the numbers of the</span>
+0012 <span class="comment">%                variables in the clause. The rest three component indicate whether the</span>
+0013 <span class="comment">%                literal is negated (0) or not (1).</span>
+0014 <span class="comment">% OUTPUTS</span>
+0015 <span class="comment">% valfun: A vector of m components. valfun(i) is the number of clauses</span>
+0016 <span class="comment">% satisfied in formula i.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Last version 2/17/2009. Roberto Santana (roberto.santana@ehu.es)</span>
+0019 
+0020  <span class="keyword">global</span> Formulas;
+0021  
+0022   n = size(solution,2);   <span class="comment">% number of variables</span>
+0023   m = size(Formulas,1);   <span class="comment">% number of formulas (objectives)</span>
+0024   c = size(Formulas,2);   <span class="comment">% number of clauses</span>
+0025   valfun = zeros(1,m);
+0026   
+0027   <span class="keyword">for</span> i=1:m,
+0028     <span class="keyword">for</span> j=1:c,
+0029       auxclause(1:3) = solution(Formulas{i,j}(1:3)); 
+0030       auxclause(4:6) = Formulas{i,j}(4:6);
+0031       valfun(i) = valfun(i) + ( xor(auxclause(1),auxclause(4)) + xor(auxclause(2),auxclause(5)) + xor(auxclause(3),auxclause(6)) &lt;3);      
+0032     <span class="keyword">end</span>,
+0033   <span class="keyword">end</span>,
+0034</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

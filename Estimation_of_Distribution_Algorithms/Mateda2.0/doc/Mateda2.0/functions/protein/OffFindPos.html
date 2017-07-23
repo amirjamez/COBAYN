@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of OffFindPos</title>
+  <meta name="keywords" content="OffFindPos">
+  <meta name="description" content="OffFindPos translates the vector of angles to the  positions into the lattice.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; OffFindPos.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>OffFindPos
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>OffFindPos translates the vector of angles to the  positions into the lattice.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Pos] =  OffFindPos(vector) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">OffFindPos translates the vector of angles to the  positions into the lattice.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="EvaluateOffHPProtein.html" class="code" title="function[Evals] =  EvaluateOffHPProtein(Pop)">EvaluateOffHPProtein</a>	[Evals] =  EvaluateOffHPProtein(Pop)</li><li><a href="OffPrintProtein.html" class="code" title="function[] =  OffPrintProtein(vector)">OffPrintProtein</a>	[] =  OffPrintProtein(vector)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Pos] =  OffFindPos(vector)</a>
+0002 
+0003 <span class="comment">%OffFindPos translates the vector of angles to the  positions into the lattice.</span>
+0004 
+0005 
+0006 <span class="comment">% INPUTS</span>
+0007 <span class="comment">% vector: Sequence of residues ( (H)ydrophobic or (P)olar, respectively represented by zero and one)</span>
+0008 
+0009 
+0010 <span class="comment">% OUTPUTS</span>
+0011 <span class="comment">% Pos: Matrix of positions Pos(sizechain,2) calculated from the angles</span>
+0012 
+0013 sizeChain = size(vector,2);
+0014 Pos = zeros(sizeChain,2);
+0015 
+0016 Pos(1,1) = 0;  <span class="comment">%Position for the initial molecule</span>
+0017 Pos(1,2) = 0;
+0018  
+0019 Pos(2,1) = 1;  <span class="comment">%Position for the second molecule</span>
+0020 Pos(2,2) = 0;
+0021 
+0022 <span class="keyword">for</span> i=3:sizeChain
+0023  Pos(i,1) = Pos(i-1,1)+cos(vector(i));
+0024  Pos(i,2) = Pos(i-1,2)+sin(vector(i));
+0025 <span class="keyword">end</span>
+0026 
+0027 <span class="comment">%sol1 = [1.553335e-001 6.150657e+000 4.425148e+000 4.760213e-002 5.986690e+000 1.193417e+000 2.739953e+000 1.168770e+000 3.132109e+000 1.326418e+000 2.391033e-001 1.175209e+000 3.009217e+000 1.476943e+000 2.263935e-003 3.641778e-001 4.693403e+000 2.159132e-001 2.738250e-001 1.293043e+000 3.107070e+000</span>
+0028 <span class="comment">%]</span>
+0029 <span class="comment">%sol2 = [6.280128e+000 8.993728e-003 1.791911e+000 6.114974e+000 1.327735e+000 6.072794e+000 4.595686e+000 4.953036e+000 3.010987e+000 4.817423e+000 4.858861e+000 5.898593e+000 1.416969e+000 6.661956e-001 3.370680e-001 2.133721e+000 1.836168e-001 5.703042e-001 5.349405e+000 3.854111e+000 5.640157e+000</span>
+0030 <span class="comment">%];</span>
+0031 <span class="comment">%sol3 = [6.273743e+000 8.057623e-002 6.173477e+000 4.234966e+000 5.987332e+000 6.074495e+000 8.322097e-001 2.649786e+000 6.995055e-001 2.539575e+000 1.093253e+000 5.815352e+000 5.916623e-001 5.277412e+000 3.879921e+000 5.749515e+000 3.813017e+000 5.647877e+000 3.975749e-001 5.213975e-001 2.278595e+000</span>
+0032 <span class="comment">%];</span>
+0033 
+0034 <span class="comment">% Last version 10/09/2005. Roberto Santana (rsantana@si.ehu.es)</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

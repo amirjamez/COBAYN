@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EvaluateEnergy</title>
+  <meta name="keywords" content="EvaluateEnergy">
+  <meta name="description" content="EvaluateEnergy:    Evaluates  the energy corresponding to the sequence lattice configuration determined by the lattice in vector.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; EvaluateEnergy.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>EvaluateEnergy
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EvaluateEnergy:    Evaluates  the energy corresponding to the sequence lattice configuration determined by the lattice in vector.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[energy] =  EvaluateEnergy(vector) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EvaluateEnergy:    Evaluates  the energy corresponding to the sequence lattice configuration determined by the lattice in vector.
+ From the residues positions, the interaction energies are calculated by the energy function    
+ For reference on the  HP model see:
+--- R. Santana, P. Larra�aga, and J. A. Lozano (2004) Protein folding in 2-dimensional lattices with estimation of distribution algorithms. 
+--- In Proceedings of the First International Symposium on Biological and Medical Data Analysis, 
+--- Volume 3337 of Lecture Notes in Computer Science, pages 388-398, Barcelona, Spain, 2004. Springer Verlag. 
+ INPUTS
+ vector: Sequence of residues ( (H)ydrophobic or (P)olar, respectively represented by zero and one)
+ OUTPUTS
+ energy: Energy evaluation.
+
+ Last version 4/15/2009. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="EvalChain.html" class="code" title="function[Collisions,Overlappings,Pos] =  EvalChain(vector)">EvalChain</a>	[Collisions,Overlappings,Pos] =  EvalChain(vector)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[energy] =  EvaluateEnergy(vector)</a>
+0002 <span class="comment">% EvaluateEnergy:    Evaluates  the energy corresponding to the sequence lattice configuration determined by the lattice in vector.</span>
+0003 <span class="comment">% From the residues positions, the interaction energies are calculated by the energy function</span>
+0004 <span class="comment">% For reference on the  HP model see:</span>
+0005 <span class="comment">%--- R. Santana, P. Larra�aga, and J. A. Lozano (2004) Protein folding in 2-dimensional lattices with estimation of distribution algorithms.</span>
+0006 <span class="comment">%--- In Proceedings of the First International Symposium on Biological and Medical Data Analysis,</span>
+0007 <span class="comment">%--- Volume 3337 of Lecture Notes in Computer Science, pages 388-398, Barcelona, Spain, 2004. Springer Verlag.</span>
+0008 <span class="comment">% INPUTS</span>
+0009 <span class="comment">% vector: Sequence of residues ( (H)ydrophobic or (P)olar, respectively represented by zero and one)</span>
+0010 <span class="comment">% OUTPUTS</span>
+0011 <span class="comment">% energy: Energy evaluation.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Last version 4/15/2009. Roberto Santana (roberto.santana@ehu.es)</span>
+0014 
+0015 
+0016 <span class="keyword">global</span> HPInitConf;
+0017 
+0018 
+0019 [Collisions,Overlappings,Pos] =  <a href="EvalChain.html" class="code" title="function[Collisions,Overlappings,Pos] =  EvalChain(vector)">EvalChain</a>(vector);
+0020  
+0021 
+0022 <span class="keyword">if</span> Collisions&lt;0
+0023  energy = Collisions*(Overlappings+1);
+0024 <span class="keyword">else</span>
+0025  energy = Collisions/(Overlappings+1);
+0026 <span class="keyword">end</span>
+0027 
+0028 
+0029</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

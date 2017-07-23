@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of MakeVarDepFormulas</title>
+  <meta name="keywords" content="MakeVarDepFormulas">
+  <meta name="description" content="[Formulas]=MakeVarDepFormulas(n,m,c,relatedvars,ratio)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">sat</a> &gt; MakeVarDepFormulas.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/sat&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>MakeVarDepFormulas
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Formulas]=MakeVarDepFormulas(n,m,c,relatedvars,ratio)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Formulas]=MakeVarDepFormulas(n,m,c,relatedvars,ratio) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Formulas]=MakeVarDepFormulas(n,m,c,relatedvars,ratio) 
+ MakeVarDepFormulas: Creates a set of formulas (one corresponds to each objective) where some clauses have a higher
+                     probability to appear in the formula in accordance to
+                     the variables appear in them
+ INPUT
+ n: Number of variables
+ m: Number of formulas (objectives)
+ c: Number of clauses in each formula 
+ relatedvars: Vector of variables that will be more frequent in each formula
+ ratio: Determines how often a clause appear in a formula. ratio=1 implies
+        that all variables have the same likelihood. The weight of a
+        clause is the sum of variables in relatedvars multiplied by the
+        ratio. The probability of each clauses is computed normalizing its weight by
+        the total weight
+ OUTPUT
+ Formulas: An array of matrices, each matrix has a row for each clause,
+           In the row, first the variables involved are shown, then
+           whether they are negated (0 value) or not (1 value)
+ EXAMPLE
+  [Formulas] = MakeVarDepFormulas(20,10,20,[1:10],5) 
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/otherfiles/sus.html" class="code" title="function[Index]=sus(SelCant,Sumvector)">sus</a>	[Index]=sus(SelCant,Sumvector)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Formulas]=MakeVarDepFormulas(n,m,c,relatedvars,ratio) </a>
+0002 <span class="comment">% [Formulas]=MakeVarDepFormulas(n,m,c,relatedvars,ratio)</span>
+0003 <span class="comment">% MakeVarDepFormulas: Creates a set of formulas (one corresponds to each objective) where some clauses have a higher</span>
+0004 <span class="comment">%                     probability to appear in the formula in accordance to</span>
+0005 <span class="comment">%                     the variables appear in them</span>
+0006 <span class="comment">% INPUT</span>
+0007 <span class="comment">% n: Number of variables</span>
+0008 <span class="comment">% m: Number of formulas (objectives)</span>
+0009 <span class="comment">% c: Number of clauses in each formula</span>
+0010 <span class="comment">% relatedvars: Vector of variables that will be more frequent in each formula</span>
+0011 <span class="comment">% ratio: Determines how often a clause appear in a formula. ratio=1 implies</span>
+0012 <span class="comment">%        that all variables have the same likelihood. The weight of a</span>
+0013 <span class="comment">%        clause is the sum of variables in relatedvars multiplied by the</span>
+0014 <span class="comment">%        ratio. The probability of each clauses is computed normalizing its weight by</span>
+0015 <span class="comment">%        the total weight</span>
+0016 <span class="comment">% OUTPUT</span>
+0017 <span class="comment">% Formulas: An array of matrices, each matrix has a row for each clause,</span>
+0018 <span class="comment">%           In the row, first the variables involved are shown, then</span>
+0019 <span class="comment">%           whether they are negated (0 value) or not (1 value)</span>
+0020 <span class="comment">% EXAMPLE</span>
+0021 <span class="comment">%  [Formulas] = MakeVarDepFormulas(20,10,20,[1:10],5)</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0024 
+0025 triples = nchoosek([1:n],3);
+0026 ntriples = size(triples,1);
+0027 
+0028  <span class="keyword">for</span> i=1:ntriples,
+0029   common = intersect(relatedvars,triples(i,:));
+0030   ncommon = size(common,2);
+0031   <span class="keyword">if</span>(ncommon&gt;1) 
+0032       val(i) = ratio*ncommon;
+0033   <span class="keyword">else</span>
+0034       val(i) = 1;
+0035   <span class="keyword">end</span>
+0036  <span class="keyword">end</span>
+0037  
+0038 
+0039  matrix = zeros(n,n);
+0040  val = cumsum(val/sum(val));
+0041 
+0042 
+0043  
+0044  <span class="keyword">for</span> i=1:m
+0045     Index = <a href="../../../Mateda2.0/otherfiles/sus.html" class="code" title="function[Index]=sus(SelCant,Sumvector)">sus</a>(c,val);
+0046   
+0047    <span class="keyword">for</span> j=1:c
+0048      Formulas{i,j} = [triples(Index(j),:),fix(2*rand(1,3))];
+0049      matrix(triples(Index(j),1),triples(Index(j),2)) = matrix(triples(Index(j),1),triples(Index(j),2)) + 1;
+0050      matrix(triples(Index(j),1),triples(Index(j),3)) = matrix(triples(Index(j),1),triples(Index(j),3)) + 1;
+0051      matrix(triples(Index(j),2),triples(Index(j),3)) = matrix(triples(Index(j),2),triples(Index(j),3)) + 1;
+0052      matrix(triples(Index(j),2),triples(Index(j),1)) = matrix(triples(Index(j),2),triples(Index(j),1)) + 1;
+0053      matrix(triples(Index(j),3),triples(Index(j),1)) = matrix(triples(Index(j),3),triples(Index(j),1)) + 1;
+0054      matrix(triples(Index(j),3),triples(Index(j),2)) = matrix(triples(Index(j),3),triples(Index(j),2)) + 1;
+0055    <span class="keyword">end</span> 
+0056  <span class="keyword">end</span>
+0057  
+0058  <span class="comment">%matrix</span>
+0059  <span class="comment">%sum(matrix(1:10,1:10))</span>
+0060  <span class="comment">%sum(matrix(11:20,11:20))</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

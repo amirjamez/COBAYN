@@ -1,0 +1,523 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of RunEDA</title>
+  <meta name="keywords" content="RunEDA">
+  <meta name="description" content="[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mateda2.0</a> &gt; RunEDA.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>RunEDA
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams) 
+ RUNEDA:  Calls an EDA defined by the operators and parameters given by the
+          user. A number of predefined operators (e.g. learning and sampling
+          algorithms) have been implemented. 
+ Different BN structure learning algorithms are used 
+ INPUTS
+ PopSize: Population size
+ n: Number of variables
+ F: Name of the function that has as an argument a vector or NumbVar
+ variables. For multivariate functions the output of F is a vector with
+ the number_of_objectives values.
+ cache: Is a vector that determines which structures of the EDA will be
+        stored.
+        cache(1) = 1 : The whole population at each generation k will be saved in Cache{1,k};
+        cache(2) = 1 : The selected population at each generation k will be saved in Cache{2,k};
+        cache(3) = 1 : The probability model at each generation k will be  saved in Cache{3,k};    
+        cache(4) = 1 : The evaluation of the Population at each generation k will be  saved in Cache{4,k};    
+        cache(5) = 1 : The evaluation of the Population at each generation  k will be  saved in Cache{4,k};    
+ edaparams: Array where each row includes three columns: 1) the 'type' of
+ EDA operator method, 2) the 'name' of the EDA operator method, which is a
+ matlab program defined by the user or could be one of the given implementations(see below) and 3) the
+ parameters used by the implementation of the method.
+ e.g. edaparams{1}(1) = 'sampling_method'; edaparams{1}(2) = 'PLS'; edaparams{1}(3) = {1000};
+      edaparams{2}(1) = 'selection_method; edaparams{2}(2) = 'truncation_selection';   edaparams{2}(3) = {0.15};
+ edaparams can appear in any order and there are a number of default of default values for all the operators (see below)
+
+ The following are the different types of operators, given implementations and parameters. They are displayed
+
+ type_of_method(fixed parameters, user defined parameters (method_params))
+
+ seeding_pop_method(n,PopSize,Card,seeding_pop_params):
+                       seeding_pop_method keeps the name of the matlab program that  implements the seeding
+                       procedure.   seeding_pop_method = 'RandomInit'(default) corresponds to random initialization
+                       Current implementations include:
+                       'seeding_unitation_constraint': Generates a population of binary vectors  where all vectors have the same number of ones
+ seeding_pop_params:   Depends on seeding method defined by the user. For seeding_pop_method='seeding_unitation_constraint',  seeding_pop_params{1}
+                       = Number of ones in each solution
+ sampling_method(n,PopSize,model,SelPop,SelFunVal,Card,sampling_params):
+                         Sampling methods implemented: 
+                         'SampleBN': Samples a BN of discrete variables using probabilistic logic sampling (PLS) 
+                         'MOAGeneratePopulation': Samples a Markov network  using Gibbs Sampling
+                         'SampleFDA': Samples a population of individuals from a factorized model using PLS
+                         'SampleGaussianUnivModel': Samples a univariate Gaussian model
+ sampling_params:     sampling_params{1} = NewPopSize: Number of
+                         sampled individuals. By default sambpling_params{1} = PopSize, but it
+                         may change according to the replacement strategy.
+                         Additional params might be required by each sampling algorithm
+ repairing_method(Pop,Card,reparing_params):
+                         Implements a repairing procedure. The whole population is received and all or some of the
+                         individuals are repaired
+ repairing_params:     Those needed to implement the repairing procedure
+ local_opt_method(Pop,FunVal,local_opt_params):
+                         Implements a given local optimization procedure. The whole population is received and all or some of the
+                         individuals are optimized. The algorithm outputs
+                         the optimized population, with the new fitness values and number of evaluations done in the local
+                         optimization.
+ local_opt_params:     Those needed to implement the repairing procedure
+ replacement_method(Pop,SelPop,NewPop,FunVal,SelFunVal,NewPopFunVal,replacement_params)
+                         Allows the implementation of replacement method that creates a  new population from a set of three other
+                         populations (Current Pop, Sampled Pop, and Selected Pop)
+                         Current implementation includes replacement_method = {'elitism','best_elitism','pop_agregation'}
+                          'elitism' adds the k best individuals of the previous population to the current pop. 
+                          'best_elitism' joins the selected individuals with the sampled individuals to form the next population.
+                         in this case, it should be enforced that SampledPopSize = PopSize - SelPopSize
+                         'pop_aggregation' joins the current population with the new and select the best PopSize
+                         individuals as the new population.
+                         replacement_method = 'none' for Pop = NewPop.
+  replacement_params:     Depends on implementation. For replacement_metho
+                         For 'elitism': replacement_params{1} = k: number of elistist solutions
+                         and replacement_params{2} = find_bestids_method: method that implements a criterion to select the
+                         best individuals from a population. This is an important  user-defined method. Currently
+                         find_bestids_method = 'fitness_ordering' which take into account fitness ordering (see help
+                         'fitness_ordering' for details.
+                         For 'pop_agregation': replacement_params{1} = find_bestids_method.
+ selection_method(Pop,FunVal,selection_params):   'selection_method' name of the matlab program selection method. Current   implementations include: 
+                     'truncation_selection' (default), 'prop_selection' and 'exp_selection'
+ selection_params:    depends on the user implemented selection method  
+                      (e.g) selection_params{1}  =     T: Truncation parameter T \in (0,1) for truncation selection 
+ learning_method(k,n,Card,SelPop,SelFunVal,learning_params):  
+                        'LearnBN': Bayesian network learning algorithms (see Help of the method for learning parameters)
+                        'LearnMOAModel': Markov network learning algorithms (see Help of the method for learning parameters)
+                        
+ statistics_method(k,Pop,FunVal,time_operations,number_evaluations,AllStat ,statistics_params):
+                         Implements the computation of the statistics about the EDA behavior. 
+                         The statistics are stored in AllStat which may be used later for displaying information.
+                         Currently implemented is the method:  'simple_pop_statistics'
+ statistics_params:      Use for passing information necessary in the
+                         computation of the statistics (see 'simple_pop_statistics' for an  example)
+ verbose_method(k,AllStat,verbose_params):
+                          Defines the program used to display information about the EDA during the evolution
+                          Currently implemented is 'simple_verbose' which prints a number of statistics 
+                          (depending on verbose_params) about generation k of the EDA
+ verbose_params:
+ stop_cond_method(currentgen,currentPop,currentFunVal,stop_cond_params): 
+                         Implements the stop conditions of the algorithm. By default, the algorithm
+                         stops when reaching a maximum number of generations (1000). This is
+                         stop_cond_method = 'max_gen'. Current implementations include stop_cond_method =
+                         'maxgen_maxval' which stops either when a maximum number of iterations has been reached or give
+                         value of the function has been reached stop_cond_params{1} = 1000; 
+                         NOTE: the parameters currentPop and currentFunValallow the implementation of stop cond. methods
+                         based on the homogeneity of the population
+ stop_cond_params:       Depend on the stop_cond_method. For
+                         stop_cond_method = {'max_gen','maxgen_maxval'} stop_cond_params{1} = CantGen: Maximum number of generations 
+                         stop_cond_method = 'maxgen_maxval', stop_cond_params{2} = MaximumFunction:  Maximum of the function that can be used as stop
+                         condition when it is known 
+ OUTPUTS
+ AllStat:             Array containing the statistics of the populations.
+                      It is updated by the method
+                      AllStat{k,1}= matrix of 7 rows and number_objectives
+                      columns. Each row shows information about
+                      max,mean,median,min, and variance values of the
+                      corresponding objective in the current population
+                      AllStat{k,2}= Stores the best individual
+                      AllStat{k,3}= Number of different individuals
+                      AllStat{k,4}= matrix of 5 rows and n
+                      columns. Each row shows information about
+                      max,mean,median,min, and variance values of the
+                      corresponding variable in the current population
+                      AllStat{k,5} =  Vector with the number of evaluations in each generation
+                      AllStat{k,6} = Matrix with the time in seconds spent at the main
+                      EDA steps, each of the 8 column stores the times for the
+                      following steps {sampling,repairing, evaluation,local optimization, ,replacement, selection,learning and
+                      total (which consider the time by the previous 7 and
+                      other EDA operations
+                         
+ number_evaluations(1:k): 
+ Cache:
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Mateda2.0/ScriptsMateda/AnalysisScripts/FitnessMeasuresComp.html" class="code" title="">FitnessMeasuresComp</a>	%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</li><li><a href="../Mateda2.0/ScriptsMateda/FitnessModScripts/BN_MPCsFitness.html" class="code" title="">BN_MPCsFitness</a>	EXAMPLE 5:</li><li><a href="../Mateda2.0/ScriptsMateda/FitnessModScripts/BN_Prediction.html" class="code" title="">BN_Prediction</a>	EXAMPLE 2: Evaluation of the prediction capability of the models</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/AffEDA_Deceptive3.html" class="code" title="">AffEDA_Deceptive3</a>	EXAMPLE 4:  Aff_EDA with proportional selection and elitism 1</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/BayesianTree_IsingModel.html" class="code" title="">BayesianTree_IsingModel</a>	EXAMPLE 10:</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/DefaultEDA_NKRandom.html" class="code" title="">DefaultEDA_NKRandom</a>	EXAMPLE 9:  Bayesian tree for a multiobjective function of the NK random</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/DefaultEDA_OneMax.html" class="code" title="">DefaultEDA_OneMax</a>	EXAMPLE 1: One Max Funtion. Default parameters</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/DefaultEDA_TrapFunction.html" class="code" title="">DefaultEDA_TrapFunction</a>	EXAMPLE 11:</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/EBNA_Deceptive3.html" class="code" title="">EBNA_Deceptive3</a>	EXAMPLE 2: Goldberg's deceptive function; BN K2 algorithm with BIC metric</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/EBNA_MultiObj_SAT.html" class="code" title="">EBNA_MultiObj_SAT</a>	% EXAMPLE 2: MULTIO-OBJECTIVE MAXSAT</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/EBNA_PLS_MPC_NKRandom.html" class="code" title="">EBNA_PLS_MPC_NKRandom</a>	EXAMPLE 16:</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/GaussianMultivariate_OfflineHPProtein.html" class="code" title="">GaussianMultivariate_OfflineHPProtein</a>	EXAMPLE 12:  Multivariate Gaussian EDA for  the Offline HP Model continuous function</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/GaussianNetwork_OfflineHPProtein.html" class="code" title="">GaussianNetwork_OfflineHPProtein</a>	EXAMPLE 8:  Gaussian network for  the Offline HP Model continuous function</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/GaussianUMDA_ContSumFunction.html" class="code" title="">GaussianUMDA_ContSumFunction</a>	EXAMPLE 5:  Gaussian UMDA for the continuous sum function in the interval [0,5]</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/GaussianUMDA_OfflineHPProtein.html" class="code" title="">GaussianUMDA_OfflineHPProtein</a>	EXAMPLE 7:  Gaussian UMDA for  the Offline HP Model continuous function</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/MOA_Deceptive3.html" class="code" title="">MOA_Deceptive3</a>	EXAMPLE 3: MOA algorithm with exponential selection for Goldberg's deceptive function</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/MixtureGaussianEDAs_OfflineHP.html" class="code" title="">MixtureGaussianEDAs_OfflineHP</a>	EXAMPLE 14:   Mixtures of full Gaussian distributions</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/MixtureGaussianEDAs_trajectory.html" class="code" title="">MixtureGaussianEDAs_trajectory</a>	EXAMPLE 15:  Continuous EDAs that learn mixtures of distributions</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/MkFDA_HPProtein.html" class="code" title="">MkFDA_HPProtein</a>	EXAMPLE 6:  Markov Chain FDA for the HP protein model.</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/TreeFDA_Deceptive3.html" class="code" title="">TreeFDA_Deceptive3</a>	EXAMPLE 17: Goldberg's deceptive function; Tree EDA algorithm</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/TreeFDA_HPProtein.html" class="code" title="">TreeFDA_HPProtein</a>	EXAMPLE 18:  Tree-FDA for the HP protein model (The tree structure is</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/UMDA_OneMax.html" class="code" title="">UMDA_OneMax</a>	Creating UMDA for OneMax.</li><li><a href="../Mateda2.0/ScriptsMateda/OptimizationScripts/VariantsGaussianEDAs_trajectory.html" class="code" title="">VariantsGaussianEDAs_trajectory</a>	EXAMPLE 13:  Different variants of continuous EDAs for a spacecraft</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams) </a>
+0002 <span class="comment">% [AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</span>
+0003 <span class="comment">% RUNEDA:  Calls an EDA defined by the operators and parameters given by the</span>
+0004 <span class="comment">%          user. A number of predefined operators (e.g. learning and sampling</span>
+0005 <span class="comment">%          algorithms) have been implemented.</span>
+0006 <span class="comment">% Different BN structure learning algorithms are used</span>
+0007 <span class="comment">% INPUTS</span>
+0008 <span class="comment">% PopSize: Population size</span>
+0009 <span class="comment">% n: Number of variables</span>
+0010 <span class="comment">% F: Name of the function that has as an argument a vector or NumbVar</span>
+0011 <span class="comment">% variables. For multivariate functions the output of F is a vector with</span>
+0012 <span class="comment">% the number_of_objectives values.</span>
+0013 <span class="comment">% cache: Is a vector that determines which structures of the EDA will be</span>
+0014 <span class="comment">%        stored.</span>
+0015 <span class="comment">%        cache(1) = 1 : The whole population at each generation k will be saved in Cache{1,k};</span>
+0016 <span class="comment">%        cache(2) = 1 : The selected population at each generation k will be saved in Cache{2,k};</span>
+0017 <span class="comment">%        cache(3) = 1 : The probability model at each generation k will be  saved in Cache{3,k};</span>
+0018 <span class="comment">%        cache(4) = 1 : The evaluation of the Population at each generation k will be  saved in Cache{4,k};</span>
+0019 <span class="comment">%        cache(5) = 1 : The evaluation of the Population at each generation  k will be  saved in Cache{4,k};</span>
+0020 <span class="comment">% edaparams: Array where each row includes three columns: 1) the 'type' of</span>
+0021 <span class="comment">% EDA operator method, 2) the 'name' of the EDA operator method, which is a</span>
+0022 <span class="comment">% matlab program defined by the user or could be one of the given implementations(see below) and 3) the</span>
+0023 <span class="comment">% parameters used by the implementation of the method.</span>
+0024 <span class="comment">% e.g. edaparams{1}(1) = 'sampling_method'; edaparams{1}(2) = 'PLS'; edaparams{1}(3) = {1000};</span>
+0025 <span class="comment">%      edaparams{2}(1) = 'selection_method; edaparams{2}(2) = 'truncation_selection';   edaparams{2}(3) = {0.15};</span>
+0026 <span class="comment">% edaparams can appear in any order and there are a number of default of default values for all the operators (see below)</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% The following are the different types of operators, given implementations and parameters. They are displayed</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% type_of_method(fixed parameters, user defined parameters (method_params))</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% seeding_pop_method(n,PopSize,Card,seeding_pop_params):</span>
+0033 <span class="comment">%                       seeding_pop_method keeps the name of the matlab program that  implements the seeding</span>
+0034 <span class="comment">%                       procedure.   seeding_pop_method = 'RandomInit'(default) corresponds to random initialization</span>
+0035 <span class="comment">%                       Current implementations include:</span>
+0036 <span class="comment">%                       'seeding_unitation_constraint': Generates a population of binary vectors  where all vectors have the same number of ones</span>
+0037 <span class="comment">% seeding_pop_params:   Depends on seeding method defined by the user. For seeding_pop_method='seeding_unitation_constraint',  seeding_pop_params{1}</span>
+0038 <span class="comment">%                       = Number of ones in each solution</span>
+0039 <span class="comment">% sampling_method(n,PopSize,model,SelPop,SelFunVal,Card,sampling_params):</span>
+0040 <span class="comment">%                         Sampling methods implemented:</span>
+0041 <span class="comment">%                         'SampleBN': Samples a BN of discrete variables using probabilistic logic sampling (PLS)</span>
+0042 <span class="comment">%                         'MOAGeneratePopulation': Samples a Markov network  using Gibbs Sampling</span>
+0043 <span class="comment">%                         'SampleFDA': Samples a population of individuals from a factorized model using PLS</span>
+0044 <span class="comment">%                         'SampleGaussianUnivModel': Samples a univariate Gaussian model</span>
+0045 <span class="comment">% sampling_params:     sampling_params{1} = NewPopSize: Number of</span>
+0046 <span class="comment">%                         sampled individuals. By default sambpling_params{1} = PopSize, but it</span>
+0047 <span class="comment">%                         may change according to the replacement strategy.</span>
+0048 <span class="comment">%                         Additional params might be required by each sampling algorithm</span>
+0049 <span class="comment">% repairing_method(Pop,Card,reparing_params):</span>
+0050 <span class="comment">%                         Implements a repairing procedure. The whole population is received and all or some of the</span>
+0051 <span class="comment">%                         individuals are repaired</span>
+0052 <span class="comment">% repairing_params:     Those needed to implement the repairing procedure</span>
+0053 <span class="comment">% local_opt_method(Pop,FunVal,local_opt_params):</span>
+0054 <span class="comment">%                         Implements a given local optimization procedure. The whole population is received and all or some of the</span>
+0055 <span class="comment">%                         individuals are optimized. The algorithm outputs</span>
+0056 <span class="comment">%                         the optimized population, with the new fitness values and number of evaluations done in the local</span>
+0057 <span class="comment">%                         optimization.</span>
+0058 <span class="comment">% local_opt_params:     Those needed to implement the repairing procedure</span>
+0059 <span class="comment">% replacement_method(Pop,SelPop,NewPop,FunVal,SelFunVal,NewPopFunVal,replacement_params)</span>
+0060 <span class="comment">%                         Allows the implementation of replacement method that creates a  new population from a set of three other</span>
+0061 <span class="comment">%                         populations (Current Pop, Sampled Pop, and Selected Pop)</span>
+0062 <span class="comment">%                         Current implementation includes replacement_method = {'elitism','best_elitism','pop_agregation'}</span>
+0063 <span class="comment">%                          'elitism' adds the k best individuals of the previous population to the current pop.</span>
+0064 <span class="comment">%                          'best_elitism' joins the selected individuals with the sampled individuals to form the next population.</span>
+0065 <span class="comment">%                         in this case, it should be enforced that SampledPopSize = PopSize - SelPopSize</span>
+0066 <span class="comment">%                         'pop_aggregation' joins the current population with the new and select the best PopSize</span>
+0067 <span class="comment">%                         individuals as the new population.</span>
+0068 <span class="comment">%                         replacement_method = 'none' for Pop = NewPop.</span>
+0069 <span class="comment">%  replacement_params:     Depends on implementation. For replacement_metho</span>
+0070 <span class="comment">%                         For 'elitism': replacement_params{1} = k: number of elistist solutions</span>
+0071 <span class="comment">%                         and replacement_params{2} = find_bestids_method: method that implements a criterion to select the</span>
+0072 <span class="comment">%                         best individuals from a population. This is an important  user-defined method. Currently</span>
+0073 <span class="comment">%                         find_bestids_method = 'fitness_ordering' which take into account fitness ordering (see help</span>
+0074 <span class="comment">%                         'fitness_ordering' for details.</span>
+0075 <span class="comment">%                         For 'pop_agregation': replacement_params{1} = find_bestids_method.</span>
+0076 <span class="comment">% selection_method(Pop,FunVal,selection_params):   'selection_method' name of the matlab program selection method. Current   implementations include:</span>
+0077 <span class="comment">%                     'truncation_selection' (default), 'prop_selection' and 'exp_selection'</span>
+0078 <span class="comment">% selection_params:    depends on the user implemented selection method</span>
+0079 <span class="comment">%                      (e.g) selection_params{1}  =     T: Truncation parameter T \in (0,1) for truncation selection</span>
+0080 <span class="comment">% learning_method(k,n,Card,SelPop,SelFunVal,learning_params):</span>
+0081 <span class="comment">%                        'LearnBN': Bayesian network learning algorithms (see Help of the method for learning parameters)</span>
+0082 <span class="comment">%                        'LearnMOAModel': Markov network learning algorithms (see Help of the method for learning parameters)</span>
+0083 <span class="comment">%</span>
+0084 <span class="comment">% statistics_method(k,Pop,FunVal,time_operations,number_evaluations,AllStat ,statistics_params):</span>
+0085 <span class="comment">%                         Implements the computation of the statistics about the EDA behavior.</span>
+0086 <span class="comment">%                         The statistics are stored in AllStat which may be used later for displaying information.</span>
+0087 <span class="comment">%                         Currently implemented is the method:  'simple_pop_statistics'</span>
+0088 <span class="comment">% statistics_params:      Use for passing information necessary in the</span>
+0089 <span class="comment">%                         computation of the statistics (see 'simple_pop_statistics' for an  example)</span>
+0090 <span class="comment">% verbose_method(k,AllStat,verbose_params):</span>
+0091 <span class="comment">%                          Defines the program used to display information about the EDA during the evolution</span>
+0092 <span class="comment">%                          Currently implemented is 'simple_verbose' which prints a number of statistics</span>
+0093 <span class="comment">%                          (depending on verbose_params) about generation k of the EDA</span>
+0094 <span class="comment">% verbose_params:</span>
+0095 <span class="comment">% stop_cond_method(currentgen,currentPop,currentFunVal,stop_cond_params):</span>
+0096 <span class="comment">%                         Implements the stop conditions of the algorithm. By default, the algorithm</span>
+0097 <span class="comment">%                         stops when reaching a maximum number of generations (1000). This is</span>
+0098 <span class="comment">%                         stop_cond_method = 'max_gen'. Current implementations include stop_cond_method =</span>
+0099 <span class="comment">%                         'maxgen_maxval' which stops either when a maximum number of iterations has been reached or give</span>
+0100 <span class="comment">%                         value of the function has been reached stop_cond_params{1} = 1000;</span>
+0101 <span class="comment">%                         NOTE: the parameters currentPop and currentFunValallow the implementation of stop cond. methods</span>
+0102 <span class="comment">%                         based on the homogeneity of the population</span>
+0103 <span class="comment">% stop_cond_params:       Depend on the stop_cond_method. For</span>
+0104 <span class="comment">%                         stop_cond_method = {'max_gen','maxgen_maxval'} stop_cond_params{1} = CantGen: Maximum number of generations</span>
+0105 <span class="comment">%                         stop_cond_method = 'maxgen_maxval', stop_cond_params{2} = MaximumFunction:  Maximum of the function that can be used as stop</span>
+0106 <span class="comment">%                         condition when it is known</span>
+0107 <span class="comment">% OUTPUTS</span>
+0108 <span class="comment">% AllStat:             Array containing the statistics of the populations.</span>
+0109 <span class="comment">%                      It is updated by the method</span>
+0110 <span class="comment">%                      AllStat{k,1}= matrix of 7 rows and number_objectives</span>
+0111 <span class="comment">%                      columns. Each row shows information about</span>
+0112 <span class="comment">%                      max,mean,median,min, and variance values of the</span>
+0113 <span class="comment">%                      corresponding objective in the current population</span>
+0114 <span class="comment">%                      AllStat{k,2}= Stores the best individual</span>
+0115 <span class="comment">%                      AllStat{k,3}= Number of different individuals</span>
+0116 <span class="comment">%                      AllStat{k,4}= matrix of 5 rows and n</span>
+0117 <span class="comment">%                      columns. Each row shows information about</span>
+0118 <span class="comment">%                      max,mean,median,min, and variance values of the</span>
+0119 <span class="comment">%                      corresponding variable in the current population</span>
+0120 <span class="comment">%                      AllStat{k,5} =  Vector with the number of evaluations in each generation</span>
+0121 <span class="comment">%                      AllStat{k,6} = Matrix with the time in seconds spent at the main</span>
+0122 <span class="comment">%                      EDA steps, each of the 8 column stores the times for the</span>
+0123 <span class="comment">%                      following steps {sampling,repairing, evaluation,local optimization, ,replacement, selection,learning and</span>
+0124 <span class="comment">%                      total (which consider the time by the previous 7 and</span>
+0125 <span class="comment">%                      other EDA operations</span>
+0126 <span class="comment">%</span>
+0127 <span class="comment">% number_evaluations(1:k):</span>
+0128 <span class="comment">% Cache:</span>
+0129 <span class="comment">%</span>
+0130 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0131 
+0132 
+0133 <span class="comment">% Default operators and parameters</span>
+0134 
+0135 seeding_pop_method = <span class="string">'RandomInit'</span>;
+0136 seeding_pop_params = [];
+0137 sampling_method = <span class="string">'SampleBN'</span>;
+0138 sampling_params{1}(1) = {PopSize};
+0139 repairing_method  = <span class="string">'none'</span>;
+0140 repairing_params  = [];
+0141 local_opt_method  = <span class="string">'none'</span>;
+0142 local_opt_params  = [];
+0143 replacement_method = <span class="string">'best_elitism'</span>;
+0144 replacement_params{1,1} = <span class="string">'fitness_ordering'</span>;
+0145 selection_method =   <span class="string">'truncation_selection'</span>;
+0146 selection_params{1}(1) = {0.5};
+0147 selection_params{1}(2)=  {<span class="string">'fitness_ordering'</span>};
+0148 learning_method = <span class="string">'LearnBN'</span>;
+0149 learning_params{1,1} = {<span class="string">'tree'</span>};
+0150 learning_params{1}(2) = {10};
+0151 learning_params{1}(3) = {0.05};
+0152 learning_params{1}(4) = {<span class="string">'pearson'</span>};
+0153 learning_params{1}(5) = {<span class="string">'bic'</span>};
+0154 learning_params{1}(6) = {<span class="string">'no'</span>};
+0155 statistics_method =  <span class="string">'simple_pop_statistics'</span>;
+0156 statistics_params{1}(1)=  {<span class="string">'fitness_ordering'</span>};
+0157 verbose_method = <span class="string">'simple_verbose'</span>;
+0158 verbose_params{1,1} = [];
+0159 stop_cond_method =   <span class="string">'max_gen'</span>;
+0160 stop_cond_params{1}(1) = {50}; <span class="comment">% Number of generations</span>
+0161 Cache = {};
+0162 
+0163 nparams = size(edaparams,2);
+0164 
+0165         <span class="keyword">for</span> i = 1:nparams
+0166             auxstr = char(cellstr(edaparams{i}(1)));
+0167             auxstr2 = char(cellstr(edaparams{i}(2)));
+0168 
+0169             
+0170           <span class="keyword">switch</span> auxstr
+0171             <span class="keyword">case</span> <span class="string">'seeding_pop_method'</span>, seeding_pop_method = auxstr2;, seeding_pop_params = edaparams{i}(3);
+0172             <span class="keyword">case</span> <span class="string">'sampling_method'</span>, sampling_method = auxstr2;, sampling_params = edaparams{i}(3); 
+0173             <span class="keyword">case</span> <span class="string">'repairing_method'</span>,   repairing_method  = auxstr2;, repairing_params = edaparams{i}(3);
+0174             <span class="keyword">case</span> <span class="string">'local_opt_method'</span>,   local_opt_method  = auxstr2;, local_opt_params = edaparams{i}(3);
+0175             <span class="keyword">case</span> <span class="string">'replacement_method'</span>, replacement_method = auxstr2;, replacement_params = edaparams{i}(3);
+0176             <span class="keyword">case</span> <span class="string">'selection_method'</span>,   selection_method = auxstr2;, selection_params = edaparams{i}(3);
+0177             <span class="keyword">case</span> <span class="string">'learning_method'</span>, learning_method = auxstr2;, learning_params = edaparams{i}(3); 
+0178             <span class="keyword">case</span> <span class="string">'statistics_method'</span>,  statistics_method  = auxstr2;, statistics_params = edaparams{i}(3);
+0179             <span class="keyword">case</span> <span class="string">'verbose_method'</span>,     verbose_method  = auxstr2;,    verbose_params = edaparams{i}(3);
+0180             <span class="keyword">case</span> <span class="string">'stop_cond_method'</span>,   stop_cond_method  = auxstr2;,  stop_cond_params = edaparams{i}(3);           
+0181             <span class="keyword">end</span>;
+0182         <span class="keyword">end</span>;
+0183 
+0184 auxedaparams{1,:} = {PopSize,n,F,Card};    
+0185 auxedaparams{2,:} = {<span class="string">'seeding_pop_method'</span>, seeding_pop_method, seeding_pop_params};
+0186 auxedaparams{3,:} = {<span class="string">'sampling_method'</span>, sampling_method, sampling_params}; 
+0187 auxedaparams{4,:} = { <span class="string">'repairing_method'</span>,   repairing_method , repairing_params };
+0188 auxedaparams{5,:} = { <span class="string">'local_opt_method'</span>,   local_opt_method , local_opt_params };
+0189 auxedaparams{6,:} = { <span class="string">'replacement_method'</span>, replacement_method , replacement_params };
+0190 auxedaparams{7,:} = { <span class="string">'selection_method'</span>,   selection_method , selection_params};
+0191 auxedaparams{8,:} = { <span class="string">'learning_method'</span>, learning_method , learning_params}; 
+0192 auxedaparams{9,:} = { <span class="string">'statistics_method'</span>,  statistics_method  , statistics_params};
+0193 auxedaparams{10,:} = { <span class="string">'verbose_method'</span>,     verbose_method,    verbose_params };
+0194 auxedaparams{11,:} = { <span class="string">'stop_cond_method'</span>,   stop_cond_method  ,  stop_cond_params };
+0195 
+0196 
+0197 continue_evolution = 1;
+0198 k = 1;
+0199 AllStat = {};
+0200 number_objectives = size(F,1);
+0201 NewPopSize = cell2num(sampling_params{1}(1));
+0202 CantGen = cell2num(stop_cond_params{1}(1));
+0203 
+0204 previous_t = cputime;
+0205 
+0206 <span class="keyword">while</span>(continue_evolution==1)
+0207    
+0208  t = cputime;    
+0209    <span class="keyword">if</span>(k==1)
+0210      <span class="comment">% Initialization of the population .</span>
+0211      <span class="comment">% Random by default. Alternatively, seeding procedure seeding_pop_method.</span>
+0212         Pop = eval([seeding_pop_method,<span class="string">'(n,PopSize,Card,seeding_pop_params)'</span>]);   
+0213    <span class="keyword">else</span>     
+0214        <span class="comment">% The new population is sampled from the learned model</span>
+0215         NewPop  = eval([sampling_method,<span class="string">'(n,model,Card,SelPop,SelFunVal,sampling_params)'</span>]);        
+0216    <span class="keyword">end</span>
+0217    
+0218   time_operations(k,1) = cputime-t;   <span class="comment">% Time spent in sampling</span>
+0219   
+0220    
+0221   t = cputime; 
+0222   
+0223   <span class="keyword">if</span>(~strcmp(repairing_method,<span class="string">'none'</span>) == 1)    
+0224    <span class="keyword">if</span>(k==1)
+0225      [Pop] =  eval([repairing_method,<span class="string">'(Pop,Card,repairing_params)'</span>]); <span class="comment">% Repairing method is applied</span>
+0226    <span class="keyword">else</span>
+0227      [NewPop] =  eval([repairing_method,<span class="string">'(NewPop,Card,repairing_params)'</span>]); <span class="comment">% Repairing method is applied</span>
+0228    <span class="keyword">end</span>
+0229   <span class="keyword">end</span>
+0230    
+0231  time_operations(k,2) = cputime-t;   <span class="comment">% Time spent in repairing</span>
+0232    
+0233  
+0234  t = cputime;    
+0235      <span class="comment">% The sampled population is evaluated</span>
+0236      
+0237      <span class="keyword">if</span> k==1
+0238        <span class="keyword">for</span> i=1:PopSize,
+0239            FunVal(i,:) = feval(F,Pop(i,:));  
+0240        <span class="keyword">end</span>
+0241        number_evaluations(k) = PopSize ;
+0242        <span class="comment">% FunVal'</span>
+0243      <span class="keyword">else</span>
+0244       <span class="keyword">for</span> i=1:NewPopSize,
+0245            NewPopFunVal(i,:) = feval(F,NewPop(i,:));  
+0246       <span class="keyword">end</span>
+0247       number_evaluations(k) = number_evaluations(k-1) + NewPopSize ;
+0248       <span class="comment">% NewPopFunVal'</span>
+0249      <span class="keyword">end</span>
+0250 
+0251   time_operations(k,3) = cputime-t;   <span class="comment">% Time spent in evaluation</span>
+0252     
+0253   
+0254   t = cputime; 
+0255   
+0256   <span class="keyword">if</span>(~strcmp(local_opt_method,<span class="string">'none'</span>) == 1)  <span class="comment">% Local optimization method is applied</span>
+0257    <span class="keyword">if</span> k==1   
+0258      [Pop,FunVal,NumbEvals] =  eval([local_opt_method,<span class="string">'(k,Pop,FunVal,local_opt_params)'</span>]); 
+0259      number_evaluations(k) = number_evaluations(k) + NumbEvals;
+0260      <span class="comment">%aux = FunVal'</span>
+0261    <span class="keyword">else</span>
+0262      [NewPop,NewPopFunVal,NumbEvals] =  eval([local_opt_method,<span class="string">'(k,NewPop,NewPopFunVal,local_opt_params)'</span>]); 
+0263      number_evaluations(k) = number_evaluations(k) + NumbEvals;
+0264      <span class="comment">% aux = NewPopFunVal'</span>
+0265    <span class="keyword">end</span>
+0266   <span class="keyword">end</span>
+0267   
+0268  time_operations(k,4) = cputime-t;   <span class="comment">% Time spent in local optimization</span>
+0269  
+0270   
+0271      t = cputime;  
+0272      <span class="keyword">if</span> k&gt;1           <span class="comment">% In the first generation, the generated population is just the current population</span>
+0273                       <span class="comment">% Replacement algorithm (e.g. elitism). The new population is formed using the previous population, the</span>
+0274                       <span class="comment">% selected population and the sampled population.</span>
+0275        <span class="keyword">if</span>(strcmp(replacement_method,<span class="string">'none'</span>) == 1)
+0276           Pop = NewPop;                               <span class="comment">% By default, the new population in the one just generated</span>
+0277           FunVal = NewPopFunVal;
+0278        <span class="keyword">else</span>                                          <span class="comment">% Alternatively another</span>
+0279          [Pop,FunVal]  = eval([replacement_method,<span class="string">'(Pop,SelPop,NewPop,FunVal,SelFunVal,NewPopFunVal,replacement_params)'</span>]); 
+0280          
+0281        <span class="keyword">end</span>       
+0282      <span class="keyword">end</span>
+0283      
+0284      
+0285      
+0286      <span class="keyword">if</span> (cache(1)==1)
+0287        Cache{1,k} = Pop;
+0288      <span class="keyword">end</span>
+0289      <span class="keyword">if</span> (cache(4)==1)
+0290        Cache{4,k} = FunVal;
+0291      <span class="keyword">end</span>
+0292      
+0293     time_operations(k,5) = cputime-t;   <span class="comment">% Time spent in replacement</span>
+0294      
+0295   
+0296   t = cputime;       
+0297   
+0298       <span class="comment">% Selection is applied</span>
+0299          [SelPop,SelFunVal]  = eval([selection_method,<span class="string">'(Pop,FunVal,selection_params)'</span>]);
+0300      <span class="keyword">if</span> (cache(2)==1)
+0301        Cache{2,k} = SelPop;
+0302      <span class="keyword">end</span>
+0303      <span class="keyword">if</span> (cache(5)==1)
+0304        Cache{5,k} = SelFunVal;
+0305      <span class="keyword">end</span>
+0306        
+0307   time_operations(k,6) = cputime-t;   <span class="comment">% Time spent in selection</span>
+0308   
+0309 
+0310   t = cputime;          
+0311       <span class="comment">% The model is learned using one of the predefined learning algorithms</span>
+0312       
+0313           [model] = eval([learning_method,<span class="string">'(k,n,Card,SelPop,SelFunVal,learning_params)'</span>]);
+0314      <span class="keyword">if</span> (cache(3)==1)
+0315        Cache{3,k} = model;
+0316      <span class="keyword">end</span>
+0317           
+0318   time_operations(k,7) = cputime-t;   <span class="comment">% Time spent in learning</span>
+0319   
+0320   
+0321     
+0322      <span class="keyword">if</span>(strcmp(stop_cond_method,<span class="string">'max_gen'</span>) == 1)  <span class="comment">% Default stop condition: maximum number of generations</span>
+0323         continue_evolution = (k&lt;CantGen);
+0324      <span class="keyword">else</span>                                         <span class="comment">% Alternatively, a given stop condition method that uses current</span>
+0325                                                   <span class="comment">% information about the EDA evolution plus external inf. (e.g.</span>
+0326                                                   <span class="comment">% known maximum value)</span>
+0327       continue_evolution = eval([stop_cond_method,<span class="string">'(k,Pop,FunVal,stop_cond_params)'</span>]);
+0328      <span class="keyword">end</span>
+0329 
+0330      
+0331     time_operations(k,8) = cputime - previous_t;  <span class="comment">% Time spent in the whole generation</span>
+0332     previous_t = cputime;
+0333     <span class="comment">% Statistics are computed</span>
+0334     [AllStat] = eval([statistics_method,<span class="string">'(k,Pop,FunVal,time_operations,number_evaluations,AllStat,statistics_params)'</span>]);
+0335   
+0336  
+0337     <span class="keyword">if</span>(strcmp(verbose_method,<span class="string">'none'</span>) ~= 1)  <span class="comment">%  Statistics information about the run is printed</span>
+0338       eval([verbose_method,<span class="string">'(k,AllStat,verbose_params,auxedaparams)'</span>]);
+0339     <span class="keyword">end</span>  
+0340      
+0341      k=k+1;
+0342 <span class="keyword">end</span>
+0343 
+0344 
+0345 <span class="keyword">return</span>
+0346     
+0347 
+0348 
+0349</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

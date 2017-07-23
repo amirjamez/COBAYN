@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of simple_pop_statistics</title>
+  <meta name="keywords" content="simple_pop_statistics">
+  <meta name="description" content="[AllStat] = simple_pop_statistics(k,Pop,FunVal,time_operations,number_evaluations,AllStat,statistics_params)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">statistics</a> &gt; simple_pop_statistics.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/statistics&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>simple_pop_statistics
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[AllStat] = simple_pop_statistics(k,Pop,FunVal,time_operations,number_evaluations,AllStat,statistics_params)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[AllStat] = simple_pop_statistics(k,Pop,FunVal,time_operations,number_evaluations,AllStat,statistics_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [AllStat] = simple_pop_statistics(k,Pop,FunVal,time_operations,number_evaluations,AllStat,statistics_params)
+ simple_pop_statistics:  Computes relevant statistics about EDA in each
+                         generation and stores it in AllStat
+
+
+
+
+ INPUTS 
+ k:                   Current generation
+ Pop:                 Current population
+ FunVal:              A matrix of function evaluations, one vector of m objectives for each individual
+ time_operations(1:k,1:6):  Matrix with the time in seconds spent at the main
+                      EDA steps, each of the 8 column stores the times for the
+                      following steps {sampling, repairing, evaluation, local optimization, replacement, selection,learning and
+                      total (which consider the time by the previous 7 and
+                      other EDA operations)
+                         
+ number_evaluations(1:k):  Vector with the number of evaluations in each generation
+ AllStat:             Array containing the statistics of the populations.
+                      It is updated by the method
+                      AllStat{k,1}= matrix of 7 rows and number_objectives
+                      columns. Each row shows information about
+                      max,mean,median,min, and variance values of the
+                      corresponding objective in the current population
+                      AllStat{k,2}= Stores the best individual
+                      AllStat{k,3}= Number of different individuals
+                      AllStat{k,4}= matrix of 5 rows and n
+                      columns. Each row shows information about
+                      max,mean,median,min, and variance values of the
+                      corresponding variable in the current population
+                      AllStat{k,5} = number_evaluations(k,:) (see inputs)
+                      AllStat{k,6} = time_operations(k,:) (see inputs)
+ statistics_params(1): find_bestinds_method: Name of the procedure for selecting the  best individuals 
+                                                 from a population (by default is 'fitness_ordering')
+ OUTPUTS
+ AllStat: Array containing the statistics of the population
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[AllStat] = simple_pop_statistics(k,Pop,FunVal,time_operations,number_evaluations,AllStat,statistics_params)</a>
+0002 <span class="comment">% [AllStat] = simple_pop_statistics(k,Pop,FunVal,time_operations,number_evaluations,AllStat,statistics_params)</span>
+0003 <span class="comment">% simple_pop_statistics:  Computes relevant statistics about EDA in each</span>
+0004 <span class="comment">%                         generation and stores it in AllStat</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% INPUTS</span>
+0010 <span class="comment">% k:                   Current generation</span>
+0011 <span class="comment">% Pop:                 Current population</span>
+0012 <span class="comment">% FunVal:              A matrix of function evaluations, one vector of m objectives for each individual</span>
+0013 <span class="comment">% time_operations(1:k,1:6):  Matrix with the time in seconds spent at the main</span>
+0014 <span class="comment">%                      EDA steps, each of the 8 column stores the times for the</span>
+0015 <span class="comment">%                      following steps {sampling, repairing, evaluation, local optimization, replacement, selection,learning and</span>
+0016 <span class="comment">%                      total (which consider the time by the previous 7 and</span>
+0017 <span class="comment">%                      other EDA operations)</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% number_evaluations(1:k):  Vector with the number of evaluations in each generation</span>
+0020 <span class="comment">% AllStat:             Array containing the statistics of the populations.</span>
+0021 <span class="comment">%                      It is updated by the method</span>
+0022 <span class="comment">%                      AllStat{k,1}= matrix of 7 rows and number_objectives</span>
+0023 <span class="comment">%                      columns. Each row shows information about</span>
+0024 <span class="comment">%                      max,mean,median,min, and variance values of the</span>
+0025 <span class="comment">%                      corresponding objective in the current population</span>
+0026 <span class="comment">%                      AllStat{k,2}= Stores the best individual</span>
+0027 <span class="comment">%                      AllStat{k,3}= Number of different individuals</span>
+0028 <span class="comment">%                      AllStat{k,4}= matrix of 5 rows and n</span>
+0029 <span class="comment">%                      columns. Each row shows information about</span>
+0030 <span class="comment">%                      max,mean,median,min, and variance values of the</span>
+0031 <span class="comment">%                      corresponding variable in the current population</span>
+0032 <span class="comment">%                      AllStat{k,5} = number_evaluations(k,:) (see inputs)</span>
+0033 <span class="comment">%                      AllStat{k,6} = time_operations(k,:) (see inputs)</span>
+0034 <span class="comment">% statistics_params(1): find_bestinds_method: Name of the procedure for selecting the  best individuals</span>
+0035 <span class="comment">%                                                 from a population (by default is 'fitness_ordering')</span>
+0036 <span class="comment">% OUTPUTS</span>
+0037 <span class="comment">% AllStat: Array containing the statistics of the population</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0040 
+0041 find_bestinds_method = char(cellstr(statistics_params{1}(1)));
+0042 
+0043          AllStat{k,1} =  [max(FunVal);  <span class="comment">% Statistics of the fitness objectives</span>
+0044                           mean(FunVal);
+0045                           median(FunVal);
+0046                           min(FunVal);
+0047                           var(FunVal)];          
+0048               
+0049         [Ind]  = eval([find_bestinds_method,<span class="string">'(Pop,FunVal)'</span>]);  <span class="comment">% The  best individual is found</span>
+0050         
+0051         AllStat{k,2} = Pop(Ind(1),:);                                <span class="comment">% Best individual</span>
+0052         AllStat{k,3} = size(unique(Pop,<span class="string">'rows'</span>),1);                <span class="comment">% Number of different individuals</span>
+0053        
+0054         
+0055         AllStat{k,4} =   [max(Pop);              <span class="comment">% Statistics of the population</span>
+0056                           mean(Pop);
+0057                           median(Pop);
+0058                           min(Pop);
+0059                           var(Pop)];
+0060       
+0061        AllStat{k,5} = number_evaluations(k);                    
+0062        AllStat{k,6} = time_operations(k,:);       
+0063 
+0064         
+0065             
+0066 <span class="keyword">return</span>;        
+0067</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of BN_Prediction</title>
+  <meta name="keywords" content="BN_Prediction">
+  <meta name="description" content="EXAMPLE 2: Evaluation of the prediction capability of the models">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">FitnessModScripts</a> &gt; BN_Prediction.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/FitnessModScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>BN_Prediction
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EXAMPLE 2: Evaluation of the prediction capability of the models</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EXAMPLE 2: Evaluation of the prediction capability of the models 
+            learned during the evolution of an EDA for a multiobjective function
+            The prediction is measured using the correlation between the probability
+            given by the models to the solutions and its fitness values</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li><li><a href="../../../Mateda2.0/functions/generators/CreateListFactorsCircularNK.html" class="code" title="function [ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)">CreateListFactorsCircularNK</a>	[ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)</li><li><a href="../../../Mateda2.0/functions/generators/ReadFunctionsFromData.html" class="code" title="function[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)">ReadFunctionsFromData</a>	[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)</li><li><a href="../../../Mateda2.0/knowledge_extraction/BN_Fitness_Corr.html" class="code" title="function[bn_fit_corr] =  BN_Fitness_Corr(bnet,Pop,FunVal)">BN_Fitness_Corr</a>	[bn_fit_corr] =  BN_Fitness_Corr(bnet,Pop,FunVal):</li><li><a href="../../../Mateda2.0/otherfiles/FindListCard.html" class="code" title="function [ListFactorsCard] = FindListCard(ListFactors,Card)">FindListCard</a>	[ListFactorsCard] = FindListCard(ListFactors,Card)</li><li><a href="../../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>	This program has been downloaded from</li><li><a href="../../../Mateda2.0/selection/FindParetoSet.html" class="code" title="function[Index]=FindParetoSet(Pop,FunVal)">FindParetoSet</a>	[Index]=FindParetoSet(Pop,FunVal)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001  <span class="comment">% EXAMPLE 2: Evaluation of the prediction capability of the models</span>
+0002  <span class="comment">%            learned during the evolution of an EDA for a multiobjective function</span>
+0003  <span class="comment">%            The prediction is measured using the correlation between the probability</span>
+0004  <span class="comment">%            given by the models to the solutions and its fitness values</span>
+0005  
+0006  <span class="comment">%%%%% First, the EDA is defined</span>
+0007  clear edaparams;  
+0008  PopSize = 1000; n = 50; cache = [1,1,1,1,1]; Card = 2*ones(1,n); MaxGen = 30;
+0009  <span class="keyword">global</span> FunctionTables;
+0010  <span class="keyword">global</span> FunctionStructure;
+0011  <span class="keyword">global</span> FunctionAccCard;
+0012  <span class="keyword">global</span> SelectedObjectives;
+0013  
+0014  [FunctionStructure] =  <a href="../../../Mateda2.0/functions/generators/CreateListFactorsCircularNK.html" class="code" title="function [ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)">CreateListFactorsCircularNK</a>(n,4); <span class="comment">% The circular structure is created</span>
+0015  [FunctionTables] = <a href="../../../Mateda2.0/functions/generators/ReadFunctionsFromData.html" class="code" title="function[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)">ReadFunctionsFromData</a>(<span class="string">'testNK_fnt_N50_k4Inst_1.txt'</span>,FunctionStructure,Card); <span class="comment">% Values are read from a file</span>
+0016  [FunctionAccCard] = <a href="../../../Mateda2.0/otherfiles/FindListCard.html" class="code" title="function [ListFactorsCard] = FindListCard(ListFactors,Card)">FindListCard</a>(FunctionStructure,Card); <span class="comment">% Auxiliary structure for function evaluation</span>
+0017  SelectedObjectives = [1:4:48];
+0018  
+0019  F = <span class="string">'PartialEvaluateGeneralFunction'</span>;  <span class="comment">% General function that uses global variables FunctionTables, FunctionStructure and FunctionAccCard.</span>
+0020  selparams(1:2) = {0.5,<span class="string">'ParetoRank_ordering'</span>};
+0021  edaparams{1} = {<span class="string">'selection_method'</span>,<span class="string">'truncation_selection'</span>,selparams};
+0022  edaparams{2} = {<span class="string">'replacement_method'</span>,<span class="string">'best_elitism'</span>,{<span class="string">'ParetoRank_ordering'</span>}};
+0023  edaparams{3} = {<span class="string">'stop_cond_method'</span>,<span class="string">'max_gen'</span>,{MaxGen}};
+0024  
+0025  <span class="comment">%%%%% Second, the EDA is executed and all the information is saved in Cache</span>
+0026  
+0027  [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,n,F,Card,cache,edaparams); 
+0028  
+0029  
+0030  <span class="comment">%%%%% Third the information is extracted and analyzed</span>
+0031  
+0032  AllSols = []; AllVals = [];
+0033  <span class="keyword">for</span> i=1:MaxGen,
+0034   AllSols = [AllSols;Cache{1,i}];   <span class="comment">% All the populations</span>
+0035   AllVals = [AllVals;Cache{4,i}];   <span class="comment">% All the evaluations</span>
+0036  <span class="keyword">end</span>
+0037  
+0038  Index = <a href="../../../Mateda2.0/selection/FindParetoSet.html" class="code" title="function[Index]=FindParetoSet(Pop,FunVal)">FindParetoSet</a>(AllSols,AllVals); <span class="comment">% The set of Pareto solutions found by the EDA is extracted</span>
+0039  ParetoPop = AllSols(Index,:);
+0040  ParetoVals = AllVals(Index,:);
+0041  
+0042  parallelcoords(ParetoVals); <span class="comment">% The Pareto set is shown using parallel coordinates</span>
+0043  ObjectivesCorr = corr(ParetoVals); <span class="comment">% The correlations between the objectives are computed.</span>
+0044  [idx,netsim,dpsim,expref]=<a href="../../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>(ObjectivesCorr,mean(ObjectivesCorr)); <span class="comment">% Affinity propagation is used</span>
+0045                                                                            <span class="comment">% to reduce the number of objectives</span>
+0046                                                                            <span class="comment">% by selecting correlated variables</span>
+0047  
+0048  <span class="keyword">for</span> i=1:MaxGen,              <span class="comment">% The correlations between the probabilities of each BN and each of</span>
+0049   bnet = Cache{3,i};          <span class="comment">% the problem objectives are computed using the Pareto Set</span>
+0050   All_BN_Fit_Corr(i,:) =  <a href="../../../Mateda2.0/knowledge_extraction/BN_Fitness_Corr.html" class="code" title="function[bn_fit_corr] =  BN_Fitness_Corr(bnet,Pop,FunVal)">BN_Fitness_Corr</a>(bnet,ParetoPop,ParetoVals)
+0051  <span class="keyword">end</span>
+0052</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

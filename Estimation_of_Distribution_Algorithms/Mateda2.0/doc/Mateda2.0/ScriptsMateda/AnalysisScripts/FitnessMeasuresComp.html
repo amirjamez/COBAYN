@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FitnessMeasuresComp</title>
+  <meta name="keywords" content="FitnessMeasuresComp">
+  <meta name="description" content="%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">AnalysisScripts</a> &gt; FitnessMeasuresComp.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/AnalysisScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>FitnessMeasuresComp
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ EXAMPLE 1: From the results of an EDA run with default parameters, different measures describing
+            the behavior of the algorithm are computed and graphs are
+            displayed</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li><li><a href="../../../Mateda2.0/knowledge_extraction/Amount_of_selection.html" class="code" title="function[S] = Amount_of_selection(AllFunVals,AllSelFunVals)">Amount_of_selection</a>	[S] = Amount_of_selection(AllFunVals,AllSelFunVals)</li><li><a href="../../../Mateda2.0/knowledge_extraction/Generations_entropy.html" class="code" title="function H_gens = Generations_entropy(inds_gens,Card,laplace)">Generations_entropy</a>	function H_gens = Generations_entropy(inds_gens,Card,laplace)</li><li><a href="../../../Mateda2.0/knowledge_extraction/Individuals_entropy.html" class="code" title="function S_H = Individuals_entropy(Inds,Card,laplace)">Individuals_entropy</a>	</li><li><a href="../../../Mateda2.0/knowledge_extraction/Mean_Var_Objectives.html" class="code" title="function[mean_objs,var_objs] = Mean_Var_Objectives(AllFunVals)">Mean_Var_Objectives</a>	[mean_objs,var_objs] = Mean_Var_Objectives(AllFunVals)</li><li><a href="../../../Mateda2.0/knowledge_extraction/ObjectiveDistribution.html" class="code" title="function[] = ObjectiveDistribution(AllFunVals,objs,gens)">ObjectiveDistribution</a>	[] = ObjectiveDistribution(AllFunVals,objs,gens)</li><li><a href="../../../Mateda2.0/knowledge_extraction/Realized_heritability.html" class="code" title="function[b] = Realized_heritability(AllFunVals,AllSelFunVals)">Realized_heritability</a>	[b] = Realized_heritability(AllFunVals,AllSelFunVals)</li><li><a href="../../../Mateda2.0/knowledge_extraction/Response_to_selection.html" class="code" title="function[RS] = Response_to_selection(AllFunVals)">Response_to_selection</a>	[RS] = Response_to_selection(AllFunVals)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 
+0002 <span class="comment">%%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0003 <span class="comment">% EXAMPLE 1: From the results of an EDA run with default parameters, different measures describing</span>
+0004 <span class="comment">%            the behavior of the algorithm are computed and graphs are</span>
+0005 <span class="comment">%            displayed</span>
+0006 
+0007   PopSize = 300; n = 45; cache  = [1,1,1,1,1]; Card = 2*ones(1,n); edaparams = {};
+0008   F = <span class="string">'sum'</span>; <span class="comment">% Onemax function;</span>
+0009   ngen = 10;
+0010   edaparams{1} = {<span class="string">'stop_cond_method'</span>,<span class="string">'max_gen'</span>,{ngen}};
+0011   [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,n,F,Card,cache,edaparams) 
+0012    <span class="keyword">for</span> i=1:ngen,
+0013      auxr{1,i} = Cache{4,i};
+0014      auxs{1,i} = Cache{5,i};
+0015    <span class="keyword">end</span>,
+0016    
+0017   [mean_obj,var_obj] = <a href="../../../Mateda2.0/knowledge_extraction/Mean_Var_Objectives.html" class="code" title="function[mean_objs,var_objs] = Mean_Var_Objectives(AllFunVals)">Mean_Var_Objectives</a>(auxr); <span class="comment">% Mean and variance of objectives</span>
+0018   [RS] = <a href="../../../Mateda2.0/knowledge_extraction/Response_to_selection.html" class="code" title="function[RS] = Response_to_selection(AllFunVals)">Response_to_selection</a>(auxr);             <span class="comment">% Response to selection</span>
+0019   [S] = <a href="../../../Mateda2.0/knowledge_extraction/Amount_of_selection.html" class="code" title="function[S] = Amount_of_selection(AllFunVals,AllSelFunVals)">Amount_of_selection</a>(auxr,auxs);           <span class="comment">% Amount of selection</span>
+0020   [b] = <a href="../../../Mateda2.0/knowledge_extraction/Realized_heritability.html" class="code" title="function[b] = Realized_heritability(AllFunVals,AllSelFunVals)">Realized_heritability</a>(auxr,auxs);         <span class="comment">% Realized heritability</span>
+0021   <a href="../../../Mateda2.0/knowledge_extraction/ObjectiveDistribution.html" class="code" title="function[] = ObjectiveDistribution(AllFunVals,objs,gens)">ObjectiveDistribution</a>(auxr,1,[1:ngen]);         <span class="comment">% Histogram of the objective distribution</span>
+0022  
+0023   
+0024  Inds = Cache{1,1}; 
+0025  Inds_sel = Cache{2,1}; 
+0026  S_H_pop = <a href="../../../Mateda2.0/knowledge_extraction/Individuals_entropy.html" class="code" title="function S_H = Individuals_entropy(Inds,Card,laplace)">Individuals_entropy</a>(Inds,Card,1);      <span class="comment">% Accumulated entropy of variables in the first population</span>
+0027  S_H_sel = <a href="../../../Mateda2.0/knowledge_extraction/Individuals_entropy.html" class="code" title="function S_H = Individuals_entropy(Inds,Card,laplace)">Individuals_entropy</a>(Inds_sel,Card,1);  <span class="comment">% Accumulated entropy of variables in the first selected population</span>
+0028  <span class="keyword">for</span> i=1:ngen
+0029    inds_gens{i}=Cache{1,i};
+0030  <span class="keyword">end</span>
+0031  H_gens = <a href="../../../Mateda2.0/knowledge_extraction/Generations_entropy.html" class="code" title="function H_gens = Generations_entropy(inds_gens,Card,laplace)">Generations_entropy</a>(inds_gens,Card,1);  <span class="comment">% Accumulated entropy of variables at each generation</span>
+0032 
+0033  X = [1:ngen]
+0034  plot(X,H_gens);</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

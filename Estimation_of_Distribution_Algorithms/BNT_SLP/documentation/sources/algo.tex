@@ -1,0 +1,457 @@
+The algorithms we use in the following experiments are:  PC (causality search), MWST (maximum weight spanning tree), K2 (with two random initializations), K2+T (K2 with MWST initialization), K2-T (K2 with MWST \textit{inverse} initialization), GS (starting from an empty structure), GS+T (GS starting from a MWST-initialized structure), GES (greedy search in the space of equivalent classes) and SEM (greedy search dealing with missing values, starting from an empty structure). We also use NB (Naive Bayes) and TANB (Tree Augmented Naive Bayes) for classification tasks.
+
+In the following, the term \texttt{n} represents the number of nodes of the expected Bayesian network and the number of attributes in the dataset \texttt{Data}.
+Then the size of the dataset is \texttt{[n,m]} where \texttt{m} is the number of cases.
+
+\subsection{Dealing with complete data}
+%========================================
+
+\subsubsection{A causality search algorithm}
+
+A statistical test can be used to evaluate the conditional dependencies between variables and then use the results to build the network structure.
+The PC algorithm has been introduced by \cite{Spi00}. \cite{Pea91} also proposed a similar algorithm (IC) at the same time.\\
+These functions already exist in BNT \cite{BNT04}.
+They need an external function to compute conditional independence tests.
+\vspace*{-1\baselineskip}
+
+\mabox{v1.5}{[CI Chi2] = cond\_indep\_chisquare(X, Y, S, Data, test, alpha, ns)}{
+This boolean function perfoms either a Pearson's Chi2 Test or a G2 Likelyhood Ration test\vspace*{0.5\baselineskip}\\
+INPUTS :\\
+\hspace*{20pt}Data - data matrix, n cols * m rows\\
+\hspace*{20pt}X - index of variable X in Data matrix\\
+\hspace*{20pt}Y - index of variable Y in Data matrix\\
+\hspace*{20pt}S - indexes of variables in set S\\
+\hspace*{20pt}alpha - significance level [0.01]\\
+\hspace*{20pt}test - 'pearson' for Pearson's chi2 test, 'LRT' for G2 test ['LRT']\\
+\hspace*{20pt}ns - node size [max(Data')]\vspace*{0.5\baselineskip}\\
+OUTPUTS :\\
+\hspace*{20pt}CI - test result (1=conditional independency, 0=no)\\
+\hspace*{20pt}Chi2 - chi2 value (-1 if not enough data to perform the test --> CI=0)
+}
+
+Remark that this algorithm does not give a \textsc{dag} but a completed \textsc{pdag} which only contains unreversible arcs.
+\vspace*{-1.5\baselineskip}
+
+\mabox{BNT}{PDAG = learn\_struct\_pdag\_pc('cond\_indep', n, n-2, Data);}{
+INPUTS:\\
+\hspace*{20pt}cond\_indep - boolean function that perfoms statistical tests and that can\\
+  \hspace*{40pt}be called as follows : feval(cond\_indep\_chisquare, x, y, S, ...)\\
+\hspace*{20pt}n - number of node\\
+\hspace*{20pt}k - upper bound on the fan-in\\
+\hspace*{20pt}Data\{i,m\} - value of node i in case m (can be a cell array).\vspace*{0.5\baselineskip}\\
+OUTPUT :\\
+\hspace*{20pt}PDAG is an adjacency matrix, in which\\
+\hspace*{40pt}PDAG(i,j) = -1 if there is an i->j edge\\
+\hspace*{40pt}PDAG(i,j) = P(j,i) = 1 if there is an undirected edge i <-> j\\[3pt]
+Then to have a DAG, the following operation is needed :\\
+\hspace*{40pt}DAG  = cpdag\_to\_dag(PDAG);
+}
+\vspace*{-.25\baselineskip}
+
+\noindent The IC* algorithm learns a latent structure associated with a set of observed variables.
+The latent structure revealed is the projection in which every latent variable
+is a root node or is linked to exactly two observed variables.
+Latent variables in the projection are represented using a bidirectional graph, and thus remain implicit.
+\vspace*{-1.5\baselineskip}
+
+\mabox{BNT}{PDAG = learn\_struct\_pdag\_ic\_star('cond\_indep\_chisquare', n, n-2, Data);}{
+INPUTS:\\
+\hspace*{20pt}cond\_indep - boolean function that perfoms statistical tests and that can\\
+  \hspace*{40pt}be called as follows : feval(cond\_indep\_chisquare, x, y, S, ...)\\
+\hspace*{20pt}n - number of node\\
+\hspace*{20pt}k - upper bound on the fan-in\\
+\hspace*{20pt}Data\{i,m\} - value of node i in case m (can be a cell array).\vspace*{0.5\baselineskip}\\
+OUTPUTS :\\
+\hspace*{20pt}PDAG is an adjacency matrix, in which\\
+\hspace*{40pt}PDAG(i,j) = -1 if there is either a latent variable L such that\\
+  \hspace*{60pt}i <-L-> j OR there is a directed edge from i->j.\\
+\hspace*{40pt}PDAG(i,j) = -2 if there is a marked directed i-*>j edge.\\
+\hspace*{40pt}PDAG(i,j) = PDAG(j,i) = 1 if there is and undirected edge i--j\\
+\hspace*{40pt}PDAG(i,j) = PDAG(j,i) = 2 if there is a latent variable L such that\\
+  \hspace*{60pt}i<-L->j.
+}
+\vspace{-.25\baselineskip}
+
+\noindent A improvement of PC, \textsc{ bnpc-b} \cite{Che02}, has been introduced.
+\vspace*{-1.5\baselineskip}
+
+\mabox{v1.5}{DAG = learn\_struct\_bnpc(Data);}{
+The following arguments (in this order) are optionnal:\\
+\hspace*{20pt}ns - a vector containing the nodes sizes [max(Data')]\\
+\hspace*{20pt}epsilon - value uses for the probabilistic tests [0.05]\\
+\hspace*{20pt}mwst - 1 to use learn\_struct\_mwst instead of Phase\_1 [0]\\
+\hspace*{20pt}star - 1 to use try\_to\_separate\_B\_star instead of try\_to\_separate\_B, more
+  \hspace*{40pt}accurate but more complexe [0]
+}
+
+%========================================
+\subsubsection{Maximum weight spanning tree}
+
+\cite{Cho68} have proposed a method derived from the \emph{maximum weight spanning tree} algorithm (MWST).
+This method associates a weigth to each edge. This weight can be either the \emph{mutual information} between the two variables \cite{Cho68} or the score variation when one node becomes a parent of the other \cite{Hec94}.
+When the weight matrix is created, a usual MWST algorithm (Kruskal or Prim's ones) gives an undirected tree that can be oriented given a root.
+\vspace*{-1.25\baselineskip}
+
+\mabox{v1.5}{T = learn\_struct\_mwst(Data, discrete, ns, node\_type, score, root);}{
+INPUTS:\\
+\hspace*{20pt}Data(i,m) is the node i in the case m,\\
+\hspace*{20pt}discrete - 1 if discret-node 0 if not\\
+\hspace*{20pt}ns - arity of nodes (1 if gaussian node)\\
+\hspace*{20pt}node\_type - tabular or gaussian\\
+\hspace*{20pt}score - BIC or mutual\_info (only tabular nodes)\\
+\hspace*{20pt}root - root-node of the result tree T\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}T - a \textbf{\textrm{sparse matrix}} that represents the result tree
+}
+
+%========================================
+\subsubsection{Naive bayes structure and augmented naive bayes}
+
+The naive bayes classifier is a well-known classifier related to Bayesian networks. Its structure contains only edges from the class node $C$ to the other observations in order to simplify the joint distribution as
+$\mathbb{P}(C,X_1,...,X_n)=\mathbb{P}(C)\mathbb{P}(X_1|C)...\mathbb{P}(X_n|C)$
+\vspace*{-1.25\baselineskip}
+
+\mabox{v1.5}{DAG = mk\_naive\_struct(n,C)}{where n is the number of nodes and C the class node}
+
+The naive bayes structure supposes that observations are independent given the class, but this hypothesis can be overridden using an \emph{augmented naive bayes} classifier \cite{Keo99,Fri97b}. Precisely, we use a tree-augmented structure, where the best tree relying all the observations is obtained by the MWST algorithm \cite{Gei92}.
+\vspace*{-1.25\baselineskip}
+
+\mabox{v1.5}{DAG = learn\_struct\_tan(Data, C, root, ns, scoring\_fn);}{
+INPUTS :\\
+\hspace*{20pt}Data - data(i,m) is the m$^{st}$ observation of node i\\
+\hspace*{20pt}C - number of the class node\\
+\hspace*{20pt}root - root of the tree built on the observation node (root$\neq$C)\\
+\hspace*{20pt}ns - vector containing the size of nodes, 1 if gaussian node\\
+\hspace*{20pt}scoring\_fn - (optional) 'bic' (default value) or 'mutual\_info'\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - TAN structure
+}
+
+%========================================
+\subsubsection{K2 algorithm}
+
+The main idea of the K2 algorithm is to maximize the structure probability given the data.
+To compute this probability, we can use the fact that:
+
+\begin{equ}\nonumber\frac{\mathbb{P}(\mathcal{G}_{1}/D)}{\mathbb{P}(\mathcal{G}_{2}/D)}=\frac{\frac{\mathbb{P}(\mathcal{G}_{1},D)}{P(D)}}{\frac{\mathbb{P}(\mathcal{G}_{2},D)}{P(D)}}=\frac{\mathbb{P}(\mathcal{G}_{1},D)}{\mathbb{P}(\mathcal{G}_{2},D)}\end{equ}
+and the following result given by \cite{Coo92a} :
+\begin{Th}\label{Tbay}
+let D the dataset, N the number of examples, and $\mathcal{G}$ the network structure on X.
+If $pa_{ij}$ is the $j^{th}$ instantiation of $Pa(X_i)$, $N_{ijk}$ the number of data where $X_i$ has the value $x_{ik}$ and $Pa(X_i)$ is instantiated in $pa_{ij}$ and $Nij=\sum_{k=1}^{r_i} N_{ijk}$ then
+\begin{equ}
+\mathbb{P}(\mathcal{G},D)=\mathbb{P}(\mathcal{G})\mathbb{P}(D|\mathcal{G})
+\text{~~~with~~~}
+\mathbb{P}(D|\mathcal{G})=\prod_{i=1}^{n} \prod_{j=1}^{q_i} \frac{(r_i-1)!}{(N_{ij}+r_i-1)!} \prod_{k=1}^{r_i} N_{ijk}!
+\label{mbay}
+\end{equ}
+where $\mathbb{P}(\mathcal{G})$ is the prior probability of the structure $\mathcal{G}$.
+\end{Th}
+
+Equation \ref{mbay} can be interpreted as a quality mesure of the network given the data and is named the \emph{Bayesian mesure}.
+
+Given an uniform prior on structures, the quality of a node $X$ and its parent set can be evaluated by the local score described in equation \ref{scoreK2}.
+\begin{equ}
+s(X_i,Pa(X_i))=\prod_{j=1}^{q_i} \frac{(r_i-1)!}{(N_{ij}+r_i-1)!} \prod_{k=1}^{r_i} N_{ijk}!
+\label{scoreK2}
+\end{equ}
+
+We can reduce the size of the search space using a topological order over the nodes \cite{Coo92a}. According to this order, a node can only be the parent of lower-ordered nodes. The search space thus becomes the subspace of all the \textsc{dag}s admitting this very topological order.
+
+The K2 algorithm tests parent insertion according to a specific order. The first node can't have any parent while, as for other nodes, we choose the parents sets (among admitable ones) that leads to the best score upgrade.
+
+\cite{Hec94} has proven that the \emph{Bayesian mesure} is not \emph{equivalent} and has proposed the BDe score (\emph{Bayesian mesure} with a specific prior on parameters) to make it so.
+It is also possible to use the BIC score or the MDL score \cite{Bou93} in the K2 algorithm which are both \emph{score equivalent}.
+\pagebreak
+
+\mabox{BNT}{DAG = learn\_struct\_k2(Data, ns, order);}{
+INPUTS:\\
+\hspace*{20pt}Data         - Data(i,m) = value of node i in case m (can be a cell array)\\
+\hspace*{20pt}ns           - ns(i) is the size of node i\\
+\hspace*{20pt}order        - order(i) is the i'th node in the topological ordering\vspace*{0.5\baselineskip}\\
+The following optional arguments can be specified in the form of ('name',value) pairs : [default value in brackets]\vspace*{0.5\baselineskip}\\
+\hspace*{20pt}max\_fan\_in - this the largest number of parents we allow per node [N]\\
+\hspace*{20pt}scoring\_fn  - 'Bayesian' or 'bic', currently, only networks with all\\
+  \hspace*{40pt}tabular nodes support Bayesian scoring ['Bayesian']\\
+\hspace*{20pt}type         - type\{i\} is the type of CPD to use for node i, where the type is a\\
+  \hspace*{40pt}string of the form 'tabular', 'noisy\_or', 'gaussian', etc.\\
+  \hspace*{40pt}[all cells contain 'tabular']\\
+\hspace*{20pt}params       - params\{i\} contains optional arguments passed to the CPD\\
+  \hspace*{40pt}constructor for node i, or [] if none.\\
+  \hspace*{40pt}[all cells contain {'prior', 1}, meaning use uniform Dirichlet priors]\\
+\hspace*{20pt}discrete     - the list of discrete nodes [1:N]\\
+\hspace*{20pt}clamped      - clamped(i,m) = 1 if node i is clamped in case m\\
+  \hspace*{40pt}[zeros(N, ncases)]\\
+\hspace*{20pt}verbose      - 'yes' means display output while running ['no']\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - The learned DAG which respect with the enumeration order\vspace*{0.5\baselineskip}\\
+e.g., dag = learn\_struct\_K2(data,ns,order,'scoring\_fn','bic','params',[])
+}
+
+\mabox{BNT}{[sampled\_graphs, accept\_ratio, num\_edges] = learn\_struct\_mcmc(Data, ns);}{
+Monte Carlo Markov Chain search over DAGs assuming fully observed data\vspace*{0.5\baselineskip}\\
+INPUTS:\\
+\hspace*{20pt}Data         - Data(i,m) = value of node i in case m (can be a cell array)\\
+\hspace*{20pt}ns           - ns(i) is the size of node i\\
+The following optional arguments can be specified as in K2\\
+\hspace*{20pt}scoring\_fn, type, params, discrete, clamped,\\
+\hspace*{20pt}nsamples     - number of samples to draw from the chain after burn-in  100*N]
+\hspace*{20pt}burnin       - number of steps to take before drawing samples [5*N]\\
+\hspace*{20pt}init\_dag    - starting point for the search [zeros(N,N)]\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}sampled\_graphs{m} = the m'th sampled graph\\
+\hspace*{20pt}accept\_ratio(t)   = acceptance ratio at iteration t\\
+\hspace*{20pt}num\_edges(t)      = number of edges in model at iteration t\vspace*{0.5\baselineskip}\\
+e.g., samples = learn\_struct\_mcmc(data, ns, 'nsamples', 1000);
+}
+
+%========================================
+\subsubsection{Markov Chain Monte Carlo}
+
+We can use a Markov Chain Monte Carlo algorithm called Metropolis-Hastings (MH) to search the space of all DAGs \cite{Mur01b}.
+The basic idea is to use the MH algorithm to draw samples from $\mathbb{P}(\mathbf{D}|\mathcal{G})$ (cf equ. \ref{mbay}) after a burn-in time.
+Then a new graph $\mathcal{G}'$ is kept if a uniform variable take a value greater than the bayes factor
+ $\frac{\mathbb{P}(\mathbf{D}|\mathcal{G}')}{\mathbb{P}(\mathbf{D}|\mathcal{G})}$ (or a ponderated bayes factor).
+Remark that this method is not deterministic.
+\vspace*{-.5\baselineskip}
+
+%========================================
+\subsubsection{Greedy search}
+
+The greedy search is a well-known optimisation heuristic.
+It takes an initial graph, defines a neighborhood, computes a score for every graph in this neighborhood, and chooses the one which maximises the score for the next iteration.
+With Bayesian networks, we can define the neighborhood as the set of graphs that differ only by one insertion, reversion or deletion of an arc from our current graph.
+
+\noindent As this method is complex in computing time, we recommend to use a cache.
+\vspace*{-1.5\baselineskip}
+
+\mabox{v1.5}{DAG = learn\_struct\_gs2(Data, ns, seeddag, 'cache', cache);}{
+This is an improvement of \texttt{learn\_struct\_gs} which was written by Gang Li.\\
+As this algorithm computes the score for every graphs in the neighborhood (created with \texttt{mk\_nbrs\_of\_dag\_topo} developped by Wei Hu instead of \texttt{mk\_nbrs\_of\_dag}), we have to use a \emph{decomposable score} to make this computation efficient and then recover some local scores in \texttt{cache}.\vspace*{0.5\baselineskip}\\
+INPUT:\\
+\hspace*{20pt}Data - training data, data(i,m) is the m obsevation of node i\\
+\hspace*{20pt}ns - the size array of different nodes\\
+\hspace*{20pt}seeddag - initial DAG of the search, optional\\
+\hspace*{20pt}cache - data structure used to memorize local score computations\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - the final structure matrix
+}
+\vspace*{-.5\baselineskip}
+
+%========================================
+\subsubsection{Greedy search in the Markov equivalent space}
+
+Recent works have shown the interest of searching in the Markov equivalent space (see definition \ref{equim}).
+\cite{Mun01} have proved that a greedy search in this space (with an equivalent score) is more likely to converge than in the DAGs space.
+These concepts have been implemented by \cite{Chi02,Cas02,Auv02} in new structure learning methods.
+\cite{Chi02c} has proposed the \emph{Greedy Equivalent Search} (GES) which used \textsc{cpdag}s to \emph{represent} Markov equivalent classes.
+This method works in two steps. First, it starts with an empty graph and adds arcs until the score cannot be improved, and then it tries to suppress some irrelevant arcs.\\~\\~
+\vspace*{-3\baselineskip}
+
+\mabox{v1.5}{DAG = learn\_struct\_ges(Data, ns,'scoring\_fn','bic','cache',cache);}{
+Like most of others methods, this function can simply be calling as \texttt{learn\_struct\_ges(Data, ns)} but this calling does not take advantages of the caching implementation.\vspace*{0.5\baselineskip}\\
+INPUTS:\\
+\hspace*{20pt}Data - training data, data(i,m) is the m obsevation of node i\\
+\hspace*{20pt}ns - the size vector of different nodes\vspace*{0.5\baselineskip}\\
+The following optional arguments can be specified in the form of ('name',value) pairs : [default value in brackets]\vspace*{0.5\baselineskip}\\
+\hspace*{20pt}cache - data structure used to memorize local scores [ [] ]\\
+\hspace*{20pt}scoring\_fn  - 'Bayesian' or 'bic' ['Bayesian']\\
+\hspace*{20pt}verbose - to display learning information ['no']\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - the final structure matrix
+}
+
+%========================================
+\subsubsection{Initialization problems}
+
+Most of the previous methods have some initialization problems.
+For instance, the run of the K2 algorithm depends on the given enumeration order.
+As \cite{Hec94} propose, we can use the oriented tree obtained with the MWST algorithm to generate this order.
+We just have to initialize the MWST algorithm with a root node, which can either be the class node (as in in our tests) or randomly chosen.
+Then we can use the topological order of the tree in order to initializ K2.
+Let us name "K2+T", the algorithm using this order with the class node as root.
+\vspace{-1.25\baselineskip}
+
+\mabox{v1.5}{dag = learn\_struct\_mwst(Data, ones(n,1), ns, node\_type, 'mutual\_info', class);}{
+       order = topological\_sort(full(dag));\\
+       dag = learn\_struct\_K2(Data, ns, order);
+}\vspace{.5\baselineskip}
+
+\noindent With this order, where the class node is the root node of the tree, the class node can be interpreted as a cause instead of a consequence. That's why we also propose to use the reverse order. We name this method "K2-T".
+%\vspace{-.3\baselineskip}
+%
+%\mabox{v1.5}{\vspace{-9.5pt}dag = learn\_struct\_mwst(Data, ones(n,1), ns, node\_type, 'mutual\_info', class);}{
+%       order = topological\_sort(full(dag));
+%       order = order(n:-1:1)\\
+%       dag = learn\_struct\_K2(Data, ns, order);
+%}\vspace{.8\baselineskip}
+Simply replace \texttt{order} by \texttt{order(n:-1:1)} in the code above.
+
+\noindent Greedy search can also be initialized with a specific \textsc{dag}. If this \textsc{dag} is not given by an expert, we also propose to use the tree given by the MSWT algorithm to initialize the greedy search instead of an empty network and name this algorithm "GS+T".
+\vspace{-1.25\baselineskip}
+
+\mabox{v1.5}{seeddag = full(learn\_struct\_mwst(Data, ones(n,1), ns, node\_type));}{
+       cache = score\_init\_cache(n,cache\_size);\\
+       dag = learn\_struct\_gs2(Data, ns, seeddag, 'cache', cache);
+}
+
+\subsection{Dealing with incomplete data}
+%========================================
+\subsubsection{Structural-EM algorithm}
+
+Friedman \cite{Fri98b} first introduced this method for structure learning with incomplete data. This method is based on the \emph{Expectation-Maximisation} principle \cite{Dem77} and deals with incomplete data without adding a new modality to each node which is not fully observed.
+
+This is an iterative method, which convergence has been proven by \cite{Fri98b}.
+It starts from an initial structure and estimates the probability distribution of variables which data are missing with the EM algorithm.
+Then it computes the expectation of the score for each graph of the neighborhood and chooses the one which maximises the score.
+%An improvement of this method was proposed by \cite{Pen01}.
+\vspace*{-\baselineskip}
+
+\mabox{BNT}{bnet = learn\_struct\_EM(bnet, Data, max\_loop);}{
+INPUTS:\\
+\hspace*{20pt}bnet - this function manipulates the baysesian network
+\texttt{bnet} instead of only
+  \hspace*{40pt}a \emph{DAG} as it learns the parameters in each iteration\\
+\hspace*{20pt}Data - training data, data(i,m) is the m obsevation of node i\\
+\hspace*{20pt}max\_loop - as this method has a big complexity, the maximum loop number
+  \hspace*{40pt}must be specify\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}DAG - the final structure matrix
+}
+
+\subsubsection{MWST-EM algorithm}
+
+In the same way than for completly observed datasets, we could use an
+algorithm based on \emph{minimum spanning tree} search from incomplete
+datasets.
+This method gives an tree shaped bayesian network that could be use as
+it, or that could be use to initialize the \texttt{learn\_struct\_EM} algorithm.
+Let see \cite{Ler05} for implementation details and experimentations.
+\vspace*{-\baselineskip}
+
+\mabox{v1.5}{bnet = learn\_struct\_mwst\_EM(data, discrete, node\_sizes, prior, nbloopmax, t)}{
+INPUTS : \\
+\hspace*{20pt}data{i,m} a cell where the node i in the case m, \\
+\hspace*{20pt}discrete = [ 1 if discret-node 0 if not ],       (ones) \\
+\hspace*{20pt}node\_sizes = 1 if gaussian node,                 (max on complete samples)\\
+\hspace*{20pt}prior = 1 to use uniform Dirichlet prior         (0) \\
+\hspace*{20pt}root is the futur root-node of the tree T.       (random) \\
+\hspace*{20pt}nbloopmax = max loop number                      (ceil(log(N*log(N)))) \\
+\hspace*{20pt}t = the convergence test's threshold        (1e-3)\\
+OUTPUTS :\\
+\hspace*{20pt}bnet = the output bayesian network\\
+\hspace*{20pt}Ebic = the espected BIC score of bnet given the data
+}
+
+\subsubsection{TAN-EM algorithm}
+
+To learn a bayesian network classifier from incomplete
+datasets, the function \\
+\noindent \texttt{learn\_struct\_tan\_EM} allow to obtain very good
+classification rates whatever the size of the dataset with a very small
+learning time. %, let see \cite{Fra06} for experimentations.
+\vspace*{-\baselineskip}
+
+\mabox{v1.5}{bnet = learn\_struct\_tan\_EM(data, class, node\_sizes,
+  root, prior, nbloopmax, t)}{
+INPUTS and OUTPUTS are the same than learn\_struct\_mwst\_EM
+%INPUTS : \\
+%\hspace*{20pt}data{i,m} a cell where the node i in the case m, \\
+%\hspace*{20pt}discrete = [ 1 if discret-node 0 if not ],       (ones) \\
+%\hspace*{20pt}node\_sizes = 1 if gaussian node,                 (max on complete samples)\\
+%\hspace*{20pt}prior = 1 to use uniform Dirichlet prior         (0) \\
+%\hspace*{20pt}root is the futur root-node of the tree T.       (random) \\
+%\hspace*{20pt}nbloopmax = max loop number                      (ceil(log(N*log(N)))) \\
+%\hspace*{20pt}t = the convergence test's threshold        (1e-3)\\
+%OUTPUTS :\\
+%\hspace*{20pt}bnet = the output bayesian network\\
+%\hspace*{20pt}Ebic = the espected BIC score of bnet given the data
+}
+
+\subsubsection{GES-EM algorithm}
+
+An extention of \texttt{learn\_struct\_ges} to incomplete datasets is also
+proposed.
+This version could use a initial structure that is not an empty one.
+Remark that the GES algorithm is said to be optimal when it is
+intitialise with an empty structure.
+Nevertheless, as the learning time is high an as this extention is no
+more optimal another choice could be made.
+Let see \cite{Bor06} for experimentations.
+\vspace*{-\baselineskip}
+
+\mabox{v1.5}{[bnet,cpdag,BIC\_score,nloop] = learn\_struct\_ges\_EM(bnet, data, max\_loop, loop\_em)}{
+INPUTS :\\
+\hspace*{20pt}bnet is an initial bayesian network structure,\\
+\hspace*{20pt}data{i,m} a cell where the node i in the case m,
+\hspace*{20pt}max\_loop is the number of step in the structure space,\\
+\hspace*{20pt}loop\_em is the number of loop of the inner EM on parameters\\
+OUTPUTS : \\
+\hspace*{20pt}bnet is the final result as a bayesian network,\\
+\hspace*{20pt}cpdag is the final partialy oriented structure,\\
+\hspace*{20pt}BIC\_score is the score on learning data of bnet,\\
+\hspace*{20pt}nloop is the number of loop that has been used.
+}
+
+\subsubsection{Using pairwise deletion instead EM}
+
+Poeple who does not want to use EM estimation as it is too much time computing could use some complete structure learning algorithms with pairwise deletion estimation (available cases analysis).
+The \texttt{scoring\_family} function in the Structure Learning package allow to perform count on incomplete datasets using a cell array as input.
+
+\mabox{v1.5}{A way to implement learn\_struct\_ges\_ACA}{
+if data is an array containing the value 'misv' for missing values :
+GESACA = learn\_struct\_ges(mat\_to\_bnt(data,misv,), ns,'scoring\_fn','bic','cache',cache))
+}
+%\newpage
+
+\subsection{Generating incomplete data}
+%========================================
+
+To generate incomplete data, you first have to build a model, and then
+you could use it to build the dataset.
+See \cite{Fra07} for details on modelisation.
+
+\subsubsection{MCAR case model building}
+
+Methods that have been proposed for MCAR dataset generation usually remove data for each variable with the same probability $\alpha$. We propose here a more general method where a different "missing" probability is associated to each variable.
+
+\noindent In the special case of MCAR mechanisms \cite{Rub76}, we have $\mathbb{P}(\mathcal{R}|\mathcal{O},\mathcal{H},\mu)=\mathbb{P}(\mathcal{R}|\mu)$.
+\vspace*{-\baselineskip}
+
+\mabox{v1.5}{bnet\_miss = gener\_MCAR\_net(bnet\_orig, base\_proba)}{
+INPUTS :\\
+\hspace*{20pt}bnet\_orig : a bnet,\\
+\hspace*{20pt}base\_proba :  a goal mean probability for value to be missing\\
+OUTPUTS : \\
+\hspace*{20pt}bnet\_miss : a bnet that could be used in gener\_data\_from\_bnet\_miss function to generate incomplete MCAR dataset.
+}
+
+\subsubsection{MAR case model building}
+
+For MAR processes, nodes representing the missingness of a variable
+can no longer be disconnected from observable nodes (we now have
+ $\mathbb{P}(\mathcal{R}|\mathcal{O},\mathcal{H},\mu)=\mathbb{P}(\mathcal{R}|\mathcal{O},\mu)$).
+So there are more a lot more parameters than in MCAR mechanisms to fix.
+\vspace*{-\baselineskip}
+
+\mabox{v1.5}{bnet\_miss = gener\_MAR\_net(bnet\_orig, base\_proba)}{
+same INPUTS and OUPUTS as gener\_MCAR\_net}
+
+\subsubsection{Generating data}
+\vspace*{-\baselineskip}
+
+\mabox{v1.5}{[data, comp\_data, bnet\_miss, rate, bnet\_orig, notok] = gener\_data\_from\_bnet\_miss(bnet\_miss, m, base\_proba ,v, testdata)}{
+INTPUTS : \\
+\hspace*{20pt}bnet\_orig : see gener\_[MCAR or MAR]\_net function,\\
+\hspace*{20pt}m : the length of the dataset\\
+\hspace*{20pt}base\_proba :  a goal mean probability for value to be missing\\
+%\hspace*{40pt}if base\_proba==0 or does not exist the chi2 test will be passed\\
+\hspace*{20pt}v==1 to enter the verbose mode [0]\\
+\hspace*{20pt}testdata==1 to always build the same dataset <-- rand('state',0)  [0]\\
+OUTPUTS : \\
+\hspace*{20pt}data : the generated dataset\\
+\hspace*{20pt}data : the full original dataset\\
+\hspace*{20pt}bnet\_miss : see gener\_[MCAR or MAR]\_net function\\
+\hspace*{20pt}ratem : the mean rate of missing data in data\\
+\hspace*{20pt}bnet\_orig : the original bnet\\
+\hspace*{20pt}notok==1 iff the generated dataset missing rate is to far from ratem.
+}

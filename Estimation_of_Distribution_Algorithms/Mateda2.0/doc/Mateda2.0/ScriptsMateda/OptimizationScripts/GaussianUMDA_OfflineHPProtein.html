@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of GaussianUMDA_OfflineHPProtein</title>
+  <meta name="keywords" content="GaussianUMDA_OfflineHPProtein">
+  <meta name="description" content="EXAMPLE 7:  Gaussian UMDA for  the Offline HP Model continuous function">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">OptimizationScripts</a> &gt; GaussianUMDA_OfflineHPProtein.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/OptimizationScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>GaussianUMDA_OfflineHPProtein
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EXAMPLE 7:  Gaussian UMDA for  the Offline HP Model continuous function</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EXAMPLE 7:  Gaussian UMDA for  the Offline HP Model continuous function 
+ For reference on the Offline HP model see:
+-- H. P. Hsu, V. Mehra and  P. Grassberger (2003)  Structure optimization in an off-lattice protein model.
+-- Phys Rev E Stat Nonlin Soft Matter Phys. 2003 Sep;68(3 Pt 2):037703. Epub 2003 Sep 30. 
+-- http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal&amp;id=PLEEE8000068000003037703000001&amp;idtype=cvips&amp;gifs=yes</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li><li><a href="../../../Mateda2.0/functions/protein/CreateFibbInitConf.html" class="code" title="function[Sj] =  CreateFibbInitConf(n)">CreateFibbInitConf</a>	Translates the vector to the  positions in the grid</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001  <span class="comment">% EXAMPLE 7:  Gaussian UMDA for  the Offline HP Model continuous function</span>
+0002  <span class="comment">% For reference on the Offline HP model see:</span>
+0003  <span class="comment">%-- H. P. Hsu, V. Mehra and  P. Grassberger (2003)  Structure optimization in an off-lattice protein model.</span>
+0004  <span class="comment">%-- Phys Rev E Stat Nonlin Soft Matter Phys. 2003 Sep;68(3 Pt 2):037703. Epub 2003 Sep 30.</span>
+0005  <span class="comment">%-- http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal&amp;id=PLEEE8000068000003037703000001&amp;idtype=cvips&amp;gifs=yes</span>
+0006   
+0007  Fibbonacci_n = 7; <span class="comment">% Fibbonacci_n: Value n for the construction of the Fibbonacci sequence. NumbVar = F(n)</span>
+0008  <span class="keyword">global</span> HPInitConf;
+0009  HPInitConf = <a href="../../../Mateda2.0/functions/protein/CreateFibbInitConf.html" class="code" title="function[Sj] =  CreateFibbInitConf(n)">CreateFibbInitConf</a>(Fibbonacci_n); <span class="comment">% HP Fibbonacci configuration</span>
+0010  NumbVar = size(HPInitConf,2);
+0011  PopSize = 1000; 
+0012  F = <span class="string">'EvaluateOffHPProtein'</span>;
+0013  cache  = [0,0,0,0,0]; Card = [zeros(1,NumbVar);2*pi*ones(1,NumbVar)];
+0014  edaparams{1} = {<span class="string">'learning_method'</span>,<span class="string">'LearnGaussianUnivModel'</span>,{}};
+0015  edaparams{2} = {<span class="string">'sampling_method'</span>,<span class="string">'SampleGaussianUnivModel'</span>,{PopSize,3}};
+0016  edaparams{3} = {<span class="string">'replacement_method'</span>,<span class="string">'elitism'</span>,{1,<span class="string">'fitness_ordering'</span>}};
+0017  edaparams{4} = {<span class="string">'selection_method'</span>,<span class="string">'prop_selection'</span>,{2}};
+0018  edaparams{5} = {<span class="string">'repairing_method'</span>,<span class="string">'SetInBounds_repairing'</span>,{}};
+0019  [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,NumbVar,F,Card,cache,edaparams) 
+0020  <span class="comment">% To draw the resulting solution use function OffPrintProtein(vector),</span>
+0021  <span class="comment">% where vector is the best solution found.</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

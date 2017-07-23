@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of DefaultEDA_NKRandom</title>
+  <meta name="keywords" content="DefaultEDA_NKRandom">
+  <meta name="description" content="EXAMPLE 9:  Bayesian tree for a multiobjective function of the NK random">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">OptimizationScripts</a> &gt; DefaultEDA_NKRandom.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/OptimizationScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>DefaultEDA_NKRandom
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EXAMPLE 9:  Bayesian tree for a multiobjective function of the NK random</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EXAMPLE 9:  Bayesian tree for a multiobjective function of the NK random
+ landscape (cicular neighbors)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li><li><a href="../../../Mateda2.0/functions/generators/CreateListFactorsCircularNK.html" class="code" title="function [ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)">CreateListFactorsCircularNK</a>	[ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)</li><li><a href="../../../Mateda2.0/functions/generators/ReadFunctionsFromData.html" class="code" title="function[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)">ReadFunctionsFromData</a>	[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)</li><li><a href="../../../Mateda2.0/otherfiles/FindListCard.html" class="code" title="function [ListFactorsCard] = FindListCard(ListFactors,Card)">FindListCard</a>	[ListFactorsCard] = FindListCard(ListFactors,Card)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001  <span class="comment">% EXAMPLE 9:  Bayesian tree for a multiobjective function of the NK random</span>
+0002  <span class="comment">% landscape (cicular neighbors)</span>
+0003  PopSize = 500; n = 50; cache = [1,1,1,1,1]; Card = 2*ones(1,n); 
+0004  <span class="keyword">global</span> FunctionTables;
+0005  <span class="keyword">global</span> FunctionStructure;
+0006  <span class="keyword">global</span> FunctionAccCard;
+0007  
+0008  <span class="comment">%[FunctionStructure]    = ReadFactorGraphFromData('testNK_str_N50_k4Inst_1.txt');</span>
+0009  [FunctionStructure] =  <a href="../../../Mateda2.0/functions/generators/CreateListFactorsCircularNK.html" class="code" title="function [ListFactors] =  CreateListFactorsCircularNK(NumberVar,k)">CreateListFactorsCircularNK</a>(n,4); <span class="comment">% The circular structure is created</span>
+0010  [FunctionTables] = <a href="../../../Mateda2.0/functions/generators/ReadFunctionsFromData.html" class="code" title="function[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)">ReadFunctionsFromData</a>(<span class="string">'testNK_fnt_N50_k4Inst_1.txt'</span>,FunctionStructure,Card); <span class="comment">% Values are read from a file</span>
+0011  [FunctionAccCard] = <a href="../../../Mateda2.0/otherfiles/FindListCard.html" class="code" title="function [ListFactorsCard] = FindListCard(ListFactors,Card)">FindListCard</a>(FunctionStructure,Card); <span class="comment">% Auxiliary structure for function evaluation</span>
+0012  F = <span class="string">'EvaluateGeneralFunction'</span>;  <span class="comment">% General function that uses global variables FunctionTables, FunctionStructure and FunctionAccCard.</span>
+0013  selparams(1:2) = {0.5,<span class="string">'ParetoRank_ordering'</span>};
+0014  edaparams{1} = {<span class="string">'selection_method'</span>,<span class="string">'truncation_selection'</span>,selparams};
+0015  edaparams{2} = {<span class="string">'replacement_method'</span>,<span class="string">'best_elitism'</span>,{<span class="string">'ParetoRank_ordering'</span>}};
+0016  edaparams{3} = {<span class="string">'stop_cond_method'</span>,<span class="string">'max_gen'</span>,{5}};
+0017  [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,n,F,Card,cache,edaparams);</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

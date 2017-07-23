@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FindMPE</title>
+  <meta name="keywords" content="FindMPE">
+  <meta name="description" content="[mpe_solution,prob_value] =  FindMPE(bnet):">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">sampling</a> &gt; FindMPE.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/sampling&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>FindMPE
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[mpe_solution,prob_value] =  FindMPE(bnet):</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[mpe_solution,prob_value] =  FindMPE(bnet) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [mpe_solution,prob_value] =  FindMPE(bnet):   
+                           Computes the most probable explanation given the Bayesian network
+ INPUTS 
+ bnet:                Bayesian network
+ OUTPUTS
+ mpe_solution: Most probable explanation
+ prob_value:  Its corresponding probability value
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/knowledge_extraction/Most_probable_explanations.html" class="code" title="function[MPEs] = Most_probable_explanations(bnets,func)">Most_probable_explanations</a>	function[MPEs] = Most_probable_explanations(bnets,func)</li><li><a href="SampleMPE_BN.html" class="code" title="function[NewPop] = SampleMPE_BN(NumbVar,bnet,Card,AuxPop,AuxFunVal,sampling_params)">SampleMPE_BN</a>	[NewPop] = SampleMPE_BN(NumbVar,bnet,Card,sampling_params):</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001  <span class="keyword">function</span>[mpe_solution,prob_value] =  FindMPE(bnet)
+0002 <span class="comment">% [mpe_solution,prob_value] =  FindMPE(bnet):</span>
+0003 <span class="comment">%                           Computes the most probable explanation given the Bayesian network</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% bnet:                Bayesian network</span>
+0006 <span class="comment">% OUTPUTS</span>
+0007 <span class="comment">% mpe_solution: Most probable explanation</span>
+0008 <span class="comment">% prob_value:  Its corresponding probability value</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0011 
+0012  n = size(bnet.dag,1); <span class="comment">% number of nodes</span>
+0013  
+0014  engine = jtree_inf_engine(bnet, <span class="string">'maximize'</span>, 1);
+0015  <span class="keyword">for</span> i=1:n,
+0016   auxvar{i} = [];           <span class="comment">%      All variables are hidden</span>
+0017  <span class="keyword">end</span>,
+0018  mpe_solution = find_mpe(engine,auxvar);
+0019  [eng, logprob] = enter_evidence(engine, mpe_solution);
+0020  prob_value = exp(logprob);
+0021</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

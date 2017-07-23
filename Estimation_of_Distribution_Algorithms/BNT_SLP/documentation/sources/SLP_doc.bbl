@@ -1,0 +1,406 @@
+\begin{thebibliography}{59}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Andersen et~al.(1989)Andersen, Olesen, Jensen, and Jensen]{HUGIN}
+S.K. Andersen, K.G. Olesen, F.V. Jensen, and F.~Jensen.
+\newblock Hugin - a shell for building bayesian belief universes for expert
+  systems.
+\newblock \emph{Proceedings of the 11th International Joint Conference on
+  Artificial Intelligence}, 1:\penalty0 1080--1085, 1989.
+\newblock \url{http://www.hugin.com/}.
+
+\bibitem[Auvray and Wehenkel(2002)]{Auv02}
+V.~Auvray and L.~Wehenkel.
+\newblock On the construction of the inclusion boundary neighbourhood for
+  markov equivalence classes of bayesian network structures.
+\newblock In Adnan Darwiche and Nir Friedman, editors, \emph{Proceedings of the
+  18th Conference on Uncertainty in Artificial Intelligence ({UAI}-02)}, pages
+  26--35, S.F., Cal., 2002. Morgan Kaufmann Publishers.
+
+\bibitem[Bennani and Bossaert(1996)]{Ben96}
+Y.~Bennani and F.~Bossaert.
+\newblock Predictive neural networks for traffic disturbance detection in the
+  telephone network.
+\newblock In \emph{Proceedings of IMACS-CESA'96}, Lille, France, 1996.
+
+\bibitem[Blake and Merz(1998)]{UCI}
+C.L. Blake and C.J. Merz.
+\newblock {UCI} repository of machine learning databases, 1998.
+\newblock \url{http://www.ics.uci.edu/~mlearn/MLRepository.html}.
+
+\bibitem[Borchani et~al.(2006)Borchani, Ben~Amor, and Mellouli]{Bor06}
+H.~Borchani, N.~Ben~Amor, and K.~Mellouli.
+\newblock Learning bayesian network equivalence classes from incomplete data.
+\newblock \emph{Lecture Notes in Computer Science}, 4265/2006:\penalty0
+  291--295, 2006.
+
+\bibitem[Bouckaert(1993)]{Bou93}
+R.~R. Bouckaert.
+\newblock Probabilistic network construction using the minimum description
+  length principle.
+\newblock \emph{Lecture Notes in Computer Science}, 747:\penalty0 41--48, 1993.
+
+\bibitem[Bradski(2004)]{PNL}
+G.~Bradski.
+\newblock Open source probabilistic network library.
+\newblock Systems Technology Labs, Intel, 2004.
+\newblock \url{http://www.intel.com/research/mrl/pnl/}.
+
+\bibitem[Castelo and Kocka(2002)]{Cas02}
+R.~Castelo and T.~Kocka.
+\newblock Towards an inclusion driven learning of bayesian networks.
+\newblock Technical Report UU-CS-2002-05, Institute of information and
+  computing sciences, University of Utrecht, 2002.
+
+\bibitem[Cheng et~al.(2001)Cheng, Hatzis, Hayashi, Krogel, Morishita, Page, and
+  Sese]{BNPC}
+J.~Cheng, C.~Hatzis, H.~Hayashi, N.A. Krogel, S.~Morishita, D.~Page, and
+  J~Sese.
+\newblock Kdd cup 2001 repport.
+\newblock the awards ceremony of the 7th ACM SIGKDD 2001, pp 47-64 (San
+  Francisco, CA), 2001.
+\newblock \url{http://www.cs.ualberta.ca/~jcheng/bnsoft.htm}.
+
+\bibitem[Cheng et~al.(2002)Cheng, Greiner, Kelly, Bell, and Liu]{Che02}
+J.~Cheng, R.~Greiner, J.~Kelly, D.~Bell, and W.~Liu.
+\newblock Learning {B}ayesian networks from data: An information-theory based
+  approach.
+\newblock \emph{Artificial Intelligence}, 137\penalty0 (1-2):\penalty0 43--90,
+  2002.
+
+\bibitem[Chickering(1996)]{Chi96}
+D.~Chickering.
+\newblock Learning equivalence classes of {bayesian} network structures.
+\newblock In Eric Horvitz and Finn Jensen, editors, \emph{Proceedings of the
+  12th Conference on Uncertainty in Artificial Intelligence ({UAI}-96)}, pages
+  150--157, San Francisco, August 1996. Morgan Kaufmann Publishers.
+\newblock ISBN 1-55860-412-X.
+
+\bibitem[Chickering(2002{\natexlab{a}})]{Chi02}
+D.M. Chickering.
+\newblock Learning equivalence classes of bayesian-network structures.
+\newblock \emph{Journal of machine learning research}, 2:\penalty0 445--498,
+  2002{\natexlab{a}}.
+
+\bibitem[Chickering(2002{\natexlab{b}})]{Chi02c}
+D.M. Chickering.
+\newblock Optimal structure identification with greedy search.
+\newblock \emph{Journal of Machine Learning Research}, 3:\penalty0 507--554,
+  November 2002{\natexlab{b}}.
+\newblock URL
+  \url{http://www.ai.mit.edu/projects/jmlr/papers/volume2/chickering02a/chicke%
+ring02b.pdf}.
+
+\bibitem[Chow and Liu(1968)]{Cho68}
+C.K. Chow and C.N. Liu.
+\newblock Approximating discrete probability distributions with dependence
+  trees.
+\newblock \emph{IEEE Transactions on Information Theory}, 14\penalty0
+  (3):\penalty0 462--467, 1968.
+
+\bibitem[Cooper and Hersovits(1992)]{Coo92a}
+G.~Cooper and E.~Hersovits.
+\newblock A bayesian method for the induction of probabilistic networks from
+  data.
+\newblock \emph{Maching Learning}, 9:\penalty0 309--347, 1992.
+
+\bibitem[Dempster et~al.(1977)Dempster, Laird, and Rubin]{Dem77}
+A.~Dempster, N.~Laird, and D.~Rubin.
+\newblock Maximum likelihood from incomplete data via the {EM} algorithm.
+\newblock \emph{Journal of the Royal Statistical Society}, B 39:\penalty0
+  1--38, 1977.
+
+\bibitem[Dor and Tarsi(1992)]{Dor92}
+D.~Dor and M.~Tarsi.
+\newblock A simple algorithm to construct a consistent extension of a partially
+  oriented graph.
+\newblock Technical Report R-185, Cognitive Systems Laboratory, UCLA Computer
+  Science Department, 1992.
+
+\bibitem[Drakos and Moore(1998)]{JAVABAYES}
+N.~Drakos and R.~Moore.
+\newblock Javabayes, bayesian networks in java : User manual and download,
+  1998.
+\newblock Available at URL: \url{http://www-2.cs.cmu.edu/~javabayes/Home/}.
+
+\bibitem[Fran\c{c}ois and Leray(2006)]{Fra06}
+O.C.H. Fran\c{c}ois and P.~Leray.
+\newblock Learning the tree augmented naive bayes classifier from incomplete
+  datasets.
+\newblock In \emph{Proceedings of the Third European Workshop on Probabilistic
+  Graphical Models (PGM'06), ISBN: 80-86742-14-8}, pages 91--98, Prague, Czech
+  Republic, september 2006.
+
+\bibitem[Fran\c{c}ois and Leray(2007)]{Fra07}
+O.C.H. Fran\c{c}ois and P.~Leray.
+\newblock Incomplete datasets generation using the bayesian networks formalism.
+\newblock In \emph{Proceedings of the International Joint Conferences on Neural
+  Networks (IJCNN 2007)}, Orlando, Florida, 2007.
+
+\bibitem[Fran\c{c}ois(2006)]{Fra06T}
+Olivier Fran\c{c}ois.
+\newblock \emph{De l'identification de structure de r\'eseaux bay\'esiens \`a
+  la reconnaissance de formes \`a partir d'informations compl\`etes ou
+  incompl\`etes}.
+\newblock PhD thesis, Institut National des Sciences Appliqu\'ees de Rouen
+  (INSA), \url{http://ofrancois.tuxfamily.org/these.html}, 2006.
+
+\bibitem[Friedman(1998)]{Fri98b}
+N.~Friedman.
+\newblock The {bayesian} structural {EM} algorithm.
+\newblock In Gregory~F. Cooper and Seraf{\'{\i}}n Moral, editors,
+  \emph{Proceedings of the 14th Conference on Uncertainty in Artificial
+  Intelligence ({UAI}-98)}, pages 129--138, San Francisco, July 1998. Morgan
+  Kaufmann.
+\newblock ISBN 1-55860-555-X.
+
+\bibitem[Friedman and Elidan(1999)]{LibB}
+N.~Friedman and G.~Elidan.
+\newblock Lib{B} for windows/linux programs, 1999.
+\newblock URL \url{http://www.cs.huji.ac.il/labs/compbio/LibB/}.
+
+\bibitem[Friedman et~al.(1997{\natexlab{a}})Friedman, Geiger, and
+  Goldszmidt]{Fri97b}
+N.~Friedman, D.~Geiger, and M.~Goldszmidt.
+\newblock bayesian network classifiers.
+\newblock \emph{Machine Learning}, 29\penalty0 (2-3):\penalty0 131--163,
+  1997{\natexlab{a}}.
+
+\bibitem[Friedman et~al.(1997{\natexlab{b}})Friedman, Goldszmidt, Heckerman,
+  and Russell]{BNR97}
+N.~Friedman, M.~Goldszmidt, D.~Heckerman, and S.~Russell.
+\newblock Challenge: What is the impact of bayesian networks on learning?,
+  \textit{Proceedings of the 15'th International Joint Conference on Artificial
+  Intelligence (NIL-97)}, 10-15, 1997{\natexlab{b}}.
+\newblock \url{http://www.cs.huji.ac.il/labs/compbio/Repository/}.
+
+\bibitem[Geiger(1992)]{Gei92}
+D.~Geiger.
+\newblock An entropy-based learning algorithm of bayesian conditional trees.
+\newblock In \emph{Uncertainty in Artificial Intelligence: Proceedings of the
+  Eighth Conference (UAI-1992)}, pages 92--97, San Mateo, CA, 1992. Morgan
+  Kaufmann Publishers.
+
+\bibitem[Heckerman et~al.(1994)Heckerman, Geiger, and Chickering]{Hec94}
+D.~Heckerman, D.~Geiger, and M.~Chickering.
+\newblock Learning {B}ayesian networks: {T}he combination of knowledge and
+  statistical data.
+\newblock In Ramon~Lopez de~Mantaras and David Poole, editors,
+  \emph{Proceedings of the 10th Conference on Uncertainty in Artificial
+  Intelligence}, pages 293--301, San Francisco, CA, USA, July 1994. Morgan
+  Kaufmann Publishers.
+\newblock ISBN 1-55860-3328.
+
+\bibitem[Jensen(1996)]{Jen96}
+F.V. Jensen.
+\newblock \emph{An introduction to {B}ayesian Networks}.
+\newblock Taylor and Francis, London, United Kingdom, 1996.
+
+\bibitem[Jordan(1998)]{Jor98b}
+M.~I Jordan.
+\newblock \emph{Learning in Graphical Models}.
+\newblock Kluwer Academic Publishers, The Netherlands, 1998.
+
+\bibitem[Kadie et~al.(2001)Kadie, Hovel, and Horvitz]{MSBN}
+C.M. Kadie, D.~Hovel, and E.~Horvitz.
+\newblock Msbnx: A component-centric toolkit for modeling and inference with
+  bayesian networks.
+\newblock Microsoft Research Technical Report MSR-TR-2001-67, July 2001.
+\newblock \url{http://www.research.microsoft.com/adapt/MSBNx/}.
+
+\bibitem[Keogh and Pazzani(1999)]{Keo99}
+E.~Keogh and M.~Pazzani.
+\newblock Learning augmented bayesian classifiers: A comparison of
+  distribution-based and classification-based approaches.
+\newblock In \emph{Proceedings of the Seventh International Workshop on
+  Artificial Intelligence and Statistics}, pages 225--230, 1999.
+
+\bibitem[Kim and Pearl(1987)]{Kim87}
+J.H. Kim and J.~Pearl.
+\newblock Convice; a conversational inference consolidation engine.
+\newblock \emph{IEEE Trans. on Systems, Man and Cybernetics}, 17:\penalty0
+  120--132, 1987.
+
+\bibitem[Lauritzen et~al.(2004)Lauritzen, Badsberg, Bøttcher, Dalgaard,
+  Dethlefsen, Edwards, Eriksen, Gregersen, Højsgaard, and Kreiner]{gR}
+S.~L. Lauritzen, J.~H. Badsberg, S.~G. Bøttcher, P.~Dalgaard, C.~Dethlefsen,
+  D.~Edwards, P.~S. Eriksen, A.~R. Gregersen, S.~Højsgaard, and S.~Kreiner.
+\newblock gr - graphical models in r.
+\newblock Aalborg, DENMARK: Aalborg University Department of Mathematical
+  Sciences, 2004.
+\newblock Available from URL: \url{http://www.math.auc.dk/gr/}.
+
+\bibitem[Lauritzen and Spiegelhalter(1988)]{Lau88}
+S.L. Lauritzen and D.J. Spiegelhalter.
+\newblock Local computations with probabilities on graphical structures and
+  their application to expert systems.
+\newblock \emph{Journal of the Royal Statistical Society B}, 50\penalty0
+  (2):\penalty0 157--224, 1988.
+
+\bibitem[Leray and Fran\c{c}ois(2005)]{Ler05}
+P.~Leray and O.~Fran\c{c}ois.
+\newblock {B}ayesian {N}etwork {S}tructural {L}earning and {I}ncomplete {D}ata.
+\newblock In \emph{Proceedings of the International and Interdisciplinary
+  Conference on Adaptive Knowledge Representation and Reasoning (AKRR 2005),
+  Espoo, Finland}, pages 33--40, 2005.
+
+\bibitem[Leray et~al.(2003)Leray, Guilmineau, Noizet, Fran\c{c}ois, Feasson,
+  and Minoc]{INSA}
+P.~Leray, S.~Guilmineau, G.~Noizet, O.~Fran\c{c}ois, E.~Feasson, and B.~Minoc.
+\newblock French {BNT} site, 2003.
+\newblock \url{http://bnt.insa-rouen.fr/}.
+
+\bibitem[Mazer et~al.(2004)Mazer, Miribel, Bessi\`ere, Lebeltel, Mekhnacha, and
+  Ahuactzin]{PROBAYES}
+E.~Mazer, J-F. Miribel, P.~Bessi\`ere, O.~Lebeltel, K.~Mekhnacha, and J-M.
+  Ahuactzin.
+\newblock Probayes : Mastering uncertainty, 2004.
+\newblock \url{http://www.probayes.com/}.
+
+\bibitem[Meganck et~al.(2006)Meganck, Leray, and Manderick]{Meg06}
+S.~Meganck, P.~Leray, and B.~Manderick.
+\newblock Learning causal bayesian networks from observations and experiments:
+  A decision theoretic approach.
+\newblock In \emph{Modelling Decisions in Artificial Intelligence (MDAI'06)},
+  2006.
+
+\bibitem[Michie et~al.(1994)Michie, Spiegelhalter, and Taylor]{Mic94}
+D.~Michie, D.~J. Spiegelhalter, and C.~C. Taylor.
+\newblock \textit{Machine Learning}, \textit{Neural and Statistical
+  Classification}, 1994.
+\newblock \url{http://www.amsta.leeds.ac.uk/~charles/statlog/},
+  \url{http://www.liacc.up.pt/ML/statlog/datasets/}.
+
+\bibitem[Munteanu and Bendou(2002)]{Mun01}
+P.~Munteanu and M.~Bendou.
+\newblock The eq framework for learning equivalence classes of bayesian
+  networks.
+\newblock In \emph{First IEEE International Conference on Data Mining (IEEE
+  ICDM)}, pages 417--424, San Jos\'e, November 2002.
+
+\bibitem[Munteanu et~al.(2001)Munteanu, Jouffe, and Wuillemin]{BAYESIA}
+P.~Munteanu, L.~Jouffe, and P.H. Wuillemin.
+\newblock Bayesia lab, 2001.
+\newblock URL \url{http://www.bayesia.com/}.
+\newblock \url{http://www.bayesia.com/}.
+
+\bibitem[Murphy(2001)]{Mur01b}
+K.~Murphy.
+\newblock Active learning of causal bayes net structure.
+\newblock Technical report, UC Berkeley, 2001.
+
+\bibitem[Murphy(2004)]{BNT04}
+K.P. Murphy.
+\newblock Bayes net toolbox v5 for matlab.
+\newblock Cambridge, MA: MIT Computer Science and Artificial Intelligence
+  Laboratory, 2004.
+\newblock \url{http://bnt.sourceforge.net}.
+
+\bibitem[Myllym{\"a}ki et~al.(2002)Myllym{\"a}ki, Silander, Tirri, and
+  Uronen]{BCOURSE}
+P.~Myllym{\"a}ki, T.~Silander, H.~Tirri, and P.~Uronen.
+\newblock B-course: A web-based tool for bayesian and causal data analysis.
+\newblock International Journal on Artificial Intelligence Tools,
+  \textbf{11}(3), p. 369-387, 2002.
+\newblock \url{http://b-course.hiit.fi/}.
+
+\bibitem[Netica(1998)]{NETICA}
+Netica.
+\newblock by {N}orsys {S}oftware {C}orp., 1998.
+\newblock \url{http://www.norsys.com/}.
+
+\bibitem[Nijman et~al.(2002)Nijman, Akay, Wiegerinck, and
+  Nijmegen]{BAYESBUILDER}
+M.~Nijman, E.~Akay, W.~Wiegerinck, and S.N.N. Nijmegen.
+\newblock Bayesbuilder: A tool for constructing and testing bayesian networks,
+  2002.
+\newblock Available at URL:
+  \url{http://www.snn.kun.nl/nijmegen/index.php3?page=31}.
+
+\bibitem[O.Colot and {El~Matouat}(1994)]{Col94}
+P.~Courtellement O.Colot, C.~Olivier and A.~{El~Matouat}.
+\newblock Information criteria and abrupt changes in probability laws.
+\newblock \emph{Signal Processing VII : Th\'eorie and Applications}, pages
+  1855--1858, 1994.
+
+\bibitem[Pearl and Verma(1991)]{Pea91}
+J.~Pearl and T.S. Verma.
+\newblock A theory of inferred causation.
+\newblock In James~F. Allen, Richard Fikes, and Erik Sandewall, editors,
+  \emph{{KR}'91: Principles of Knowledge Representation and Reasoning}, pages
+  441--452, San Mateo, California, 1991. Morgan Kaufmann.
+
+\bibitem[Perry and Stilson(2002)]{BNJ}
+B.~P. Perry and J.~A. Stilson.
+\newblock Bn-tools: A software toolkit for experimentation in bbns (student
+  abstract).
+\newblock In Proceedings of the Eighteenth National Conference on Artificial
+  Intelligence (AAAI-2002), Edmondon, Alberta, CANADA, pp. 963-964. Menlo Park,
+  CA: AAAI Press, 2002.
+\newblock Avalaible at URL: \url{http://bnj.sourceforge.net/}.
+
+\bibitem[Robinson(1977)]{rob77}
+R.~W. Robinson.
+\newblock Counting unlabeled acyclic digraphs.
+\newblock In C.~H.~C. Little, editor, \emph{Combinatorial Mathematics V},
+  volume 622 of \emph{Lecture Notes in Mathematics}, pages 28--43, Berlin,
+  1977. Springer.
+
+\bibitem[Rubin(1976)]{Rub76}
+D.B. Rubin.
+\newblock Inference and missing data.
+\newblock \emph{Biometrika}, 63:\penalty0 581--592, 1976.
+
+\bibitem[Schwartz(1978)]{Sch78}
+G~Schwartz.
+\newblock Estimating the dimension of a model.
+\newblock \emph{The Annals of Statistics}, 6\penalty0 (2):\penalty0 461--464,
+  1978.
+
+\bibitem[Sebastiani et~al.(1999)Sebastiani, Ramoni, and Crea]{BAYESWARE}
+P.~Sebastiani, M.~Ramoni, and A.~Crea.
+\newblock Profiling your customers using bayesian networks: A tutorial exercise
+  and the bayesware.
+\newblock KDD Cup 99, 1999.
+\newblock \url{http://bayesware.com/}.
+
+\bibitem[Spirtes et~al.(2000)Spirtes, Glymour, and Scheines]{Spi00}
+P.~Spirtes, C.~Glymour, and R.~Scheines.
+\newblock \emph{Causation, Prediction, and Search}.
+\newblock The {MIT} Press, ISBN: 0-262-19440-6, 2 edition, 2000.
+
+\bibitem[Spirtes et~al.(2004)Spirtes, Glymour, and Scheines]{TETRAD}
+P.~Spirtes, C.~Glymour, and R.~Scheines.
+\newblock The tetrad project: Causal models and statistical data. pittsburgh.
+\newblock PA: Carnegie Mellon University Department of Philosophy, 2004.
+\newblock Available from URL: \url{http://www.phil.cmu.edu/projects/tetrad/}.
+
+\bibitem[Sutherland and Henery(1992)]{Sut92}
+A.~I. Sutherland and R.~J. Henery.
+\newblock Statlog - an {ESPRIT} projecy for the comparison of statistical and
+  logical learning algorithms.
+\newblock \emph{New Techniques and Technologies for Statistics}, February 1992.
+
+\bibitem[Tsamardinos et~al.(2005)Tsamardinos, Brown, and Aliferis]{Tsa05}
+I.~Tsamardinos, L.~Brown, and C.~Aliferis.
+\newblock The max-min hill-climbing bayesian network structure learning
+  algorithm.
+\newblock Technical Report DSL-TR-05-01, Vanderbuilt University, 2005.
+\newblock \url{http://www.dsl-lab.org}.
+
+\bibitem[Verma and Pearl(1990)]{Ver90}
+T.~Verma and J.~Pearl.
+\newblock Equivalence and synthesis of causal models.
+\newblock In \emph{Proceedings Sixth Conference on Uncertainty and Artificial
+  Intelligence}, pages 255--268, San Francisco, 1990. Morgan Kaufmann.
+
+\bibitem[Xiang(1999)]{WEBWEAVER}
+Y.~Xiang.
+\newblock Web{W}eav{R}-{I}{I}{I}, 1999.
+\newblock \url{http://snowhite.cis.uoguelph.ca/faculty_info/yxiang/ww3/}.
+
+\end{thebibliography}

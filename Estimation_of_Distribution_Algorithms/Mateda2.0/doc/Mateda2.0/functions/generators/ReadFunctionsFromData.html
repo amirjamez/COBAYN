@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ReadFunctionsFromData</title>
+  <meta name="keywords" content="ReadFunctionsFromData">
+  <meta name="description" content="[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">generators</a> &gt; ReadFunctionsFromData.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/generators&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ReadFunctionsFromData
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Tables] = ReadFunctionsFromData(filename,ListFactors,Card) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Tables] = ReadFunctionsFromData(filename,ListFactors,Card)
+ ReadFunctionsFromData:    Read the  values  of a given function whose structure is defined in ListFactors 
+ INPUTS
+ filename: name of the file with the function
+           File format: First the factor node number (starting at NumberVar and
+              ending in NumbVar+NumberOfNodes). After each factor node number, the
+              values of the function for the factor.
+ ListFactors: Each  row i stores the variables in the factor
+ Card: Cardinalities of the variables
+ OUTPUTS
+ Tables{i}: Contains the values for each of the configurations of factor i 
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/ScriptsMateda/FitnessModScripts/BN_Prediction.html" class="code" title="">BN_Prediction</a>	EXAMPLE 2: Evaluation of the prediction capability of the models</li><li><a href="../../../Mateda2.0/ScriptsMateda/OptimizationScripts/DefaultEDA_NKRandom.html" class="code" title="">DefaultEDA_NKRandom</a>	EXAMPLE 9:  Bayesian tree for a multiobjective function of the NK random</li><li><a href="../../../Mateda2.0/ScriptsMateda/OptimizationScripts/EBNA_PLS_MPC_NKRandom.html" class="code" title="">EBNA_PLS_MPC_NKRandom</a>	EXAMPLE 16:</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Tables] = ReadFunctionsFromData(filename,ListFactors,Card)</a>
+0002 <span class="comment">% [Tables] = ReadFunctionsFromData(filename,ListFactors,Card)</span>
+0003 <span class="comment">% ReadFunctionsFromData:    Read the  values  of a given function whose structure is defined in ListFactors</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% filename: name of the file with the function</span>
+0006 <span class="comment">%           File format: First the factor node number (starting at NumberVar and</span>
+0007 <span class="comment">%              ending in NumbVar+NumberOfNodes). After each factor node number, the</span>
+0008 <span class="comment">%              values of the function for the factor.</span>
+0009 <span class="comment">% ListFactors: Each  row i stores the variables in the factor</span>
+0010 <span class="comment">% Card: Cardinalities of the variables</span>
+0011 <span class="comment">% OUTPUTS</span>
+0012 <span class="comment">% Tables{i}: Contains the values for each of the configurations of factor i</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0015 
+0016 fid = fopen(filename,<span class="string">'r'</span>);
+0017 AllEntries = fscanf(fid,<span class="string">'%f'</span>);
+0018 fclose(fid);
+0019 
+0020 EntryIndex = 1;
+0021 nvars = size(Card,2);
+0022 
+0023 <span class="keyword">for</span> i=1:size(ListFactors,2)
+0024   currentFactorIndex = AllEntries(EntryIndex) - nvars + 1;
+0025   currentFactor = ListFactors{currentFactorIndex};
+0026   auxTableSize = 1;
+0027   <span class="keyword">for</span> j=1:size(currentFactor,2)
+0028    auxTableSize = auxTableSize * Card(currentFactor(j)); 
+0029   <span class="keyword">end</span>
+0030   Tables{currentFactorIndex,:} = AllEntries(EntryIndex+1:EntryIndex+auxTableSize);
+0031   EntryIndex = EntryIndex + auxTableSize + 1;
+0032 <span class="keyword">end</span>
+0033</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

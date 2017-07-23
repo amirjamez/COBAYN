@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EvalIsing</title>
+  <meta name="keywords" content="EvalIsing">
+  <meta name="description" content="[r] = evalIsing(ind)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">ising-model</a> &gt; EvalIsing.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/ising-model&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>EvalIsing
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[r] = evalIsing(ind)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [r] = evalIsing(ind) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [r] = evalIsing(ind)
+  evalIsing : Gives the value of the Ising model for zero-one
+                        vector configuration. Requires that lattice and inter be previously
+                        defined as global structures.
+ INPUT
+ ind: the individual (vector) which represents a matrix of values for the spins
+ lattice, inter: Structures with the lattice J and the interaction values between spins
+ OUTPUT
+ The evaluation of the Ising model given a problem instance and a
+ individual
+
+ Last version 8/26/2008. Carlos Echegoyen and Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="IsingModel.html" class="code" title="">IsingModel</a>	Description of the Ising instances included in this directory and</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [r] = evalIsing(ind)</a>
+0002 <span class="comment">% [r] = evalIsing(ind)</span>
+0003 <span class="comment">%  evalIsing : Gives the value of the Ising model for zero-one</span>
+0004 <span class="comment">%                        vector configuration. Requires that lattice and inter be previously</span>
+0005 <span class="comment">%                        defined as global structures.</span>
+0006 <span class="comment">% INPUT</span>
+0007 <span class="comment">% ind: the individual (vector) which represents a matrix of values for the spins</span>
+0008 <span class="comment">% lattice, inter: Structures with the lattice J and the interaction values between spins</span>
+0009 <span class="comment">% OUTPUT</span>
+0010 <span class="comment">% The evaluation of the Ising model given a problem instance and a</span>
+0011 <span class="comment">% individual</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Last version 8/26/2008. Carlos Echegoyen and Roberto Santana (roberto.santana@ehu.es)</span>
+0014 
+0015 <span class="keyword">global</span> Isinglattice
+0016 <span class="keyword">global</span> Isinginter
+0017 r = 0;
+0018 <span class="keyword">for</span> i=1:size(Isinglattice,1)
+0019     <span class="keyword">if</span> Isinglattice(i,1) &gt; 0
+0020         <span class="keyword">for</span> j=2:(Isinglattice(i,1) + 1)
+0021             <span class="keyword">if</span> i &lt; Isinglattice(i,j)
+0022                 auxr = 2 * (ind(i) == ind(Isinglattice(i,j))) - 1;
+0023                 r = r + (auxr * Isinginter(i,j-1));
+0024             <span class="keyword">end</span>
+0025         <span class="keyword">end</span>
+0026     <span class="keyword">end</span>
+0027 <span class="keyword">end</span>
+0028 
+0029 r = -1*r;</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

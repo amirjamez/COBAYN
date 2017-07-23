@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of BN_ParallelCoords</title>
+  <meta name="keywords" content="BN_ParallelCoords">
+  <meta name="description" content="EXAMPLE 3:">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">AnalysisScripts</a> &gt; BN_ParallelCoords.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/AnalysisScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>BN_ParallelCoords
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EXAMPLE 3:</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EXAMPLE 3:
+ Parallel coordinate visualization of the generations at which most
+ frequent edges appearing in the structures  learned by an EDA. The
+ vertical axis represent the generation at which edges (shown in the
+ horizontal axis) has been learned. A line between two points means that
+ both edges appear in the same structure learned at the same generation.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/knowledge_extraction/visualization/ViewStructuresFromFile.html" class="code" title="function[run_structures,results] = ViewStructuresFromFile(namefile,n,varargin)">ViewStructuresFromFile</a>	[run_structures,results] = ViewStructuresFromFile(namefile,n,varargin)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% EXAMPLE 3:</span>
+0002 <span class="comment">% Parallel coordinate visualization of the generations at which most</span>
+0003 <span class="comment">% frequent edges appearing in the structures  learned by an EDA. The</span>
+0004 <span class="comment">% vertical axis represent the generation at which edges (shown in the</span>
+0005 <span class="comment">% horizontal axis) has been learned. A line between two points means that</span>
+0006 <span class="comment">% both edges appear in the same structure learned at the same generation.</span>
+0007 
+0008  viewparams{1} = [14];
+0009  viewparams{2} = []; <span class="comment">% The edges will be found by the algorithm</span>
+0010  viewparams{3} = 20; <span class="comment">% Only those edges that appear at least 20 times will be shown</span>
+0011  viewparams{4} = 2;  <span class="comment">% Only substructures that have at least two edges are visualized in the PC</span>
+0012  viewparams{5} = <span class="string">'ClusterUsingCorr'</span>; <span class="comment">% Variables will be ordered according correlation</span>
+0013  viewparams{6} = <span class="string">'correlation'</span>;  <span class="comment">%The distance used to cluster edges is 1-correlation between variables.  (see help pdist).</span>
+0014 
+0015  [run_s,results] = <a href="../../../Mateda2.0/knowledge_extraction/visualization/ViewStructuresFromFile.html" class="code" title="function[run_structures,results] = ViewStructuresFromFile(namefile,n,varargin)">ViewStructuresFromFile</a>(<span class="string">'ProteinStructsExR.txt'</span>, 20, <span class="string">'viewmatrix_method'</span>,<span class="string">'ViewPCStruct'</span>,viewparams)
+0016</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

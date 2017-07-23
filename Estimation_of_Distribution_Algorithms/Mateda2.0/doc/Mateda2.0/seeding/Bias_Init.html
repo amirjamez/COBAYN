@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Bias_Init</title>
+  <meta name="keywords" content="Bias_Init">
+  <meta name="description" content="[Pop]=Bias_Init(n,PopSize,Card,seeding_pop_params)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">seeding</a> &gt; Bias_Init.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/seeding&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>Bias_Init
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[Pop]=Bias_Init(n,PopSize,Card,seeding_pop_params)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[Pop]=Bias_Init(n,PopSize,Card,seeding_pop_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Pop]=Bias_Init(n,PopSize,Card,seeding_pop_params)
+ Bias_Init:  Biased initialization of a population of binary vectors,    
+             where the probability of generating 1 is p  and the probability of generating 0 
+             is  1-p.
+ INPUTS 
+ n:                   Number of Variables
+ PopSize:             Population size
+ Card:                Cardinality of the variables
+ seeding_pop_params{1} = p:  Probability of generating 1 
+ OUTPUTS
+ Pop:                 Seeded population
+ EXAMPLE
+ [Pop]=Bias_Init(10,15,2*ones(1,10),{0.8});
+
+ Last version 11/10/2008. Ruben Armananzas and Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Pop]=Bias_Init(n,PopSize,Card,seeding_pop_params)</a>
+0002 <span class="comment">% [Pop]=Bias_Init(n,PopSize,Card,seeding_pop_params)</span>
+0003 <span class="comment">% Bias_Init:  Biased initialization of a population of binary vectors,</span>
+0004 <span class="comment">%             where the probability of generating 1 is p  and the probability of generating 0</span>
+0005 <span class="comment">%             is  1-p.</span>
+0006 <span class="comment">% INPUTS</span>
+0007 <span class="comment">% n:                   Number of Variables</span>
+0008 <span class="comment">% PopSize:             Population size</span>
+0009 <span class="comment">% Card:                Cardinality of the variables</span>
+0010 <span class="comment">% seeding_pop_params{1} = p:  Probability of generating 1</span>
+0011 <span class="comment">% OUTPUTS</span>
+0012 <span class="comment">% Pop:                 Seeded population</span>
+0013 <span class="comment">% EXAMPLE</span>
+0014 <span class="comment">% [Pop]=Bias_Init(10,15,2*ones(1,10),{0.8});</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Last version 11/10/2008. Ruben Armananzas and Roberto Santana (roberto.santana@ehu.es)</span>
+0017 
+0018  p = seeding_pop_params{1};
+0019  
+0020  Pop = rand(PopSize,n) &lt;= p;
+0021  
+0022 <span class="keyword">return</span>
+0023  
+0024  
+0025</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

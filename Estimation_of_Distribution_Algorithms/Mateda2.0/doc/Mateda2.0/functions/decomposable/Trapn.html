@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Trapn</title>
+  <meta name="keywords" content="Trapn">
+  <meta name="description" content="[decep]=Trapn(vector,ntrap)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">decomposable</a> &gt; Trapn.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/decomposable&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>Trapn
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[decep]=Trapn(vector,ntrap)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[decep]=Trapn(vector,ntrap) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [decep]=Trapn(vector,ntrap)
+ Trapn:  Evaluation of a partition for trap function with parameter ntrap
+ f(x) = f_d(x_1,x_2,...x_{ntrap}) + ...+  f_d(x_{ntrap*m-ntrap-1},x_{ntrap*m-1},x_{ntrap*m})
+ INPUTS
+ vector: set of variables
+ ntrap: number of variables in the trap partition
+ OUTPUTS
+ decep: Evaluation of the deceptive function
+
+ Last version 5/11/2008. Carlos Echegoyen and Roberto Santana(carlos.echegoyen@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="evalfunctrapn.html" class="code" title="function[val]=evalfunctrapn(vector)">evalfunctrapn</a>	[val]=evalfunctrapn(vector)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[decep]=Trapn(vector,ntrap)</a>
+0002 <span class="comment">% [decep]=Trapn(vector,ntrap)</span>
+0003 <span class="comment">% Trapn:  Evaluation of a partition for trap function with parameter ntrap</span>
+0004 <span class="comment">% f(x) = f_d(x_1,x_2,...x_{ntrap}) + ...+  f_d(x_{ntrap*m-ntrap-1},x_{ntrap*m-1},x_{ntrap*m})</span>
+0005 <span class="comment">% INPUTS</span>
+0006 <span class="comment">% vector: set of variables</span>
+0007 <span class="comment">% ntrap: number of variables in the trap partition</span>
+0008 <span class="comment">% OUTPUTS</span>
+0009 <span class="comment">% decep: Evaluation of the deceptive function</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Last version 5/11/2008. Carlos Echegoyen and Roberto Santana(carlos.echegoyen@ehu.es)</span>
+0012 
+0013   s=sum(vector);
+0014   <span class="keyword">if</span> s==ntrap
+0015     decep=ntrap; 
+0016   <span class="keyword">else</span>
+0017     decep=ntrap-1-s;
+0018   <span class="keyword">end</span>
+0019  <span class="keyword">return</span>
+0020 
+0021 
+0022</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

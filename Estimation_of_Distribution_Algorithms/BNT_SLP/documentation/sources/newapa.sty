@@ -1,0 +1,272 @@
+%$$$ newapa.sty $$$  --- June 13, 1991 (Version 2.0)
+%     - Version No. has not been kept, but let's say uh uh ...  Version 2.0.
+%
+% This file implements citations for the ``newapa'' bibliography style.
+%
+%    Stephen N. Spencer
+%           modified the ``apalike'' LaTeX style
+%    Young U. Ryu
+%           further modified
+%
+% SEE THE FOLLOWING COMMENTS. THEY CONSISTS OF 4 SECTIONS
+%   1 - newapa.bst and \bibitem entry
+%   2 - citation formats
+%   3 - changing citation functions (if you want)
+%   4 - enforcing APA style section heading (if you want)
+%
+%%%%%
+% [1] newapa.bst and \bibitem entry
+%
+% The ``newapa.bst'' BibTeX bibliography style creates citations with labels:
+%       \citeauthoryear{author-info}{abbrev. author-info}{year}
+%
+%%%%%
+% [2] Citation Formats
+%
+% The citations are enclosed within parentheses. ``(,)''
+%     as default. But one may change them.
+% Short author lists use the ``et al.'' construct.
+% These labels are processed by the following LaTeX commands:
+%
+% \cite[optional notes]{Key(s)}
+%     -> (Authors1, Year1; Authors2, Year2; ..., optional notes)
+% \citeA[optional notes]{key}
+%     -> Authors (Year, optional notes)
+%     Note: ONE AND ONLY ONE KEY.
+%           \citeA[pp.~3--5]{Apt88,Lloyd87} does not make sense at all.
+%           In this case, the outcome will look aweful.
+% \citeB{keys}
+%     -> Authors1 (Year1), Authors2 (Year2), ...
+%     Note: \citeB[Notes]{keys} are given, notes will be ingored,
+%           because it does not make sense at all.
+% \citeauthor[optional notes]{key}
+%     -> Authors1, Authors2, ..., optional notes
+%
+% The difference between `\shortciteXXX' and `\citeXXX':
+% is that `\shortciteXXX' gives `First author et al.'
+% if no. authors >= 3.
+%    
+% \shortcite[optional notes]{Key(s)}
+%     -> (Short Authors1, Year1; Short Authors2, Year2; ..., optional notes)
+% \shortciteA[optional notes]{key}
+%     -> Short Authors (Year, optional notes)
+%     Note: ONE AND ONLY ONE KEY.
+%           \shortciteA[pp.~3--5]{Apt88,Lloyd87} does not make sense at all.
+%           In this case, the outcome will look aweful.
+% \shortciteB{keys}
+%     -> Authors1 (Year1), Authors2 (Year2), ...
+%     Note: \citeB[Notes]{keys} are given, notes will be ingored,
+%           because it does not make sense at all.
+% \shortciteauthor[optional notes]{key}
+%     -> Short Authors1, Short Authors2, ..., optional notes
+%
+% \citeyear[optional notes]{key}
+%     -> (Year, optional notes)
+%
+%%%%%
+% [3] Changing Citation Punctuations
+%
+% However, you may change citation punctuations.
+% \citepunct{open paren}%
+%           {between authors}%
+%           {between author year}%
+%           {between citations}%
+%           {before notes}%
+%           {closing paren}
+%
+% For example,
+%   \citepunct{[}{and}{ }{, }{: }{]}
+%        - use square brackets
+%          `and' between authors
+%          space between author and year
+%          comma between citations
+%          comma before notes
+%     e.g. [Apt and van Emden 1986, Lloyd 1985: Notes]
+%
+% The default is:
+%   \citepunct{(}{\&}{, }{; }{, }{)}
+%
+% Notice spaces around punctuations in \citepunct!!!
+%
+%%%%%
+% [4] Enforcing APA Style Section Heading 
+%
+% \newapasectioning redefines section headings as described
+%       by the APA Publication Manual
+%       \section - level 1       (toc entry, paageheading)
+%       \subsection - level 2    (toc entry)
+%       \subsection - level 3    (toc entry)
+%       \paragraph - level 4
+%       \subparagraph - level 3
+%
+%  if place * after \section, \subsection, \subsubsection
+%   section headings are not listed in the table of contents
+%
+% \def\citestarts{(}
+% \def\betweenauthors{\&}
+% \def\betweenauthoryear{, }
+% \def\betweencites{; }
+% \def\beforenote{, }
+% \def\citeends{)}
+\def\citestarts{}
+\def\betweenauthors{\textcolor{Overt}{\&}}
+\def\betweenauthoryear{\,\textcolor{Overt}{(}}
+\def\betweencites{\textcolor{Overt}{)} et }
+\def\beforenote{\textcolor{Overt}{,\,}}
+\def\citeends{\textcolor{Overt}{)}}
+%
+\def\citepunct#1#2#3#4#5#6{%
+    \def\citestarts{#1}
+    \def\betweenauthors{#2}
+    \def\betweenauthoryear{#3}
+    \def\betweencites{#4}
+    \def\beforenote{#5}
+    \def\citeends{#6} }
+%
+\let\@internalcite\cite
+%
+%
+\def\cite{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{%
+        \citestarts##1\if@tempswa \beforenote##2\fi\citeends}%
+    \def\citeauthoryear##1##2##3{##1\betweenauthoryear##3}\@internalcite}
+\def\citeA{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{%
+        ##1\if@tempswa \beforenote##2\fi\citeends}%
+    \def\citeauthoryear##1##2##3{##1 \citestarts##3}\@citedata}
+\def\citeB{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{##1}%
+    \def\citeauthoryear##1##2##3{##1 \citestarts##3\citeends}\@citedata}
+\def\citeauthor{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{%
+        ##1\if@tempswa \beforenote##2\fi}%
+    \def\citeauthoryear##1##2##3{##1}\@citedata}
+%
+%
+\def\shortcite{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{%
+        \citestarts##1\if@tempswa \beforenote##2\fi\citeends}%
+    \def\citeauthoryear##1##2##3{##2\betweenauthoryear##3}\@internalcite}
+\def\shortciteA{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{%
+        ##1\if@tempswa \beforenote##2\fi\citeends}%
+    \def\citeauthoryear##1##2##3{##2 \citestarts##3}\@citedata}
+\def\shortciteB{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{##1}%
+    \def\citeauthoryear##1##2##3{##2 \citestarts##3\citeends}\@citedata}
+\def\shortciteauthor{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{%
+        ##1\if@tempswa \beforenote##2\fi}%
+    \def\citeauthoryear##1##2##3{##2}\@citedata}
+%
+\def\citeyear{\def\@citeseppen{-1000}%
+    \def\@cite##1##2{%
+        \citestarts##1\if@tempswa \beforenote##2\fi\citeends}%
+    \def\citeauthoryear##1##2##3{##3}\@citedata}
+%
+\def\@citedata{\@ifnextchar[{\@tempswatrue\@citedatax}{\@tempswafalse\@citedatax[]}}
+%
+\def\@citedatax[#1]#2{%
+\if@filesw\immediate\write\@auxout{\string\citation{#2}}\fi
+  \def\@citea{}\@cite{\@for\@citeb:=#2\do
+    {\@citea\def\@citea{\betweencites}\@ifundefined
+       {b@\@citeb}{{\bf ?}\@warning
+       {Citation `\@citeb' on page \thepage \space undefined}}
+{\csname b@\@citeb\endcsname}}}{#1}}
+%
+\def\@citex[#1]#2{%
+\if@filesw\immediate\write\@auxout{\string\citation{#2}}\fi
+  \def\@citea{}\@cite{\@for\@citeb:=#2\do
+    {\@citea\def\@citea{\betweencites}\@ifundefined
+       {b@\@citeb}{{\bf ?}\@warning
+       {Citation `\@citeb' on page \thepage \space undefined}}%
+{\csname b@\@citeb\endcsname}}}{#1}}
+%
+% (from apalike.sty)
+% No labels in the bibliography.
+% Set length of hanging indentation for bibliography entries.
+\def\@biblabel#1{}
+\newlength{\bibhang}
+\setlength{\bibhang}{2em}
+%
+\def\thebibliography#1{%\section*{References}
+ %\addcontentsline{toc}{section}{References}
+ \list
+  {\relax}{\setlength{\labelsep}{0em}
+    \setlength{\itemindent}{-\bibhang}
+    \setlength{\leftmargin}{\bibhang}}
+    \def\newblock{\hskip .11em plus .33em minus .07em}
+    \sloppy\clubpenalty4000\widowpenalty4000
+    \sfcode`\.=1000\relax}
+%
+%
+%
+%%% Sectioning
+
+\def\newapasectioning{
+ \newlength{\sectionheadwidth}
+ \setlength{\sectionheadwidth}{\textwidth}
+ \addtolength{\sectionheadwidth}{-8em}
+ \let\@internalsection\section
+ \let\@internalsubsection\subsection
+ \let\@internalsubsubsection\subsubsection
+ \let\@internalparagraph\paragraph
+ \let\@internalsubparagraph\subparagraph
+ % Level 1
+ \def\section{\@ifnextchar *{\a@sections}{\a@section}}
+ \def\a@sections##1##2{%
+ \@internalsection*{%
+     \centering\parbox{%
+         \sectionheadwidth}{%
+             \centering\normalsize\bf\uppercase{##2}}\@mkboth{##2}{##2}}}
+ \def\a@section##1{%
+ \addcontentsline{toc}{section}{##1}
+ \@internalsection*{%
+     \centering\parbox{%
+         \sectionheadwidth}{%
+             \centering\normalsize\bf\uppercase{##1}}\@mkboth{##1}{##1}}}
+ % Level 2
+ \def\subsection{\@ifnextchar *{\a@subsections}{\a@subsection}}
+ \def\a@subsections##1##2{%
+ \@internalsubsection*{%
+     \centering\parbox{\sectionheadwidth}{\centering\normalsize\bf##2}}}
+ \def\a@subsection##1{%
+ \addcontentsline{toc}{subsection}{##1}
+ \@internalsubsection*{%
+     \centering\parbox{\sectionheadwidth}{\centering\normalsize\bf##1}}}
+ % Level 3
+ \def\subsubsection{\@ifnextchar *{\a@subsubsections}{\a@subsubsection}}
+ \def\a@subsubsections##1##2{%
+ \@internalsubsubsection*{%
+     \centering\parbox{%
+         \sectionheadwidth}{\centering\normalsize\underbar{##2}}}}
+ \def\a@subsubsection##1{%
+ \addcontentsline{toc}{subsubsection}{##1}
+ \@internalsubsubsection*{%
+     \centering\parbox{%
+         \sectionheadwidth}{\centering\normalsize\underbar{##1}}}}
+ % Level 4
+ \def\a@paragraph##1{%
+     \@internalsubsubsection*{\normalsize\underbar{##1}}}
+ % Level 5
+ \def\a@subparagraph##1{%
+     \@internalsubparagraph*{\normalsize\underbar{##1}.}}
+ % table of contents
+ \def\tableofcontents{%
+     \section*{Contents}\@starttoc{toc}
+     }
+ % list of figures
+ \def\listoffigures{%
+     \section*{List of Figures}\@starttoc{lof}}
+ % list of tables
+ \def\listoftables{%
+     \section*{List of Tables}\@starttoc{lot}}
+ % Change : to . in Figure/Table Caption
+ \long\def\@makecaption##1##2{
+     \vskip 10pt 
+     \setbox\@tempboxa\hbox{##1. ##2}
+     \ifdim \wd\@tempboxa >\hsize ##1. ##2\par \else \hbox
+     to\hsize{\hfil\box\@tempboxa\hfil} 
+     \fi}
+}
+

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FactAffinityElim</title>
+  <meta name="keywords" content="FactAffinityElim">
+  <meta name="description" content="[Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">learning</a> &gt; FactAffinityElim.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/learning&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>FactAffinityElim
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)
+ FactAffinityElim:        Finds a set of cliques from a matrix of mutual information
+                          using affinity propagation. The application of
+                          the algorithm is recursive.
+ INPUTS
+ vars:              vars that will be involved in the factorization (initially all the
+                    variables
+ sizeconstraint: Maximum size of the factors involved in the factorization
+ p: Preference parameter for affinity propagation
+ deep: Parameter to control the recursive calls
+ OUTPUTS
+ Cliques: Structure of the model in a list of cliques that defines the (chain shaped)  junction tree. 
+          Each row of Cliques is a clique. The first value is the number of overlapping variables. 
+          The second, is the number of new variables.
+          Then, overlapping variables are listed and  finally new variables are listed.
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="FactAffinityElim.html" class="code" title="function [Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)">FactAffinityElim</a>	[Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)</li><li><a href="../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>	This program has been downloaded from</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="FactAffinityElim.html" class="code" title="function [Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)">FactAffinityElim</a>	[Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)</li><li><a href="LearnMargProdModel.html" class="code" title="function [model] = LearnMargProdModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)">LearnMargProdModel</a>	[model] = LearnMargProdModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)</a>
+0002 <span class="comment">% [Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)</span>
+0003 <span class="comment">% FactAffinityElim:        Finds a set of cliques from a matrix of mutual information</span>
+0004 <span class="comment">%                          using affinity propagation. The application of</span>
+0005 <span class="comment">%                          the algorithm is recursive.</span>
+0006 <span class="comment">% INPUTS</span>
+0007 <span class="comment">% vars:              vars that will be involved in the factorization (initially all the</span>
+0008 <span class="comment">%                    variables</span>
+0009 <span class="comment">% sizeconstraint: Maximum size of the factors involved in the factorization</span>
+0010 <span class="comment">% p: Preference parameter for affinity propagation</span>
+0011 <span class="comment">% deep: Parameter to control the recursive calls</span>
+0012 <span class="comment">% OUTPUTS</span>
+0013 <span class="comment">% Cliques: Structure of the model in a list of cliques that defines the (chain shaped)  junction tree.</span>
+0014 <span class="comment">%          Each row of Cliques is a clique. The first value is the number of overlapping variables.</span>
+0015 <span class="comment">%          The second, is the number of new variables.</span>
+0016 <span class="comment">%          Then, overlapping variables are listed and  finally new variables are listed.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0019 
+0020 
+0021 <span class="keyword">if</span> deep&gt;=10
+0022    MI = MI + mean(MI(:))*rand(size(MI)); 
+0023 <span class="keyword">end</span>
+0024 
+0025 
+0026 n = size(MI,1);
+0027 outvars = [];
+0028 
+0029 [idx,netsim,dpsim,expref,unconverged]=<a href="../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>(MI,p,<span class="string">'dampfact'</span>,0.5); <span class="comment">%Find the clusters of the MI matrix</span>
+0030 nconv = 0;
+0031 <span class="keyword">while</span>(unconverged &amp; nconv&lt;10)
+0032   [idx,netsim,dpsim,expref,unconverged]=<a href="../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>(MI+min(MI(:))*rand(size(MI)),p,<span class="string">'dampfact'</span>,0.9);
+0033   nconv = nconv+1
+0034 <span class="keyword">end</span>
+0035 
+0036 Cliques = [];
+0037 nclusters = length(unique(idx));
+0038 exemplars = unique(idx);
+0039 <span class="keyword">for</span> i=1:nclusters
+0040  clusters{i} = find(idx==exemplars(i));
+0041  clustsize = size(clusters{i},1);
+0042 
+0043  <span class="keyword">if</span>(clustsize&gt;sizeconstraint)
+0044     outvars = [outvars,clusters{i}'];
+0045  <span class="keyword">else</span>
+0046    <span class="comment">%vars(clusters{i}')'</span>
+0047    Cliq = [0,clustsize,vars(clusters{i}'),zeros(1,sizeconstraint-clustsize)];
+0048    Cliques = [Cliques;Cliq];
+0049  <span class="keyword">end</span>
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">if</span>(~isempty(outvars)) 
+0052   <span class="keyword">if</span>(isempty(Cliques))  
+0053    deep = deep + 1;
+0054   <span class="keyword">end</span>,
+0055 
+0056   MI1 = MI(:,outvars);
+0057   MI1 = MI1(outvars,:);
+0058   p = median(MI1); <span class="comment">%median(MI1(:));</span>
+0059   <span class="comment">%p=  min(MI1(:))+(max(MI1(:))-min(MI1(:)))*rand();  % Set preference to median similarity</span>
+0060   [Cliques1,deep]=<a href="FactAffinityElim.html" class="code" title="function [Cliques,deep]=FactAffinityElim(MI,vars,sizeconstraint,p,deep)">FactAffinityElim</a>(MI1,vars(outvars),sizeconstraint,p,deep);
+0061   Cliques = [Cliques;Cliques1];
+0062 <span class="keyword">end</span>
+0063 
+0064 
+0065</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

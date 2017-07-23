@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EvalChainFunctional</title>
+  <meta name="keywords" content="EvalChainFunctional">
+  <meta name="description" content="Given a chain of molecules, calculates the numer of Collisions with">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; EvalChainFunctional.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>EvalChainFunctional
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Given a chain of molecules, calculates the numer of Collisions with</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Collisions,Overlappings,Pos] =  EvalChainFunctional(vector) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Given a chain of molecules, calculates the numer of Collisions with 
+ neighboring same sign molecules, and the number of Overlappings molecules.
+ HPInitConf is the configuration of the Chain of molecules
+ vector is the set of moves for all</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="EvaluateEnergyFunctional.html" class="code" title="function[energy] =  EvaluateEnergyFunctional(vector)">EvaluateEnergyFunctional</a>	[energy] =  EvaluateEnergyFunctional(vector)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Collisions,Overlappings,Pos] =  EvalChainFunctional(vector)</a>
+0002 <span class="comment">% Given a chain of molecules, calculates the numer of Collisions with</span>
+0003 <span class="comment">% neighboring same sign molecules, and the number of Overlappings molecules.</span>
+0004 <span class="comment">% HPInitConf is the configuration of the Chain of molecules</span>
+0005 <span class="comment">% vector is the set of moves for all</span>
+0006 
+0007 <span class="keyword">global</span> HPInitConf;
+0008 sizeChain = size(vector,2);
+0009 
+0010 Collisions = 0;
+0011 Overlappings = 0;
+0012 
+0013 
+0014 Pos = zeros(sizeChain,2);
+0015 
+0016 Pos(1,1) = 0;  <span class="comment">%Position for the initial molecule</span>
+0017 Pos(1,2) = 0;
+0018  
+0019 Pos(2,1) = 1;  <span class="comment">%Position for the second molecule</span>
+0020 Pos(2,2) = 0;
+0021 
+0022  <span class="keyword">for</span> i=3:sizeChain
+0023 
+0024  <span class="keyword">if</span>(Pos(i-1,2)==Pos(i-2,2))
+0025   <span class="keyword">if</span> (vector(i)==0)            <span class="comment">%UP MOVE</span>
+0026    Pos(i,1) = Pos(i-1,1);  
+0027    Pos(i,2) = Pos(i-1,2) + (Pos(i-1,1)-Pos(i-2,1));
+0028   <span class="keyword">elseif</span> (vector(i)==1)        <span class="comment">%FORWARD MOVE</span>
+0029    Pos(i,1) = Pos(i-1,1) + (Pos(i-1,1)-Pos(i-2,1));  
+0030    Pos(i,2) = Pos(i-1,2);
+0031   <span class="keyword">else</span>                         <span class="comment">%DOWN MOVE</span>
+0032    Pos(i,1) = Pos(i-1,1);  
+0033    Pos(i,2) = Pos(i-1,2) - (Pos(i-1,1)-Pos(i-2,1));
+0034   <span class="keyword">end</span>
+0035   <span class="keyword">end</span>
+0036 <span class="keyword">if</span> (Pos(i-1,1)==Pos(i-2,1))
+0037   <span class="keyword">if</span> (vector(i)==0)            <span class="comment">%UP MOVE</span>
+0038     Pos(i,2) = Pos(i-1,2);  
+0039     Pos(i,1) = Pos(i-1,1) -  (Pos(i-1,2)-Pos(i-2,2));  
+0040   <span class="keyword">elseif</span> (vector(i)==1)        <span class="comment">%FORWARD MOVE</span>
+0041     Pos(i,2) = Pos(i-1,2) +  (Pos(i-1,2)-Pos(i-2,2));  
+0042     Pos(i,1) = Pos(i-1,1);
+0043   <span class="keyword">else</span>                         <span class="comment">%DOWN MOVE</span>
+0044     Pos(i,2) = Pos(i-1,2);  
+0045     Pos(i,1) = Pos(i-1,1) + (Pos(i-1,2)-Pos(i-2,2));
+0046   <span class="keyword">end</span>
+0047  <span class="keyword">end</span>
+0048 
+0049    <span class="keyword">for</span> j=1:i-2,   <span class="comment">% Check for Overlappings and Collissions in all the    molecules except the previous one</span>
+0050     <span class="keyword">if</span>(Pos(i,1)==Pos(j,1) &amp; Pos(i,2)==Pos(j,2))
+0051       Overlappings = Overlappings + 1;
+0052     <span class="keyword">elseif</span> (HPInitConf(i)==0  &amp; HPInitConf(j)==0) 
+0053      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1) &amp; Pos(i,2)==Pos(j,2)-1)
+0054         Collisions =   Collisions + 2;
+0055      <span class="keyword">end</span>
+0056      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1)+1 &amp; Pos(i,2)==Pos(j,2))
+0057         Collisions =   Collisions + 2;
+0058      <span class="keyword">end</span>
+0059      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1) &amp; Pos(i,2)==Pos(j,2)+1)
+0060         Collisions =   Collisions + 2;
+0061      <span class="keyword">end</span>
+0062      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1)-1 &amp; Pos(i,2)==Pos(j,2))
+0063         Collisions =   Collisions + 2;
+0064      <span class="keyword">end</span>
+0065     <span class="keyword">elseif</span> (HPInitConf(i)+HPInitConf(j)&gt;0)    
+0066      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1) &amp; Pos(i,2)==Pos(j,2)-1)
+0067         Collisions =   Collisions - 1;
+0068      <span class="keyword">end</span>
+0069      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1)+1 &amp; Pos(i,2)==Pos(j,2))
+0070         Collisions =   Collisions - 1;
+0071      <span class="keyword">end</span>
+0072      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1) &amp; Pos(i,2)==Pos(j,2)+1)
+0073         Collisions =   Collisions - 1;
+0074      <span class="keyword">end</span>
+0075      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1)-1 &amp; Pos(i,2)==Pos(j,2))
+0076         Collisions =   Collisions - 1;
+0077      <span class="keyword">end</span>
+0078     <span class="keyword">end</span> 
+0079  <span class="keyword">end</span> 
+0080 <span class="keyword">end</span> 
+0081 
+0082 <span class="comment">%HPInitConf =  [zeros(1,12),1,0,1,0,1,1,0,0,1,1,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,1,0,1,zeros(1,12)];</span>
+0083 
+0084 
+0085 
+0086 
+0087  
+0088</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

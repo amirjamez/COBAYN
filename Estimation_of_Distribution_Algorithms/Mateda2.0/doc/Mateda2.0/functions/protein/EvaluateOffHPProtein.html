@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EvaluateOffHPProtein</title>
+  <meta name="keywords" content="EvaluateOffHPProtein">
+  <meta name="description" content="[Evals] =  EvaluateOffHPProtein(Pop)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; EvaluateOffHPProtein.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>EvaluateOffHPProtein
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Evals] =  EvaluateOffHPProtein(Pop)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Evals] =  EvaluateOffHPProtein(Pop) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Evals] =  EvaluateOffHPProtein(Pop)
+ EvaluateOffHPProtein:  Calculates the energy corresponding to the sequence lattice configuration determined by the lattice in vector.
+ Fixing the lengths of the edges, each angle defines the position of the next residue respective the two previous ones.  
+ From the residues positions, the interaction energies are calculated by the energy function    
+ For reference on the Offline HP model see:
+-- H. P. Hsu, V. Mehra and  P. Grassberger (2003)  Structure optimization in an off-lattice protein model.
+-- Phys Rev E Stat Nonlin Soft Matter Phys. 2003 Sep;68(3 Pt 2):037703. Epub 2003 Sep 30. 
+-- http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal&amp;id=PLEEE8000068000003037703000001&amp;idtype=cvips&amp;gifs=yes   
+ INPUTS
+ Pop: Population
+ OUTPUTS
+ Evals: Energy evaluation of each individual
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="OffFindPos.html" class="code" title="function[Pos] =  OffFindPos(vector)">OffFindPos</a>	OffFindPos translates the vector of angles to the  positions into the lattice.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/local_optimization/Greedy_search_OffHP.html" class="code" title="function[NewPop,NewFunVal,NumbEvals] =  Greedy_search_OffHP(k,Pop,FunVal,local_opt_params)">Greedy_search_OffHP</a>	[NewPop,NumbEvals] =  Greedy_search_OffHP(k,Pop,FunVal,local_opt_params)</li><li><a href="../../../Mateda2.0/local_optimization/local_search_OffHP.html" class="code" title="function[NewPop,NewFunVal,NumbEvals] =  local_search_OffHP(k,Pop,FunVal,local_opt_params)">local_search_OffHP</a>	[NewPop,NumbEvals] =  local_search_OffHP(k,Pop,FunVal,local_opt_params)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Evals] =  EvaluateOffHPProtein(Pop)</a>
+0002 <span class="comment">% [Evals] =  EvaluateOffHPProtein(Pop)</span>
+0003 <span class="comment">% EvaluateOffHPProtein:  Calculates the energy corresponding to the sequence lattice configuration determined by the lattice in vector.</span>
+0004 <span class="comment">% Fixing the lengths of the edges, each angle defines the position of the next residue respective the two previous ones.</span>
+0005 <span class="comment">% From the residues positions, the interaction energies are calculated by the energy function</span>
+0006 <span class="comment">% For reference on the Offline HP model see:</span>
+0007 <span class="comment">%-- H. P. Hsu, V. Mehra and  P. Grassberger (2003)  Structure optimization in an off-lattice protein model.</span>
+0008 <span class="comment">%-- Phys Rev E Stat Nonlin Soft Matter Phys. 2003 Sep;68(3 Pt 2):037703. Epub 2003 Sep 30.</span>
+0009 <span class="comment">%-- http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal&amp;id=PLEEE8000068000003037703000001&amp;idtype=cvips&amp;gifs=yes</span>
+0010 <span class="comment">% INPUTS</span>
+0011 <span class="comment">% Pop: Population</span>
+0012 <span class="comment">% OUTPUTS</span>
+0013 <span class="comment">% Evals: Energy evaluation of each individual</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0016 
+0017 
+0018 <span class="comment">% HPInitConf has been initialized with a sequence</span>
+0019 <span class="keyword">global</span> HPInitConf;
+0020 
+0021 <span class="comment">% The position of the sequence in the latticce are calculated</span>
+0022 
+0023 sizeChain = size(HPInitConf,2);
+0024 PopSize = size(Pop,1);
+0025 <span class="keyword">for</span> k=1:PopSize
+0026   vector = Pop(k,:);
+0027   [Pos] =  <a href="OffFindPos.html" class="code" title="function[Pos] =  OffFindPos(vector)">OffFindPos</a>(vector);  
+0028   totcos = 0;
+0029 <span class="comment">% Cosine part of the evaluation</span>
+0030  <span class="keyword">for</span> i=1:sizeChain-1,
+0031   totcos = totcos + (1-cos(vector(i)));
+0032  <span class="keyword">end</span>
+0033 <span class="comment">% Distance part of the evaluation</span>
+0034  totAB = 0;
+0035  <span class="keyword">for</span> i=1:sizeChain-2,
+0036   <span class="keyword">for</span> j=i+2:sizeChain,
+0037    dist = sqrt ((Pos(i,1) - Pos(j,1))^2 +  (Pos(i,2) - Pos(j,2))^2);
+0038    <span class="keyword">if</span> (HPInitConf(i)==1 &amp; HPInitConf(j)==1) 
+0039        ABeffect = 1;
+0040    <span class="keyword">elseif</span> (HPInitConf(i)==0 &amp; HPInitConf(j)==0) 
+0041        ABeffect = 0.5;
+0042    <span class="keyword">else</span>
+0043        ABeffect = -0.5;
+0044    <span class="keyword">end</span>
+0045    totAB = totAB + (1/(dist^12) - ABeffect/(dist^6));
+0046   <span class="keyword">end</span>
+0047  <span class="keyword">end</span>
+0048 
+0049  Evals(k) = -1.0*(totcos*0.25 + totAB*4); 
+0050 <span class="keyword">end</span>
+0051 
+0052</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

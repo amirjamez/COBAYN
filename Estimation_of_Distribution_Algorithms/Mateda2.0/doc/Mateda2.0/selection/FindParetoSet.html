@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FindParetoSet</title>
+  <meta name="keywords" content="FindParetoSet">
+  <meta name="description" content="[Index]=FindParetoSet(Pop,FunVal)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">selection</a> &gt; FindParetoSet.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/selection&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>FindParetoSet
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[Index]=FindParetoSet(Pop,FunVal)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[Index]=FindParetoSet(Pop,FunVal) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Index]=FindParetoSet(Pop,FunVal)
+ FindParetoSet:       Identify the set of non-dominated solutions 
+ INPUTS 
+ Pop:                 Population
+ FunVal:              A matrix of function evaluations, one vector of m objectives for each individual
+ OUTPUTS
+ Index: Index of non-dominated solutions in Pop
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/ScriptsMateda/FitnessModScripts/BN_Prediction.html" class="code" title="">BN_Prediction</a>	EXAMPLE 2: Evaluation of the prediction capability of the models</li><li><a href="../../Mateda2.0/knowledge_extraction/Pareto-approximations/ComputeC_Metric.html" class="code" title="function[CA,CB] = ComputeC_Metric(PopA,PopB)">ComputeC_Metric</a>	[CA,CB] = ComputeC_Metric(PopA,PopB)</li><li><a href="NonDominated_selection.html" class="code" title="function[SelPop,SelFunVal]=NonDominated_selection(Pop,FunVal,selection_params)">NonDominated_selection</a>	[SelPop,SelFunVal]=NonDominated_selection(Pop,FunVal,selection_params)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Index]=FindParetoSet(Pop,FunVal)</a>
+0002 <span class="comment">% [Index]=FindParetoSet(Pop,FunVal)</span>
+0003 <span class="comment">% FindParetoSet:       Identify the set of non-dominated solutions</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% Pop:                 Population</span>
+0006 <span class="comment">% FunVal:              A matrix of function evaluations, one vector of m objectives for each individual</span>
+0007 <span class="comment">% OUTPUTS</span>
+0008 <span class="comment">% Index: Index of non-dominated solutions in Pop</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0011 
+0012    PopSize = size(Pop,1);
+0013    number_objectives = size(FunVal,2);
+0014   
+0015    last = size(FunVal,1);  <span class="comment">% Number of individuals in the population</span>
+0016    DomPop = zeros(1,last); <span class="comment">% Indicator of dominated individuals</span>
+0017    
+0018    i = 1;
+0019  <span class="keyword">while</span> i&lt;last,    
+0020    <span class="keyword">while</span> DomPop(i)&gt;0 &amp;&amp; i&lt;last  <span class="comment">% Find the first non-dominated individual</span>
+0021      i = i + 1;
+0022    <span class="keyword">end</span>,  
+0023    j = i + 1;
+0024    <span class="keyword">while</span> j&lt;=last 
+0025     <span class="keyword">while</span> DomPop(j)&gt;0 &amp;&amp; j&lt;last  <span class="comment">% Find the second non dominated individual</span>
+0026      j = j + 1;
+0027     <span class="keyword">end</span>,
+0028       <span class="keyword">if</span>(sum(FunVal(i,:)&gt;=FunVal(j,:))==number_objectives) <span class="comment">% j is dominated by i (they could be equal)</span>
+0029         DomPop(j) = DomPop(j) + 1;   <span class="comment">% j is marked as dominated</span>
+0030       <span class="keyword">elseif</span>(sum(FunVal(j,:)&gt;=FunVal(i,:))==number_objectives) <span class="comment">% i is dominated by j</span>
+0031         DomPop(i) = DomPop(i) + 1;  <span class="comment">% i is marked as dominated</span>
+0032         j = last;     
+0033       <span class="keyword">end</span>,
+0034     j = j + 1;
+0035    <span class="keyword">end</span>
+0036    i = i + 1; 
+0037  <span class="keyword">end</span>
+0038 
+0039 
+0040  Index = find(DomPop==0); <span class="comment">%Non dominated solutions</span>
+0041    
+0042  <span class="keyword">return</span>
+0043  
+0044    last = size(FunVal,1);
+0045    DomPop = zeros(1,last);
+0046    <span class="keyword">for</span> i=1:last-1
+0047     <span class="keyword">for</span> j=i+1:last
+0048       <span class="keyword">if</span>(sum(FunVal(i,:)&gt;=FunVal(j,:))==number_objectives)
+0049         DomPop(j) = DomPop(j) + 1;
+0050       <span class="keyword">elseif</span>(sum(FunVal(j,:)&gt;=FunVal(i,:))==number_objectives)      
+0051         DomPop(i) = DomPop(i) + 1;  
+0052       <span class="keyword">end</span>,
+0053     <span class="keyword">end</span>
+0054    <span class="keyword">end</span>
+0055    Index = find(DomPop==0); <span class="comment">%Non dominated solutions</span>
+0056    
+0057    
+0058</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,773 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Creator: dot version uwin97 (4-15-97)
+%%For: (nir) Nir Friedman,795 Soda,(510) 642-9595,
+%%Title: G
+%%Pages: (atend)
+%%BoundingBox: 14 52 591 740
+%%EndComments
+%%BeginProlog
+save
+/DotDict 200 dict def
+DotDict begin
+
+%%BeginResource: procset
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+	dup 1 exch div /InvScaleFactor exch def
+	dup scale
+} bind def
+
+% styles
+/solid { } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(\() show i str cvs show (,) show j str cvs show (\)) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+/arrowhead {
+	/arrowwidth exch def
+	/arrowlength exch def
+	gsave
+		3 1 roll
+		translate
+			rotate
+			newpath
+			arrowlength arrowwidth 2 div moveto
+			0 0 lineto
+			arrowlength arrowwidth -2 div lineto
+		closepath fill
+		stroke
+	grestore
+} def
+
+% draw aligned label in bounding box aligned to current point
+% alignfactor tells what fraction to place on the left.
+% -.5 is centered.
+/alignedtext {			% text labelwidth fontsz alignfactor
+	/alignfactor exch def
+	/fontsz exch def
+	/width exch def
+	/text exch def
+	gsave
+		% even if node or edge is dashed, don't paint text with dashes
+		[] 0 setdash
+		currentpoint newpath moveto
+		text stringwidth pop
+		alignfactor mul fontsz -.3 mul rmoveto
+		text show
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+% /arrowlength 10 def
+% /arrowwidth 5 def
+%%EndSetup
+%%Page: 1 1
+%%PageBoundingBox: 16 54 597 739
+gsave
+15 53 582 686 boxprim clip newpath
+16 54 translate
+0 0 1 beginpage
+0 0 translate 0 rotate
+0.000 0.000 0.000 graphcolor
+14.00 /Times-Roman set_font
+
+%	SocioEcon
+gsave 10 dict begin
+287 594 42 18 ellipse_path
+stroke
+gsave 10 dict begin
+287 595 moveto (SocioEcon) 60 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	GoodStudent
+gsave 10 dict begin
+178 522 49 18 ellipse_path
+stroke
+gsave 10 dict begin
+178 523 moveto (GoodStudent) 73 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	SocioEcon -> GoodStudent
+newpath 264 579 moveto
+248 568 226 554 209 543 curveto
+stroke
+202 538 35.54 10.00 5.00 arrowhead
+
+%	RiskAversion
+gsave 10 dict begin
+426 522 50 18 ellipse_path
+stroke
+gsave 10 dict begin
+426 523 moveto (RiskAversion) 77 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	SocioEcon -> RiskAversion
+newpath 314 580 moveto
+336 569 366 553 389 541 curveto
+stroke
+397 537 153.43 10.00 5.00 arrowhead
+
+%	VehicleYear
+gsave 10 dict begin
+238 378 47 18 ellipse_path
+stroke
+gsave 10 dict begin
+238 379 moveto (VehicleYear) 70 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	SocioEcon -> VehicleYear
+newpath 238 522 moveto
+238 522 238 446 238 404 curveto
+stroke
+238 396 90.00 10.00 5.00 arrowhead
+
+%	MakeModel
+gsave 10 dict begin
+338 378 46 18 ellipse_path
+stroke
+gsave 10 dict begin
+338 379 moveto (MakeModel) 68 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	SocioEcon -> MakeModel
+newpath 305 577 moveto
+316 566 328 552 331 540 curveto
+339 503 339 438 339 403 curveto
+stroke
+339 396 90.00 10.00 5.00 arrowhead
+
+%	AntiTheft
+gsave 10 dict begin
+39 450 39 18 ellipse_path
+stroke
+gsave 10 dict begin
+39 451 moveto (AntiTheft) 55 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	SocioEcon -> AntiTheft
+newpath 272 577 moveto
+262 565 250 550 243 540 curveto
+239 534 242 526 238 522 curveto
+stroke
+newpath 238 522 moveto
+233 517 238 506 233 504 curveto
+183 487 129 482 79 468 curveto
+76 467 73 466 71 466 curveto
+stroke
+65 464 18.43 10.00 5.00 arrowhead
+
+%	HomeBase
+gsave 10 dict begin
+127 450 42 18 ellipse_path
+stroke
+gsave 10 dict begin
+127 451 moveto (HomeBase) 61 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	SocioEcon -> HomeBase
+newpath 238 522 moveto
+233 517 238 507 233 504 curveto
+223 498 190 481 164 468 curveto
+stroke
+155 464 23.96 10.00 5.00 arrowhead
+
+%	OtherCar
+gsave 10 dict begin
+287 522 38 18 ellipse_path
+stroke
+gsave 10 dict begin
+287 523 moveto (OtherCar) 51 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	SocioEcon -> OtherCar
+newpath 287 576 moveto
+287 568 287 558 287 549 curveto
+stroke
+287 540 90.00 10.00 5.00 arrowhead
+
+%	Age
+gsave 10 dict begin
+287 666 27 18 ellipse_path
+stroke
+gsave 10 dict begin
+287 667 moveto (Age) 23 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	Age -> SocioEcon
+newpath 287 648 moveto
+287 640 287 630 287 621 curveto
+stroke
+287 612 90.00 10.00 5.00 arrowhead
+
+%	Age -> GoodStudent
+newpath 272 651 moveto
+261 639 247 623 239 612 curveto
+226 595 207 567 194 547 curveto
+stroke
+190 540 60.26 10.00 5.00 arrowhead
+
+%	Age -> RiskAversion
+newpath 314 663 moveto
+383 655 561 632 571 594 curveto
+stroke
+newpath 571 594 moveto
+580 562 522 542 477 531 curveto
+stroke
+471 530 9.46 10.00 5.00 arrowhead
+
+%	DrivingSkill
+gsave 10 dict begin
+513 378 47 18 ellipse_path
+stroke
+gsave 10 dict begin
+513 379 moveto (DrivingSkill) 70 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	Age -> DrivingSkill
+newpath 571 522 moveto
+566 498 575 473 571 450 curveto
+stroke
+newpath 571 450 moveto
+568 433 552 415 538 401 curveto
+stroke
+532 395 45.00 10.00 5.00 arrowhead
+
+%	SeniorTrain
+gsave 10 dict begin
+513 450 45 18 ellipse_path
+stroke
+gsave 10 dict begin
+513 451 moveto (SeniorTrain) 66 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	Age -> SeniorTrain
+newpath 571 594 moveto
+574 582 573 533 571 522 curveto
+stroke
+newpath 571 522 moveto
+568 505 552 487 538 473 curveto
+stroke
+532 467 45.00 10.00 5.00 arrowhead
+
+%	MedCost
+gsave 10 dict begin
+408 162 37 18 ellipse_path
+stroke
+gsave 10 dict begin
+408 163 moveto (MedCost) 51 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	Age -> MedCost
+newpath 571 450 moveto
+565 423 579 311 566 288 curveto
+543 248 479 205 440 181 curveto
+stroke
+432 176 32.01 10.00 5.00 arrowhead
+
+%	RiskAversion -> VehicleYear
+newpath 438 504 moveto
+448 488 459 465 455 450 curveto
+stroke
+newpath 455 450 moveto
+437 393 342 414 286 396 curveto
+284 396 283 395 281 394 curveto
+stroke
+272 391 18.43 10.00 5.00 arrowhead
+
+%	RiskAversion -> MakeModel
+newpath 455 450 moveto
+447 425 409 405 379 393 curveto
+stroke
+373 390 26.57 10.00 5.00 arrowhead
+
+%	DrivQuality
+gsave 10 dict begin
+435 306 46 18 ellipse_path
+stroke
+gsave 10 dict begin
+435 307 moveto (DrivQuality) 67 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	RiskAversion -> DrivQuality
+newpath 455 450 moveto
+447 427 451 401 455 378 curveto
+stroke
+newpath 455 378 moveto
+457 365 452 347 446 332 curveto
+stroke
+443 324 69.44 10.00 5.00 arrowhead
+
+%	RiskAversion -> SeniorTrain
+newpath 446 505 moveto
+458 495 474 482 487 471 curveto
+stroke
+493 466 140.19 10.00 5.00 arrowhead
+
+%	RiskAversion -> AntiTheft
+newpath 382 514 moveto
+357 509 331 504 331 504 curveto
+247 490 162 483 79 468 curveto
+77 467 74 467 72 465 curveto
+stroke
+66 463 18.43 10.00 5.00 arrowhead
+
+%	RiskAversion -> HomeBase
+newpath 384 512 moveto
+329 499 229 474 172 461 curveto
+stroke
+164 459 14.04 10.00 5.00 arrowhead
+
+%	DrivHist
+gsave 10 dict begin
+524 306 36 18 ellipse_path
+stroke
+gsave 10 dict begin
+524 307 moveto (DrivHist) 49 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	RiskAversion -> DrivHist
+newpath 455 378 moveto
+455 378 460 360 460 360 curveto
+469 350 484 338 497 327 curveto
+stroke
+504 321 139.40 10.00 5.00 arrowhead
+
+%	RuggedAuto
+gsave 10 dict begin
+187 306 47 18 ellipse_path
+stroke
+gsave 10 dict begin
+187 307 moveto (RuggedAuto) 71 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	VehicleYear -> RuggedAuto
+newpath 226 361 moveto
+220 351 212 340 205 330 curveto
+stroke
+200 323 54.46 10.00 5.00 arrowhead
+
+%	Antilock
+gsave 10 dict begin
+277 306 36 18 ellipse_path
+stroke
+gsave 10 dict begin
+277 307 moveto (Antilock) 49 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	VehicleYear -> Antilock
+newpath 248 360 moveto
+253 351 258 341 263 332 curveto
+stroke
+267 324 116.57 10.00 5.00 arrowhead
+
+%	CarValue
+gsave 10 dict begin
+80 306 38 18 ellipse_path
+stroke
+gsave 10 dict begin
+80 307 moveto (CarValue) 53 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	VehicleYear -> CarValue
+newpath 208 364 moveto
+182 352 144 335 117 322 curveto
+stroke
+108 318 23.96 10.00 5.00 arrowhead
+
+%	Airbag
+gsave 10 dict begin
+351 306 31 18 ellipse_path
+stroke
+gsave 10 dict begin
+351 307 moveto (Airbag) 38 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	VehicleYear -> Airbag
+newpath 262 363 moveto
+280 351 304 336 323 324 curveto
+stroke
+330 319 144.46 10.00 5.00 arrowhead
+
+%	Accident
+gsave 10 dict begin
+270 234 37 18 ellipse_path
+stroke
+gsave 10 dict begin
+270 235 moveto (Accident) 50 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	ThisCarDam
+gsave 10 dict begin
+134 162 48 18 ellipse_path
+stroke
+gsave 10 dict begin
+134 163 moveto (ThisCarDam) 72 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	Accident -> ThisCarDam
+newpath 245 221 moveto
+223 209 193 194 170 181 curveto
+stroke
+162 177 26.57 10.00 5.00 arrowhead
+
+%	OtherCarCost
+gsave 10 dict begin
+240 162 51 18 ellipse_path
+stroke
+gsave 10 dict begin
+240 163 moveto (OtherCarCost) 77 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	Accident -> OtherCarCost
+newpath 263 216 moveto
+259 208 255 197 251 188 curveto
+stroke
+248 180 69.44 10.00 5.00 arrowhead
+
+%	Accident -> MedCost
+newpath 295 221 moveto
+318 209 350 192 374 179 curveto
+stroke
+382 175 153.43 10.00 5.00 arrowhead
+
+%	ILiCost
+gsave 10 dict begin
+331 162 33 18 ellipse_path
+stroke
+gsave 10 dict begin
+331 163 moveto (ILiCost) 42 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	Accident -> ILiCost
+newpath 284 217 moveto
+292 208 302 196 311 185 curveto
+stroke
+317 179 135.00 10.00 5.00 arrowhead
+
+%	ThisCarCost
+gsave 10 dict begin
+134 90 47 18 ellipse_path
+stroke
+gsave 10 dict begin
+134 91 moveto (ThisCarCost) 70 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	ThisCarDam -> ThisCarCost
+newpath 134 144 moveto
+134 136 134 126 134 117 curveto
+stroke
+134 108 90.00 10.00 5.00 arrowhead
+
+%	RuggedAuto -> ThisCarDam
+newpath 193 288 moveto
+197 272 203 249 204 234 curveto
+stroke
+newpath 204 234 moveto
+203 216 184 197 166 183 curveto
+stroke
+159 178 35.54 10.00 5.00 arrowhead
+
+%	RuggedAuto -> OtherCarCost
+newpath 204 234 moveto
+203 220 213 202 222 186 curveto
+stroke
+227 179 125.54 10.00 5.00 arrowhead
+
+%	Cushioning
+gsave 10 dict begin
+358 234 44 18 ellipse_path
+stroke
+gsave 10 dict begin
+358 235 moveto (Cushioning) 64 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	RuggedAuto -> Cushioning
+newpath 219 293 moveto
+248 281 291 263 321 250 curveto
+stroke
+327 247 153.43 10.00 5.00 arrowhead
+
+%	MakeModel -> RuggedAuto
+newpath 309 364 moveto
+285 352 251 337 225 324 curveto
+stroke
+217 320 26.57 10.00 5.00 arrowhead
+
+%	MakeModel -> Antilock
+newpath 323 361 moveto
+315 351 305 339 297 329 curveto
+stroke
+291 323 45.00 10.00 5.00 arrowhead
+
+%	MakeModel -> CarValue
+newpath 305 365 moveto
+297 362 291 360 291 360 curveto
+239 346 186 337 134 324 curveto
+130 323 125 321 120 320 curveto
+stroke
+111 317 18.43 10.00 5.00 arrowhead
+
+%	MakeModel -> Airbag
+newpath 341 360 moveto
+343 352 345 342 346 333 curveto
+stroke
+348 324 102.53 10.00 5.00 arrowhead
+
+%	Antilock -> Accident
+newpath 275 288 moveto
+274 280 273 270 273 261 curveto
+stroke
+272 252 83.66 10.00 5.00 arrowhead
+
+%	Mileage
+gsave 10 dict begin
+129 378 35 18 ellipse_path
+stroke
+gsave 10 dict begin
+129 379 moveto (Mileage) 45 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	Mileage -> Accident
+newpath 125 360 moveto
+122 338 119 302 134 288 curveto
+144 277 195 259 231 247 curveto
+stroke
+239 244 159.44 10.00 5.00 arrowhead
+
+%	Mileage -> CarValue
+newpath 117 361 moveto
+111 351 103 339 95 329 curveto
+stroke
+92 324 59.04 10.00 5.00 arrowhead
+
+%	DrivQuality -> Accident
+newpath 404 293 moveto
+375 281 334 263 308 252 curveto
+307 252 306 251 304 250 curveto
+stroke
+297 247 23.20 10.00 5.00 arrowhead
+
+%	DrivingSkill -> DrivQuality
+newpath 495 361 moveto
+484 352 471 339 459 329 curveto
+stroke
+453 323 45.00 10.00 5.00 arrowhead
+
+%	DrivingSkill -> DrivHist
+newpath 516 360 moveto
+518 352 519 342 520 333 curveto
+stroke
+521 324 96.34 10.00 5.00 arrowhead
+
+%	SeniorTrain -> DrivingSkill
+newpath 513 432 moveto
+513 424 513 414 513 405 curveto
+stroke
+513 396 90.00 10.00 5.00 arrowhead
+
+%	PropCost
+gsave 10 dict begin
+175 18 38 18 ellipse_path
+stroke
+gsave 10 dict begin
+175 19 moveto (PropCost) 52 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	ThisCarCost -> PropCost
+newpath 144 72 moveto
+149 63 155 53 160 43 curveto
+stroke
+165 36 125.54 10.00 5.00 arrowhead
+
+%	CarValue -> ThisCarCost
+newpath 79 288 moveto
+78 276 77 262 76 252 curveto
+76 252 75 162 75 162 curveto
+stroke
+
+%	Theft
+gsave 10 dict begin
+37 234 27 18 ellipse_path
+stroke
+gsave 10 dict begin
+37 235 moveto (Theft) 30 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	CarValue -> Theft
+newpath 70 289 moveto
+64 279 58 268 51 258 curveto
+stroke
+47 251 60.26 10.00 5.00 arrowhead
+
+%	Theft -> ThisCarCost
+newpath 46 217 moveto
+55 201 68 177 75 162 curveto
+stroke
+newpath 75 162 moveto
+78 156 77 148 80 144 curveto
+88 134 101 121 112 111 curveto
+stroke
+116 107 135.00 10.00 5.00 arrowhead
+
+%	AntiTheft -> Theft
+newpath 56 433 moveto
+70 418 89 394 83 378 curveto
+stroke
+newpath 83 378 moveto
+76 355 48 345 36 324 curveto
+28 308 30 281 33 260 curveto
+stroke
+34 252 97.13 10.00 5.00 arrowhead
+
+%	HomeBase -> Theft
+newpath 114 433 moveto
+105 421 95 406 88 396 curveto
+88 396 83 378 83 378 curveto
+stroke
+
+%	OtherCarCost -> PropCost
+newpath 232 144 moveto
+220 119 200 73 187 45 curveto
+stroke
+183 36 66.04 10.00 5.00 arrowhead
+
+%	Cushioning -> MedCost
+newpath 370 217 moveto
+376 207 384 196 391 186 curveto
+stroke
+396 179 125.54 10.00 5.00 arrowhead
+
+%	Airbag -> Cushioning
+newpath 353 288 moveto
+354 280 355 270 355 261 curveto
+stroke
+356 252 96.34 10.00 5.00 arrowhead
+endpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+end
+restore
+%%EOF

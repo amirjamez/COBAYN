@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of MakePajekGraphOfProtein</title>
+  <meta name="keywords" content="MakePajekGraphOfProtein">
+  <meta name="description" content="[Pos] =  MakePajekGraphOfProtein(vector)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; MakePajekGraphOfProtein.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>MakePajekGraphOfProtein
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Pos] =  MakePajekGraphOfProtein(vector)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Pos] =  MakePajekGraphOfProtein(vector,pajekfilename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Pos] =  MakePajekGraphOfProtein(vector)
+ MakePajekGraphOfProtein:  Creates a graph in Pajek format corresponding to the configuration encoded by vector
+ INPUTS
+ vector: Sequence of residues ( (H)ydrophobic or (P)olar, respectively represented by zero and one)
+ OUTPUTS
+ Pos:    Position of the residues
+
+ Last version 3/9/2009. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="EvalChain.html" class="code" title="function[Collisions,Overlappings,Pos] =  EvalChain(vector)">EvalChain</a>	[Collisions,Overlappings,Pos] =  EvalChain(vector)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Pos] =  MakePajekGraphOfProtein(vector,pajekfilename)</a>
+0002 <span class="comment">% [Pos] =  MakePajekGraphOfProtein(vector)</span>
+0003 <span class="comment">% MakePajekGraphOfProtein:  Creates a graph in Pajek format corresponding to the configuration encoded by vector</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% vector: Sequence of residues ( (H)ydrophobic or (P)olar, respectively represented by zero and one)</span>
+0006 <span class="comment">% OUTPUTS</span>
+0007 <span class="comment">% Pos:    Position of the residues</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Last version 3/9/2009. Roberto Santana (roberto.santana@ehu.es)</span>
+0010 
+0011 
+0012 <span class="keyword">global</span> HPInitConf;
+0013 
+0014 [Collisions,Overlappings,Pos] =  <a href="EvalChain.html" class="code" title="function[Collisions,Overlappings,Pos] =  EvalChain(vector)">EvalChain</a>(vector);
+0015 
+0016 sizeChain = size(HPInitConf,2);
+0017 
+0018 Pos(:,1) = abs(min(Pos(:,1))) + Pos(:,1);
+0019 Pos(:,2) = abs(min(Pos(:,2))) + Pos(:,2);
+0020 
+0021 Pos(:,1) = (Pos(:,1) / max(Pos(:,1)))*0.85 + 1/sizeChain;
+0022 Pos(:,2) = (Pos(:,2) / max(Pos(:,2)))*0.85 + 1/sizeChain;
+0023 
+0024 fid = fopen(pajekfilename,<span class="string">'wt'</span>);
+0025         fprintf(fid,<span class="string">'*Vertices %d \n'</span>, sizeChain); 
+0026          <span class="keyword">for</span> i=1:sizeChain,        
+0027           auxstr = [<span class="string">'&quot;v'</span>,num2str(i),<span class="string">'&quot;'</span>];   
+0028           <span class="keyword">if</span>(HPInitConf(i) == 0)
+0029            auxstr1 = <span class="string">'box ic Red fos 30'</span>;
+0030           <span class="keyword">else</span>    
+0031            auxstr1 = <span class="string">'ellipse ic Black fos 30'</span>;
+0032           <span class="keyword">end</span>
+0033           fprintf(fid,<span class="string">'%d %s %d %d %s \n'</span>,i,auxstr,Pos(i,1),Pos(i,2),auxstr1);
+0034          <span class="keyword">end</span>,
+0035      
+0036      fprintf(fid,<span class="string">'*Edges %d \n'</span>, sizeChain-1); 
+0037       <span class="keyword">for</span> i=2:sizeChain,        
+0038           fprintf(fid,<span class="string">'%d %d \n'</span>,i-1,i);
+0039       <span class="keyword">end</span>
+0040       
+0041   fclose(fid)
+0042</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

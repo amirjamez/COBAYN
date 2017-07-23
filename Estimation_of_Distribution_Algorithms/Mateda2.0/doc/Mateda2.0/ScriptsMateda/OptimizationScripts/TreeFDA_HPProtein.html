@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of TreeFDA_HPProtein</title>
+  <meta name="keywords" content="TreeFDA_HPProtein">
+  <meta name="description" content="EXAMPLE 18:  Tree-FDA for the HP protein model (The tree structure is">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">OptimizationScripts</a> &gt; TreeFDA_HPProtein.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/OptimizationScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>TreeFDA_HPProtein
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EXAMPLE 18:  Tree-FDA for the HP protein model (The tree structure is</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EXAMPLE 18:  Tree-FDA for the HP protein model (The tree structure is
+ learned from the mutual information applying a threshold on the minimum
+ MI value to consider a dependence. Therefore the learned structure
+ actually corresponds to a forest.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li><li><a href="../../../Mateda2.0/functions/protein/PrintProtein.html" class="code" title="function[Pos] =  PrintProtein(vector)">PrintProtein</a>	[Pos] =  PrintProtein(vector)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001  <span class="comment">% EXAMPLE 18:  Tree-FDA for the HP protein model (The tree structure is</span>
+0002  <span class="comment">% learned from the mutual information applying a threshold on the minimum</span>
+0003  <span class="comment">% MI value to consider a dependence. Therefore the learned structure</span>
+0004  <span class="comment">% actually corresponds to a forest.</span>
+0005 
+0006  <span class="keyword">global</span> HPInitConf;   <span class="comment">% This is the HP protein instance, defined as a sequence of zeros and ones</span>
+0007  HPInitConf =  [zeros(1,12),1,0,1,0,1,1,0,0,1,1,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,1,0,1,zeros(1,12)]; 
+0008  <span class="comment">% The number of variables is equal to the sequence length and each</span>
+0009  <span class="comment">% variables takes values in {0,1,2}</span>
+0010  PopSize = 1000; NumbVar = size(HPInitConf,2); cache  = [1,1,1,1,1]; Card = 3*ones(1,NumbVar);   maxgen = 300;
+0011  <span class="comment">% The Markov chain model(Cliques) is constructed specifying the number of</span>
+0012  <span class="comment">% conditioned (previous) variables. In the example below this number is</span>
+0013  <span class="comment">% 1., i.e. p(x) = p(x0)p(x1|x0) ... p(xn|xn-1)</span>
+0014  
+0015  F = <span class="string">'EvaluateEnergy'</span>; <span class="comment">% HP protein evaluation function</span>
+0016  edaparams{1} = {<span class="string">'learning_method'</span>,<span class="string">'LearnTreeModel'</span>,{}};
+0017  edaparams{2} = {<span class="string">'sampling_method'</span>,<span class="string">'SampleFDA'</span>,{PopSize}};
+0018  edaparams{3} = {<span class="string">'repairing_method'</span>,<span class="string">'HP_repairing'</span>,{}}; <span class="comment">% Repairing method used to guarantee that</span>
+0019                                                         <span class="comment">% solutions do not self-intersect</span>
+0020  edaparams{4} = {<span class="string">'stop_cond_method'</span>,<span class="string">'max_gen'</span>,{maxgen}};
+0021  [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,NumbVar,F,Card,cache,edaparams) 
+0022  
+0023  <span class="comment">% To draw the resulting solution use function PrintProtein(vector),</span>
+0024  <span class="comment">% where vector is the best solution found.</span>
+0025  vector = AllStat{maxgen,2}
+0026  <a href="../../../Mateda2.0/functions/protein/PrintProtein.html" class="code" title="function[Pos] =  PrintProtein(vector)">PrintProtein</a>(vector)</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

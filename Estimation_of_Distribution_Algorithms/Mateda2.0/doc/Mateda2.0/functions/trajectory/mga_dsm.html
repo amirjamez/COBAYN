@@ -1,0 +1,1275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mga_dsm</title>
+  <meta name="keywords" content="mga_dsm">
+  <meta name="description" content="------------------------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">trajectory</a> &gt; mga_dsm.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/trajectory&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>mga_dsm
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>------------------------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [J,DVvec] = mga_dsm(t,problem) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ------------------------------------------------------------------------
+ This source file is part of the 'ESA Advanced Concepts Team's            
+ Space Mechanics Toolbox' software.                                       
+                                                                          
+ The source files are for research use only,                              
+ and are distributed WITHOUT ANY WARRANTY. Use them on your own risk.     
+                                                                                                                                                  
+ Copyright (c) 2004-2007 European Space Agency
+ ------------------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="EvalSaga.html" class="code" title="function [cost_value] = EvalSaga(t)">EvalSaga</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [r,v] = propagateKEP(r0,v0,t,mu)</a></li><li><a href="#_sub2" class="code">function E=IC2par(r0,v0,mu)</a></li><li><a href="#_sub3" class="code">function E=ni2E(ni,e)</a></li><li><a href="#_sub4" class="code">function [r0,v0]=par2IC(E,mu)</a></li><li><a href="#_sub5" class="code">function [v1,v2,a,p,theta,iter]=lambertI(r1,r2,t,mu,lw,N,branch)</a></li><li><a href="#_sub6" class="code">function t=x2tof(x,s,c,lw,N)</a></li><li><a href="#_sub7" class="code">function t=tofabn(sigma,alfa,beta,N)</a></li><li><a href="#_sub8" class="code">function v=vers(V)</a></li><li><a href="#_sub9" class="code">function ansd = vett(r1,r2)</a></li><li><a href="#_sub10" class="code">function  [r,v,E]=pleph_an ( mjd2000, planet);</a></li><li><a href="#_sub11" class="code">function [r,v] = conversion (E)</a></li><li><a href="#_sub12" class="code">function E=M2E(M,e)</a></li><li><a href="#_sub13" class="code">function M=E2M(E,e)</a></li><li><a href="#_sub14" class="code">function [r,v]=CUSTOMeph(jd,epoch,keplerian,flag)</a></li><li><a href="#_sub15" class="code">function t = time2distance(r0,v0,rtarget)</a></li><li><a href="#_sub16" class="code">function jd = mjd20002jed(mjd2000)</a></li><li><a href="#_sub17" class="code">function jd = mjd2jed(mjd)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ------------------------------------------------------------------------</span>
+0002 <span class="comment">% This source file is part of the 'ESA Advanced Concepts Team's</span>
+0003 <span class="comment">% Space Mechanics Toolbox' software.</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% The source files are for research use only,</span>
+0006 <span class="comment">% and are distributed WITHOUT ANY WARRANTY. Use them on your own risk.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Copyright (c) 2004-2007 European Space Agency</span>
+0009 <span class="comment">% ------------------------------------------------------------------------</span>
+0010 <span class="comment">%</span>
+0011 
+0012 <a name="_sub0" href="#_subfunctions" class="code">function [J,DVvec] = mga_dsm(t,problem)</a>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%Programmed by:   Claudio Bombardelli (ESA/ACT)</span>
+0016 <span class="comment">%                 Dario Izzo          (ESA/ACT)</span>
+0017 <span class="comment">%Date:                  15/03/2007</span>
+0018 <span class="comment">%Revision:              4</span>
+0019 <span class="comment">%Tested by:             C.Bombardelli</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%  Computes the DeltaV cost function of a Multiple Gravity Assist trajectory</span>
+0022 <span class="comment">%  with a Deep Space Maneuver between each planet pair</span>
+0023 <span class="comment">%  N.B.: All swing-bys are UNPOWERED (thrust is only present at each dsm)</span>
+0024 <span class="comment">%  It takes as input a sequence of planets P1,Pn and a decision vector t</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">%  The flyby/dsm sequence is:  P1/d1/P2/d2/../dn-1/Pn</span>
+0027 <span class="comment">%</span>
+0028 
+0029 <span class="comment">% DECISION VECTOR DEFINITION:</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%  t(1)=  epoch of departure MJD2000 from first planet (not necessarily earth)</span>
+0032 <span class="comment">%  t(2)=  magnitude hyperbolic escape velocity from first planet</span>
+0033 <span class="comment">%  t(3,4)= u,v variables for the hyperbolic velocity orientation wrt Earth</span>
+0034 <span class="comment">%  velocity at departure</span>
+0035 <span class="comment">%  t(5..n+3)= planet-to-planet Time of Flight [ToF] (days)</span>
+0036 <span class="comment">%  t(n+4..2n-2)= fraction of ToF at which the DSM occurs</span>
+0037 <span class="comment">%  t(2n+3..3n) = perigee fly-by radius for planets P2..Pn-1, non-dimensional wrt planetary radii</span>
+0038 <span class="comment">%  t(3n+1..4n-2) = rotation gamma of the bplane-component of the swingby outgoing velocity (v_rel_out)</span>
+0039 <span class="comment">%  [take n_r=cross(v_rel_in,v_planet_helio) if you rotate n_r by +gamma around v_rel_in</span>
+0040 <span class="comment">%  you obtain the projection of v_rel_out on the b-plane]</span>
+0041 <span class="comment">%  Vector (Vout) around the axis of the incoming swingby velocity vector (Vin)</span>
+0042 <span class="comment">%</span>
+0043 
+0044 <span class="comment">%Usage:     [J,DVvec,dsm_epoch,flyby_epoch] = mga_dsm(t,MGADSMproblem)</span>
+0045 <span class="comment">%Outputs:</span>
+0046 <span class="comment">%           J:     Cost function = depends on the problem:</span>
+0047 <span class="comment">%                  orbit insertion: total DV from propulsion system (V_launcher not counted)</span>
+0048 <span class="comment">%                  gtoc1= (s/c final mass)*v_asteroid'*vrel_ast_sc</span>
+0049 <span class="comment">%                  asteroid deflection-&gt; 1/d with d=deflecion on the earth-asteroid lineofsight</span>
+0050 <span class="comment">%           DVvec: vector of all DV maneuvers</span>
+0051 <span class="comment">%           dsm_epoch: vector of epochs (mjd2000) corresponding to each DV maneuver</span>
+0052 <span class="comment">%           flyby_epoch: vector of epochs (mjd2000) corresponding to each flyby</span>
+0053 <span class="comment">%</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">%Inputs:</span>
+0056 <span class="comment">%           t:         decision vector</span>
+0057 <span class="comment">%               MGADSMproblem = struct array defining the problem, i.e.</span>
+0058 <span class="comment">%               MGADSMproblem.sequence:  planet sequence. Example [3 3 4]= [E E M]. A</span>
+0059 <span class="comment">%                      negative sign represents a retrograde orbit after the fly-by</span>
+0060 <span class="comment">%               MGADSMproblem.objective.type: type of objective function (e.g.</span>
+0061 <span class="comment">%                       'orbit insertion','rndv','gtoc1')</span>
+0062 <span class="comment">%               MGADSMproblem.objective.rp: pericentre radius of the</span>
+0063 <span class="comment">%                       target orbit if type = 'orbit insertion'</span>
+0064 <span class="comment">%               MGADSMproblem.objective.e:  eccentricity of the target</span>
+0065 <span class="comment">%                       orbit if type = 'orbit insertion'</span>
+0066 <span class="comment">%               MGADSMproblem.bounds: decision vector upper and lower</span>
+0067 <span class="comment">%               bounds for the optimiser</span>
+0068 <span class="comment">%               MGADSMproblem.yplot:     1-&gt; plot trajectory, 0-&gt; don't</span>
+0069 <span class="comment">%</span>
+0070 <span class="comment">%</span>
+0071 <span class="comment">%*********  IMPORTANT NOTE (SINGULARITY)   ************</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">% The routine is singular when the S/C relative incoming  velocity to a planet v_rel_in</span>
+0074 <span class="comment">% is parallel to the heliocentric velocity of that planet.</span>
+0075 <span class="comment">%</span>
+0076 <span class="comment">% One can move the singularity elsewhere by changing the definition of the</span>
+0077 <span class="comment">% angle gamma.</span>
+0078 <span class="comment">% For example one possibility is to define gamma as follows:</span>
+0079 <span class="comment">% [take n_r=cross(v_rel_in,r_planet_helio) and rotate n_r by +gamma around v_rel_in</span>
+0080 <span class="comment">% in this case is singular for v_rel_in parallel to r_planet_helio</span>
+0081 <span class="comment">%</span>
+0082 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0083 
+0084 sequence= problem.sequence;          <span class="comment">%THE PLANETs SEQUENCE</span>
+0085 yplot = problem.yplot;             <span class="comment">%This option is deactivated in this version of the mga_dsm.m</span>
+0086 
+0087 <span class="keyword">switch</span> problem.objective.type
+0088     <span class="keyword">case</span> <span class="string">'orbit insertion'</span>
+0089         rp_target= problem.objective.rp; <span class="comment">% radius of pericentre at capture</span>
+0090         e_target=problem.objective.e;   <span class="comment">% Eccentricity of the target orbit at capture</span>
+0091     <span class="keyword">case</span> <span class="string">'total DV orbit insertion'</span>
+0092         rp_target= problem.objective.rp; <span class="comment">% radius of pericentre at capture</span>
+0093         e_target=problem.objective.e;   <span class="comment">% Eccentricity of the target orbit at capture</span>
+0094     <span class="keyword">case</span> <span class="string">'gtoc1'</span>
+0095         Isp=problem.objective.Isp;
+0096         mass = problem.objective.mass;
+0097     <span class="keyword">case</span> <span class="string">'time to AUs'</span>
+0098         AUdist = problem.objective.AU;
+0099         DVtotal = problem.objective.DVtot;
+0100         DVonboard = problem.objective.DVonboard;
+0101 <span class="keyword">end</span>
+0102 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0103 
+0104 
+0105 <span class="comment">%**************************************************************************</span>
+0106 <span class="comment">%Definition of the gravitational constants of the various planets</span>
+0107 <span class="comment">%(used in the powered swing-by routine) and of the sun (used in the lambert</span>
+0108 <span class="comment">%solver routine)</span>
+0109 <span class="comment">%**************************************************************************</span>
+0110 
+0111 mu(1)=22321;          <span class="comment">%                          Mercury</span>
+0112 mu(2)=324860;         <span class="comment">%Gravitational constant of Venus</span>
+0113 mu(3)=398601.19;      <span class="comment">%                          Earth</span>
+0114 mu(4)=42828.3;        <span class="comment">%                          Mars</span>
+0115 mu(5)=126.7e6;        <span class="comment">%                          Jupiter</span>
+0116 mu(6)=37.9e6;         <span class="comment">%                          Saturn</span>
+0117 
+0118 muSUN=1.32712428e+11; <span class="comment">%Gravitational constant of Sun</span>
+0119 
+0120 
+0121 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0122 <span class="comment">%  Definition of planetari radii</span>
+0123 <span class="comment">%</span>
+0124 RPL(1)=2440; <span class="comment">% Mercury</span>
+0125 RPL(2)=6052; <span class="comment">% Venus</span>
+0126 RPL(3)=6378; <span class="comment">% Earth</span>
+0127 RPL(4)=3397; <span class="comment">% Mars</span>
+0128 RPL(5)=71492;<span class="comment">% Jupiter</span>
+0129 RPL(6)=60268;<span class="comment">% Saturn</span>
+0130 
+0131 
+0132 <span class="comment">%**************************************************************************</span>
+0133 <span class="comment">% Decision vector definition</span>
+0134 
+0135 tdep=t(1);         <span class="comment">% departure epoch (MJD2000)</span>
+0136 VINF=t(2);         <span class="comment">%Hyperbolic escape velocity (km/sec)</span>
+0137 udir=t(3);            <span class="comment">%Hyperbolic escape velocity var1 (non dim)</span>
+0138 vdir=t(4);            <span class="comment">%Hyperbolic escape velocity var2 (non dim)</span>
+0139 N=length(sequence);
+0140 
+0141 <span class="comment">%Preallocating memory increase speed</span>
+0142 tof = zeros(N-1,1);
+0143 alpha = zeros(N-1,1);
+0144 
+0145 <span class="keyword">for</span> i=1:N-1
+0146     tof(i)=t(i+4); <span class="comment">%planet-to-planet Time of Flight [ToF] (days)</span>
+0147     alpha(i)=t(N+i+3); <span class="comment">%fraction of ToF at which the DSM occurs</span>
+0148 <span class="keyword">end</span>
+0149 
+0150 
+0151 <span class="comment">%If we are optimising to reach a given distance in the shortest time ('time</span>
+0152 <span class="comment">%to AUs) then the decision vector needs to include also r_p and bincl at</span>
+0153 <span class="comment">%the last planet, otherwise not</span>
+0154 
+0155 <span class="keyword">if</span> strcmp(problem.objective.type,<span class="string">'time to AUs'</span>)
+0156     rp_non_dim=zeros(N-1,1);        <span class="comment">%initialization gains speed</span>
+0157     gamma=zeros(N-1,1);
+0158     <span class="keyword">for</span> i=1:N-1
+0159         rp_non_dim(i)=t(i+2*N+2); <span class="comment">% non-dim perigee fly-by radius of planets P2..Pn (i=1 refers to the second planet)</span>
+0160         gamma(i)=t(3*N+i);        <span class="comment">% rotation of the bplane-component of the swingby outgoing</span>
+0161         <span class="comment">% velocity  Vector (Vout) around the axis of the incoming swingby velocity vector (Vin)</span>
+0162     <span class="keyword">end</span>
+0163 <span class="keyword">else</span>
+0164     rp_non_dim=zeros(N-2,1);        <span class="comment">%initialization gains speed</span>
+0165     gamma=zeros(N-2,1);
+0166     <span class="keyword">for</span> i=1:N-2
+0167         rp_non_dim(i)=t(i+2*N+2); <span class="comment">% non-dim perigee fly-by radius of planets P2..Pn-1 (i=1 refers to the second planet)</span>
+0168         gamma(i)=t(3*N+i);        <span class="comment">% rotation of the bplane-component of the swingby outgoing</span>
+0169         <span class="comment">% velocity  Vector (Vout) around the axis of the incoming swingby velocity vector (Vin)</span>
+0170     <span class="keyword">end</span>
+0171 <span class="keyword">end</span>
+0172 
+0173 <span class="comment">%**************************************************************************</span>
+0174 <span class="comment">%Evaluation of position and velocities of the planets</span>
+0175 <span class="comment">%**************************************************************************</span>
+0176 
+0177 N=length(sequence);
+0178 
+0179 r= zeros(3,N);
+0180 v= zeros(3,N);
+0181 
+0182 muvec=zeros(N,1);
+0183 Itime = zeros(N);
+0184 dT=zeros(1,N);
+0185 
+0186 seq = abs (sequence);
+0187 
+0188 T=tdep;
+0189 dT(1:N-1)=tof;
+0190 
+0191 <span class="keyword">for</span> i=1:N
+0192     Itime(i)=T;
+0193     <span class="keyword">if</span> seq(i)&lt;10
+0194         <a href="#_sub10" class="code" title="subfunction  [r,v,E]=pleph_an ( mjd2000, planet);">pleph_an</a>( T , seq(i));
+0195         [r(:,i),v(:,i)]=<a href="#_sub10" class="code" title="subfunction  [r,v,E]=pleph_an ( mjd2000, planet);">pleph_an</a>( T , seq(i)); <span class="comment">%positions and velocities of solar system planets</span>
+0196         muvec(i)=mu(seq(i)); <span class="comment">%gravitational constants</span>
+0197     <span class="keyword">else</span>
+0198         [r(:,i),v(:,i)]=<a href="#_sub14" class="code" title="subfunction [r,v]=CUSTOMeph(jd,epoch,keplerian,flag)">CUSTOMeph</a>( <a href="#_sub16" class="code" title="subfunction jd = mjd20002jed(mjd2000)">mjd20002jed</a>(T) , <span class="keyword">...</span>
+0199             problem.customobject(seq(i)).epoch, <span class="keyword">...</span>
+0200             problem.customobject(seq(i)).keplerian , 1); <span class="comment">%positions and velocities of custom object</span>
+0201         muvec(i)=problem.customobject(seq(i)).mu; <span class="comment">%gravitational constant of custom object</span>
+0202 
+0203     <span class="keyword">end</span>
+0204 
+0205     T=T+dT(i);
+0206 
+0207 <span class="keyword">end</span>
+0208 
+0209 
+0210 
+0211 <span class="keyword">if</span> strcmp(problem.objective.type,<span class="string">'time to AUs'</span>)
+0212     rp=zeros(N-1,1);        <span class="comment">%initialization gains speed</span>
+0213     <span class="keyword">for</span> i=1:N-1
+0214         rp(i)= rp_non_dim(i)*RPL(seq(i+1)); <span class="comment">%dimensional flyby radii (i=1 corresponds to 2nd planet)</span>
+0215     <span class="keyword">end</span>
+0216 <span class="keyword">else</span>
+0217     rp=zeros(N-2,1);        <span class="comment">%initialization gains speed</span>
+0218     <span class="keyword">for</span> i=1:N-2
+0219         rp(i)= rp_non_dim(i)*RPL(seq(i+1)); <span class="comment">%dimensional flyby radii (i=1 corresponds to 2nd planet)</span>
+0220     <span class="keyword">end</span>
+0221 <span class="keyword">end</span>
+0222 
+0223 
+0224 <span class="comment">%**************************************************************************</span>
+0225 <span class="comment">%%%% FIRST BLOCK (P1 to P2)</span>
+0226 
+0227 <span class="comment">%Spacecraft position and velocity at departure</span>
+0228 
+0229 vtemp= cross(r(:,1),v(:,1));
+0230 
+0231 iP1= v(:,1)/norm(v(:,1));
+0232 zP1= vtemp/norm(vtemp);
+0233 jP1= cross(zP1,iP1);
+0234 
+0235 
+0236 theta=2*pi*udir;         <span class="comment">%See Picking a Point on a Sphere</span>
+0237 phi=acos(2*vdir-1)-pi/2; <span class="comment">%In this way: -pi/2&lt;phi&lt;pi/2 so phi can be used as out-of-plane rotation</span>
+0238 
+0239 <span class="comment">%vinf=VINF*(-sin(theta)*iP1+cos(theta)*cos(phi)*jP1+sin(phi)*cos(theta)*zP1);</span>
+0240 vinf=VINF*(cos(theta)*cos(phi)*iP1+sin(theta)*cos(phi)*jP1+sin(phi)*zP1);
+0241 
+0242 v_sc_pl_in(:,1)=v(:,1); <span class="comment">%Spacecraft absolute incoming velocity at P1</span>
+0243 v_sc_pl_out(:,1)=v(:,1)+vinf; <span class="comment">%Spacecraft absolute outgoing velocity at P1</span>
+0244 
+0245 <span class="comment">%Days from P1 to DSM1</span>
+0246 tDSM(1)=alpha(1)*tof(1);
+0247 
+0248 <span class="comment">%Computing S/C position and absolute incoming velocity at DSM1</span>
+0249 [rd(:,1),v_sc_dsm_in(:,1)]=<a href="#_sub1" class="code" title="subfunction [r,v] = propagateKEP(r0,v0,t,mu)">propagateKEP</a>(r(:,1),v_sc_pl_out(:,1),tDSM(1)*24*60*60,muSUN);
+0250 
+0251 <span class="comment">%Evaluating the Lambert arc from DSM1 to P2</span>
+0252 
+0253 lw=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(rd(:,1),r(:,2));
+0254 lw=sign(lw(3));
+0255 <span class="keyword">if</span> lw==1
+0256     lw=0;
+0257 <span class="keyword">else</span>
+0258     lw=1;
+0259 <span class="keyword">end</span>
+0260 [v_sc_dsm_out(:,1),v_sc_pl_in(:,2)]=<a href="#_sub5" class="code" title="subfunction [v1,v2,a,p,theta,iter]=lambertI(r1,r2,t,mu,lw,N,branch)">lambertI</a>(rd(:,1),r(:,2),tof(1)*(1-alpha(1))*24*60*60,muSUN,lw);
+0261 
+0262 <span class="comment">%First Contribution to DV (the 1st deep space maneuver)</span>
+0263 DV=zeros(N-1,1);
+0264 DV(1)=norm(v_sc_dsm_out(:,1)-v_sc_dsm_in(:,1));
+0265 
+0266 
+0267 <span class="comment">%****************************************</span>
+0268 <span class="comment">% INTERMEDIATE BLOCK</span>
+0269 
+0270 tDSM=zeros(N-1,1);
+0271 <span class="keyword">for</span> i=1:N-2
+0272 
+0273     <span class="comment">%Evaluation of the state immediately after Pi</span>
+0274 
+0275     v_rel_in=v_sc_pl_in(:,i+1)-v(:,i+1);
+0276 
+0277     e=1+rp(i)/muvec(i+1)*v_rel_in'*v_rel_in;
+0278 
+0279     beta_rot=2*asin(1/e);              <span class="comment">%velocity rotation</span>
+0280 
+0281     ix=v_rel_in/norm(v_rel_in);
+0282     <span class="comment">% ix=r_rel_in/norm(v_rel_in);  % activating this line and disactivating the one above</span>
+0283     <span class="comment">% shifts the singularity for r_rel_in parallel to v_rel_in</span>
+0284 
+0285     iy=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(ix,v(:,i+1)/norm(v(:,i+1)))';
+0286     iy=iy/norm(iy);
+0287     iz=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(ix,iy)';
+0288     iVout = cos(beta_rot) * ix + cos(gamma(i))*sin(beta_rot) * iy + sin(gamma(i))*sin(beta_rot) * iz;
+0289     v_rel_out=norm(v_rel_in)*iVout;
+0290 
+0291     v_sc_pl_out(:,i+1)=v(:,i+1)+v_rel_out;
+0292 
+0293 
+0294     <span class="comment">%Days from Pi to DSMi</span>
+0295     tDSM(i+1)=alpha(i+1)*tof(i+1);
+0296 
+0297 
+0298     <span class="comment">%Computing S/C position and absolute incoming velocity at DSMi</span>
+0299     [rd(:,i+1),v_sc_dsm_in(:,i+1)]=<a href="#_sub1" class="code" title="subfunction [r,v] = propagateKEP(r0,v0,t,mu)">propagateKEP</a>(r(:,i+1),v_sc_pl_out(:,i+1),tDSM(i+1)*24*60*60,muSUN);
+0300 
+0301 
+0302     <span class="comment">%Evaluating the Lambert arc from DSMi to Pi+1</span>
+0303 
+0304     lw=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(rd(:,i+1),r(:,i+2));
+0305     lw=sign(lw(3));
+0306     <span class="keyword">if</span> lw==1
+0307         lw=0;
+0308     <span class="keyword">else</span>
+0309         lw=1;
+0310     <span class="keyword">end</span>
+0311     [v_sc_dsm_out(:,i+1),v_sc_pl_in(:,i+2)]=<a href="#_sub5" class="code" title="subfunction [v1,v2,a,p,theta,iter]=lambertI(r1,r2,t,mu,lw,N,branch)">lambertI</a>(rd(:,i+1),r(:,i+2),tof(i+1)*(1-alpha(i+1))*24*60*60,muSUN,lw);
+0312 
+0313     <span class="comment">%DV contribution</span>
+0314     DV(i+1)=norm(v_sc_dsm_out(:,i+1)-v_sc_dsm_in(:,i+1));
+0315 
+0316 <span class="keyword">end</span>
+0317 
+0318 <span class="comment">%************************************************************************</span>
+0319 <span class="comment">% FINAL BLOCK</span>
+0320 <span class="comment">%</span>
+0321 <span class="comment">%1)Evaluation of the arrival DV</span>
+0322 <span class="comment">%</span>
+0323 DVrel=norm(v(:,N)-v_sc_pl_in(:,N)); <span class="comment">%Relative velocity at target planet</span>
+0324 
+0325 
+0326 <span class="keyword">switch</span> problem.objective.type
+0327     <span class="keyword">case</span> <span class="string">'orbit insertion'</span>
+0328         DVper=sqrt(DVrel^2+2*muvec(N)/rp_target);  <span class="comment">%Hyperbola</span>
+0329         DVper2=sqrt(2*muvec(N)/rp_target-muvec(N)/rp_target*(1-e_target)); <span class="comment">%Ellipse</span>
+0330         DVarr=abs(DVper-DVper2);
+0331     <span class="keyword">case</span> <span class="string">'total DV orbit insertion'</span>
+0332         DVper=sqrt(DVrel^2+2*muvec(N)/rp_target);  <span class="comment">%Hyperbola</span>
+0333         DVper2=sqrt(2*muvec(N)/rp_target-muvec(N)/rp_target*(1-e_target)); <span class="comment">%Ellipse</span>
+0334         DVarr=abs(DVper-DVper2);
+0335     <span class="keyword">case</span> <span class="string">'rndv'</span>
+0336         DVarr = DVrel;
+0337     <span class="keyword">case</span> <span class="string">'total DV rndv'</span>
+0338         DVarr = DVrel;
+0339     <span class="keyword">case</span> <span class="string">'gtoc1'</span>
+0340         DVarr = DVrel;
+0341     <span class="keyword">case</span> <span class="string">'time to AUs'</span>  <span class="comment">%no DVarr is considered</span>
+0342         DVarr = 0;
+0343 <span class="keyword">end</span>
+0344 
+0345 DV(N)=DVarr;
+0346 
+0347 
+0348 <span class="comment">%</span>
+0349 <span class="comment">%**************************************************************************</span>
+0350 <span class="comment">%Evaluation of total DV spent by the propulsion system</span>
+0351 <span class="comment">%**************************************************************************</span>
+0352 
+0353 <span class="keyword">switch</span> problem.objective.type
+0354     <span class="keyword">case</span> <span class="string">'gtoc1'</span>
+0355         DVtot=sum(DV(1:N-1));
+0356     <span class="keyword">otherwise</span>
+0357         DVtot=sum(DV);
+0358 <span class="keyword">end</span>
+0359 
+0360 
+0361 DVvec=[VINF ; DV];
+0362 
+0363 
+0364 
+0365 
+0366 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0367 <span class="comment">%Finally our objective function is:</span>
+0368 <span class="keyword">switch</span> problem.objective.type
+0369     <span class="keyword">case</span> <span class="string">'total DV orbit insertion'</span>
+0370         J= DVtot+VINF;
+0371     <span class="keyword">case</span> <span class="string">'total DV rndv'</span>
+0372         J= DVtot+VINF;
+0373     <span class="keyword">case</span> <span class="string">'orbit insertion'</span>
+0374         J= DVtot;
+0375     <span class="keyword">case</span> <span class="string">'rndv'</span>
+0376         J= DVtot;
+0377     <span class="keyword">case</span> <span class="string">'gtoc1'</span>
+0378         mass_fin = mass * exp (- DVtot/ (Isp/1000 * 9.80665));
+0379         J = 1/(mass_fin * abs((v_sc_pl_in(:,N)-v(:,N))'* v(:,N)));
+0380     <span class="keyword">case</span> <span class="string">'time to AUs'</span>
+0381         <span class="comment">%non dimensional units</span>
+0382         AU  = 149597870.66;
+0383         V = sqrt(muSUN/AU);
+0384         T = AU/V;
+0385         <span class="comment">%evaluate the state of the spacecraft after the last fly-by</span>
+0386         v_rel_in=v_sc_pl_in(:,N)-v(:,N);
+0387         e=1+rp(N-1)/muvec(N)*v_rel_in'*v_rel_in;
+0388         beta_rot=2*asin(1/e);              <span class="comment">%velocity rotation</span>
+0389         ix=v_rel_in/norm(v_rel_in);
+0390         <span class="comment">% ix=r_rel_in/norm(v_rel_in);  % activating this line and disactivating the one above</span>
+0391         <span class="comment">% shifts the singularity for r_rel_in parallel to v_rel_in</span>
+0392         iy=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(ix,v(:,N)/norm(v(:,N)))';
+0393         iy=iy/norm(iy);
+0394         iz=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(ix,iy)';
+0395         iVout = cos(beta_rot) * ix + cos(gamma(N-1))*sin(beta_rot) * iy + sin(gamma(N-1))*sin(beta_rot) * iz;
+0396         v_rel_out=norm(v_rel_in)*iVout;
+0397         v_sc_pl_out(:,N)=v(:,N)+v_rel_out;
+0398         t = <a href="#_sub15" class="code" title="subfunction t = time2distance(r0,v0,rtarget)">time2distance</a>(r(:,N)/AU,v_sc_pl_out(:,N)/V,AUdist);
+0399         DVpen=0;
+0400         <span class="keyword">if</span> sum(DVvec)&gt;DVtotal
+0401             DVpen=DVpen+(sum(DVvec)-DVtotal);
+0402         <span class="keyword">end</span>
+0403         <span class="keyword">if</span> sum(DVvec(2:end))&gt;DVonboard
+0404             DVpen=DVpen+(sum(DVvec(2:end))-DVonboard);
+0405         <span class="keyword">end</span>
+0406 
+0407         J= (t*T/60/60/24 + sum(tof))/365.25 + DVpen*100;
+0408         <span class="keyword">if</span> isnan(J) 
+0409             J = 100000;
+0410         <span class="keyword">end</span>
+0411         <span class="keyword">if</span> isnan(DV)
+0412             J=100000;
+0413         <span class="keyword">end</span>
+0414 <span class="keyword">end</span>
+0415 
+0416 
+0417 <span class="comment">%--------------------------------------------------------------------------</span>
+0418 <a name="_sub1" href="#_subfunctions" class="code">function [r,v] = propagateKEP(r0,v0,t,mu)</a>
+0419 <span class="comment">%</span>
+0420 <span class="comment">%Usage: [r,v] = propagateKEP(r0,v0,t)</span>
+0421 <span class="comment">%</span>
+0422 <span class="comment">%Inputs:</span>
+0423 <span class="comment">%           r0:    column vector for the non dimensional position</span>
+0424 <span class="comment">%           v0:    column vector for the non dimensional velocity</span>
+0425 <span class="comment">%           t:     non dimensional time</span>
+0426 <span class="comment">%</span>
+0427 <span class="comment">%Outputs:</span>
+0428 <span class="comment">%           r:    column vector for the non dimensional position</span>
+0429 <span class="comment">%           v:    column vector for the non dimensional velocity</span>
+0430 <span class="comment">%</span>
+0431 <span class="comment">%Comments:  The function works in non dimensional units, it takes an</span>
+0432 <span class="comment">%initial condition and it propagates it as in a kepler motion analytically.</span>
+0433 <span class="comment">%</span>
+0434 <span class="comment">%The matrix DD will be almost always the unit matrix, except for orbits</span>
+0435 <span class="comment">%with little inclination in which cases a rotation is performed so that</span>
+0436 <span class="comment">%par2IC is always defined</span>
+0437 DD=eye(3);
+0438 h=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(r0,v0);
+0439 ih=h/norm(h);
+0440 <span class="keyword">if</span> abs(abs(ih(3))-1)&lt;1e-3         <span class="comment">%the abs is needed in cases in which the orbit is retrograde,</span>
+0441                                   <span class="comment">%that would held ih=[0,0,-1]!!</span>
+0442     DD=[1,0,0;0,0,1;0,-1,0];      <span class="comment">%Random rotation matrix that make the Euler angles well defined for the case</span>
+0443     r0=DD*r0;                     <span class="comment">%For orbits with little inclination another ref. frame is used.</span>
+0444     v0=DD*v0;
+0445 <span class="keyword">end</span>
+0446 
+0447 E=<a href="#_sub2" class="code" title="subfunction E=IC2par(r0,v0,mu)">IC2par</a>(r0,v0,mu);  
+0448 
+0449 M0=<a href="#_sub13" class="code" title="subfunction M=E2M(E,e)">E2M</a>(E(6),E(2));
+0450 <span class="keyword">if</span> E(2)&lt;1
+0451     M=M0+sqrt(mu/E(1)^3)*t;
+0452 <span class="keyword">else</span>
+0453     M=M0+sqrt(-mu/E(1)^3)*t;
+0454 <span class="keyword">end</span>
+0455 E(6)=<a href="#_sub12" class="code" title="subfunction E=M2E(M,e)">M2E</a>(M,E(2));
+0456 [r,v]=<a href="#_sub4" class="code" title="subfunction [r0,v0]=par2IC(E,mu)">par2IC</a>(E,mu);
+0457 
+0458 r=DD'*r;                    
+0459 v=DD'*v;
+0460 
+0461 
+0462 <span class="comment">%--------------------------------------------------------------------------%</span>
+0463 <a name="_sub2" href="#_subfunctions" class="code">function E=IC2par(r0,v0,mu)</a>
+0464 <span class="comment">%</span>
+0465 <span class="comment">%Usage: E = IC2par(r0,v0,mu)</span>
+0466 <span class="comment">%</span>
+0467 <span class="comment">%Inputs:</span>
+0468 <span class="comment">%           r0:    column vector for the position</span>
+0469 <span class="comment">%           v0:    column vector for the velocity</span>
+0470 <span class="comment">%</span>
+0471 <span class="comment">%Outputs:</span>
+0472 <span class="comment">%           E:     Column Vectors containing the six keplerian parameters,</span>
+0473 <span class="comment">%                  (a (negative for hyperbolas),e,i,OM,om,Eccentric Anomaly</span>
+0474 <span class="comment">%                  (or Gudermannian whenever e&gt;1))</span>
+0475 <span class="comment">%</span>
+0476 <span class="comment">%Comments:  The parameters returned are, of course, referred to the same</span>
+0477 <span class="comment">%ref. frame in which r0,v0 are given. Units have to be consistent, and</span>
+0478 <span class="comment">%output angles are in radians</span>
+0479 <span class="comment">%The algorithm used is quite common and can be found as an example in Bate,</span>
+0480 <span class="comment">%Mueller and White. It goes singular for zero inclination and for ni=pi</span>
+0481 <span class="comment">%Note also that the anomaly in output ranges from -pi to pi</span>
+0482 <span class="comment">%Note that a is negative for hyperbolae</span>
+0483 
+0484 k=[0,0,1]';
+0485 h=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(r0,v0)';
+0486 p=h'*h/mu;
+0487 n=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(k,h)';
+0488 n=n/norm(n);
+0489 R0=norm(r0);
+0490 evett=<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(v0,h)'/mu-r0/R0;
+0491 e=evett'*evett;
+0492 E(1)=p/(1-e);
+0493 E(2)=sqrt(e);
+0494 e=E(2);
+0495 E(3)=acos(h(3)/norm(h));
+0496 E(5)=(acos((n'*evett)/e));
+0497 <span class="keyword">if</span> evett(3)&lt;0
+0498     E(5)=2*pi-E(5);
+0499 <span class="keyword">end</span>
+0500 E(4)=acos(n(1));
+0501 <span class="keyword">if</span> n(2)&lt;0
+0502     E(4)=2*pi-E(4);
+0503 <span class="keyword">end</span>
+0504 ni=real(acos((evett'*r0)/e/R0)); <span class="comment">%real is to avoid problems when ni~=pi</span>
+0505 <span class="keyword">if</span> (r0'*v0)&lt;0
+0506     ni=2*pi-ni;
+0507 <span class="keyword">end</span>
+0508 EccAn=<a href="#_sub3" class="code" title="subfunction E=ni2E(ni,e)">ni2E</a>(ni,e);
+0509 E(6)=EccAn;
+0510 
+0511 
+0512 <span class="comment">%--------------------------------------------------------------------------</span>
+0513 <a name="_sub3" href="#_subfunctions" class="code">function E=ni2E(ni,e)</a>
+0514 <span class="keyword">if</span> e&lt;1
+0515     E=2*atan(sqrt((1-e)/(1+e))*tan(ni/2)); <span class="comment">%algebraic kepler's equation</span>
+0516 <span class="keyword">else</span>
+0517     E=2*atan(sqrt((e-1)/(e+1))*tan(ni/2)); <span class="comment">%algebraic equivalent of kepler's equation in terms of the Gudermannian</span>
+0518 <span class="keyword">end</span>
+0519 
+0520 
+0521 
+0522 <span class="comment">%--------------------------------------------------------------------------</span>
+0523 <a name="_sub4" href="#_subfunctions" class="code">function [r0,v0]=par2IC(E,mu)</a>
+0524 <span class="comment">%</span>
+0525 <span class="comment">%Usage: [r0,v0] = IC2par(E,mu)</span>
+0526 <span class="comment">%</span>
+0527 <span class="comment">%Outputs:</span>
+0528 <span class="comment">%           r0:    column vector for the position</span>
+0529 <span class="comment">%           v0:    column vector for the velocity</span>
+0530 <span class="comment">%</span>
+0531 <span class="comment">%Inputs:</span>
+0532 <span class="comment">%           E:     Column Vectors containing the six keplerian parameters,</span>
+0533 <span class="comment">%                  (a (negative fr hyperbolas),e,i,OM,om,Eccentric Anomaly</span>
+0534 <span class="comment">%                    or Gudermannian if e&gt;1)</span>
+0535 <span class="comment">%           mu:    gravitational constant</span>
+0536 <span class="comment">%</span>
+0537 <span class="comment">%Comments:  The parameters returned are, of course, referred to the same</span>
+0538 <span class="comment">%ref. frame in which r0,v0 are given. a can be given either in kms or AUs,</span>
+0539 <span class="comment">%but has to be consistent with mu.All the angles must be given in radians.</span>
+0540 
+0541 a=E(1);
+0542 e=E(2);
+0543 i=E(3);
+0544 omg=E(4);
+0545 omp=E(5);
+0546 EA=E(6);
+0547 
+0548 
+0549 <span class="comment">% Grandezze definite nel piano dell'orbita</span>
+0550 <span class="keyword">if</span> e&lt;1
+0551     b=a*sqrt(1-e^2);
+0552     n=sqrt(mu/a^3);
+0553 
+0554     xper=a*(cos(EA)-e);
+0555     yper=b*sin(EA);
+0556 
+0557     xdotper=-(a*n*sin(EA))/(1-e*cos(EA));
+0558     ydotper=(b*n*cos(EA))/(1-e*cos(EA));
+0559 <span class="keyword">else</span>
+0560     b=-a*sqrt(e^2-1);
+0561     n=sqrt(-mu/a^3);   
+0562     dNdzeta=e*(1+tan(EA)^2)-(1/2+1/2*tan(1/2*EA+1/4*pi)^2)/tan(1/2*EA+1/4*pi);
+0563     
+0564     xper = a/cos(EA)-a*e;
+0565     yper = b*tan(EA);
+0566     
+0567     xdotper = a*tan(EA)/cos(EA)*n/dNdzeta;
+0568     ydotper = b/cos(EA)^2*n/dNdzeta;
+0569 <span class="keyword">end</span>
+0570 
+0571 <span class="comment">% Matrice di trasformazione da perifocale a ECI</span>
+0572 
+0573 R(1,1)=cos(omg)*cos(omp)-sin(omg)*sin(omp)*cos(i);
+0574 R(1,2)=-cos(omg)*sin(omp)-sin(omg)*cos(omp)*cos(i);
+0575 R(1,3)=sin(omg)*sin(i);
+0576 R(2,1)=sin(omg)*cos(omp)+cos(omg)*sin(omp)*cos(i);
+0577 R(2,2)=-sin(omg)*sin(omp)+cos(omg)*cos(omp)*cos(i);
+0578 R(2,3)=-cos(omg)*sin(i);
+0579 R(3,1)=sin(omp)*sin(i);
+0580 R(3,2)=cos(omp)*sin(i);
+0581 R(3,3)=cos(i);
+0582 
+0583 <span class="comment">% Posizione nel sistema inerziale</span>
+0584 
+0585 r0=R*[xper;yper;0];
+0586 v0=R*[xdotper;ydotper;0];
+0587 
+0588 
+0589 
+0590 <span class="comment">%--------------------------------------------------------------------------</span>
+0591 <a name="_sub5" href="#_subfunctions" class="code">function [v1,v2,a,p,theta,iter]=lambertI(r1,r2,t,mu,lw,N,branch)</a>
+0592 <span class="comment">%</span>
+0593 <span class="comment">%</span>
+0594 <span class="comment">%This routine implements a new algorithm that solves Lambert's problem. The</span>
+0595 <span class="comment">%algorithm has two major characteristics that makes it favorable to other</span>
+0596 <span class="comment">%existing ones.</span>
+0597 <span class="comment">%</span>
+0598 <span class="comment">%   1) It describes the generic orbit solution of the boundary condition</span>
+0599 <span class="comment">%   problem through the variable X=log(1+cos(alpha/2)). By doing so the</span>
+0600 <span class="comment">%   graphs of the time of flight become defined in the entire real axis and</span>
+0601 <span class="comment">%   resembles a straight line. Convergence is granted within few iterations</span>
+0602 <span class="comment">%   for all the possible geometries (except, of course, when the transfer</span>
+0603 <span class="comment">%   angle is zero). When multiple revolutions are considered the variable is</span>
+0604 <span class="comment">%   X=tan(cos(alpha/2)*pi/2).</span>
+0605 <span class="comment">%</span>
+0606 <span class="comment">%   2) Once the orbit has been determined in the plane, this routine</span>
+0607 <span class="comment">%   evaluates the velocity vectors at the two points in a way that is not</span>
+0608 <span class="comment">%   singular for the transfer angle approaching to pi (Lagrange coefficient</span>
+0609 <span class="comment">%   based methods are numerically not well suited for this purpose).</span>
+0610 <span class="comment">%</span>
+0611 <span class="comment">%   As a result Lambert's problem is solved (with multiple revolutions</span>
+0612 <span class="comment">%   being accounted for) with the same computational effort for all</span>
+0613 <span class="comment">%   possible geometries. The case of near 180 transfers is also solved</span>
+0614 <span class="comment">%   efficiently.</span>
+0615 <span class="comment">%</span>
+0616 <span class="comment">%   We note here that even when the transfer angle is exactly equal to pi</span>
+0617 <span class="comment">%   the algorithm does solve the problem in the plane (it finds X), but it</span>
+0618 <span class="comment">%   is not able to evaluate the plane in which the orbit lies. A solution</span>
+0619 <span class="comment">%   to this would be to provide the direction of the plane containing the</span>
+0620 <span class="comment">%   transfer orbit from outside. This has not been implemented in this</span>
+0621 <span class="comment">%   routine since such a direction would depend on which application the</span>
+0622 <span class="comment">%   transfer is going to be used in.</span>
+0623 <span class="comment">%</span>
+0624 <span class="comment">%Usage: [v1,v2,a,p,theta,iter]=lambertI(r1,r2,t,mu,lw,N,branch)</span>
+0625 <span class="comment">%</span>
+0626 <span class="comment">%Inputs:</span>
+0627 <span class="comment">%           r1=Position vector at departure (column)</span>
+0628 <span class="comment">%           r2=Position vector at arrival (column, same units as r1)</span>
+0629 <span class="comment">%           t=Transfer time (scalar)</span>
+0630 <span class="comment">%           mu=gravitational parameter (scalar, units have to be</span>
+0631 <span class="comment">%           consistent with r1,t units)</span>
+0632 <span class="comment">%           lw=1 if long way is chosen</span>
+0633 <span class="comment">%           branch='l' if the left branch is selected in a problem where N</span>
+0634 <span class="comment">%           is not 0 (multirevolution)</span>
+0635 <span class="comment">%           N=number of revolutions</span>
+0636 <span class="comment">%</span>
+0637 <span class="comment">%Outputs:</span>
+0638 <span class="comment">%           v1=Velocity at departure        (consistent units)</span>
+0639 <span class="comment">%           v2=Velocity at arrival</span>
+0640 <span class="comment">%           a=semi major axis of the solution</span>
+0641 <span class="comment">%           p=semi latus rectum of the solution</span>
+0642 <span class="comment">%           theta=transfer angle in rad</span>
+0643 <span class="comment">%           iter=number of iteration made by the newton solver (usually 6)</span>
+0644 <span class="comment">%</span>
+0645 <span class="comment">%</span>
+0646 <span class="comment">%Preliminary control on the function call</span>
+0647 <span class="keyword">if</span> nargin==5
+0648     N=0;
+0649 <span class="keyword">end</span>
+0650 <span class="keyword">if</span> t&lt;=0
+0651     warning(<span class="string">'Negative time as input'</span>)
+0652     v1=[NaN;NaN;NaN];
+0653     v2=[NaN;NaN;NaN];
+0654     <span class="keyword">return</span>
+0655 <span class="keyword">end</span>
+0656 
+0657 
+0658 tol=1e-11;  <span class="comment">%Increasing the tolerance does not bring any advantage as the</span>
+0659 <span class="comment">%precision is usually greater anyway (due to the rectification of the tof</span>
+0660 <span class="comment">%graph) except near particular cases such as parabolas in which cases a</span>
+0661 <span class="comment">%lower precision allow for usual convergence.</span>
+0662 
+0663 
+0664 <span class="comment">%Non dimensional units</span>
+0665 R=norm(r1);
+0666 V=sqrt(mu/R);
+0667 T=R/V;
+0668 
+0669 <span class="comment">%working with non-dimensional radii and time-of-flight</span>
+0670 r1=r1/R;
+0671 r2=r2/R;
+0672 t=t/T;                     
+0673 
+0674 <span class="comment">%Evaluation of the relevant geometry parameters in non dimensional units</span>
+0675 r2mod=norm(r2);
+0676 theta=acos(r1'*r2/r2mod);
+0677 
+0678 <span class="keyword">if</span> lw
+0679     theta=2*pi-theta;
+0680 <span class="keyword">end</span>
+0681 c=sqrt(1+r2mod^2-2*r2mod*cos(theta)); <span class="comment">%non dimensional chord</span>
+0682 s=(1+r2mod+c)/2;                      <span class="comment">%non dimensional semi-perimeter</span>
+0683 am=s/2;                               <span class="comment">%minimum energy ellipse semi major axis</span>
+0684 lambda=sqrt(r2mod)*cos(theta/2)/s;    <span class="comment">%lambda parameter defined in BATTIN's book</span>
+0685 
+0686 
+0687 
+0688 <span class="comment">%We start finding the log(x+1) value of the solution conic:</span>
+0689 <span class="comment">%%NO MULTI REV --&gt; (1 SOL)</span>
+0690 <span class="keyword">if</span> N==0
+0691     inn1=-.5233;    <span class="comment">%first guess point</span>
+0692     inn2=.5233;     <span class="comment">%second guess point</span>
+0693     x1=log(1+inn1);
+0694     x2=log(1+inn2);
+0695     y1=log(<a href="#_sub6" class="code" title="subfunction t=x2tof(x,s,c,lw,N)">x2tof</a>(inn1,s,c,lw,N))-log(t);
+0696     y2=log(<a href="#_sub6" class="code" title="subfunction t=x2tof(x,s,c,lw,N)">x2tof</a>(inn2,s,c,lw,N))-log(t);
+0697     
+0698     <span class="comment">%Newton iterations</span>
+0699     err=1;
+0700     i=0;
+0701     <span class="keyword">while</span> ((err&gt;tol) &amp;&amp; (y1~=y2))
+0702         i=i+1;
+0703         xnew=(x1*y2-y1*x2)/(y2-y1);
+0704         ynew=log(<a href="#_sub6" class="code" title="subfunction t=x2tof(x,s,c,lw,N)">x2tof</a>(exp(xnew)-1,s,c,lw,N))-log(t);
+0705         x1=x2;
+0706         y1=y2;
+0707         x2=xnew;
+0708         y2=ynew;
+0709         err=abs(x1-xnew);
+0710     <span class="keyword">end</span>
+0711     iter=i;
+0712     x=exp(xnew)-1;
+0713     
+0714     
+0715     <span class="comment">%%MULTI REV --&gt; (2 SOL) SEPARATING RIGHT AND LEFT BRANCH</span>
+0716 <span class="keyword">else</span> 
+0717     <span class="keyword">if</span> branch==<span class="string">'l'</span>
+0718         inn1=-.5234;
+0719         inn2=-.2234;
+0720     <span class="keyword">else</span>
+0721         inn1=.7234;
+0722         inn2=.5234;
+0723     <span class="keyword">end</span>
+0724     x1=tan(inn1*pi/2);
+0725     x2=tan(inn2*pi/2);
+0726     y1=<a href="#_sub6" class="code" title="subfunction t=x2tof(x,s,c,lw,N)">x2tof</a>(inn1,s,c,lw,N)-t;
+0727     
+0728     y2=<a href="#_sub6" class="code" title="subfunction t=x2tof(x,s,c,lw,N)">x2tof</a>(inn2,s,c,lw,N)-t;
+0729     err=1;
+0730     i=0;
+0731     
+0732     <span class="comment">%Newton Iteration</span>
+0733     <span class="keyword">while</span> ((err&gt;tol) &amp;&amp; (i&lt;60) &amp;&amp; (y1~=y2))
+0734         i=i+1;
+0735         xnew=(x1*y2-y1*x2)/(y2-y1);
+0736         ynew=<a href="#_sub6" class="code" title="subfunction t=x2tof(x,s,c,lw,N)">x2tof</a>(atan(xnew)*2/pi,s,c,lw,N)-t;
+0737         x1=x2;
+0738         y1=y2;
+0739         x2=xnew;
+0740         y2=ynew;
+0741         err=abs(x1-xnew);        
+0742     <span class="keyword">end</span>
+0743     x=atan(xnew)*2/pi;
+0744     iter=i;
+0745 <span class="keyword">end</span>
+0746 
+0747 <span class="comment">%The solution has been evaluated in terms of log(x+1) or tan(x*pi/2), we</span>
+0748 <span class="comment">%now need the conic. As for transfer angles near to pi the lagrange</span>
+0749 <span class="comment">%coefficient technique goes singular (dg approaches a zero/zero that is</span>
+0750 <span class="comment">%numerically bad) we here use a different technique for those cases. When</span>
+0751 <span class="comment">%the transfer angle is exactly equal to pi, then the ih unit vector is not</span>
+0752 <span class="comment">%determined. The remaining equations, though, are still valid.</span>
+0753 
+0754 
+0755 a=am/(1-x^2);                       <span class="comment">%solution semimajor axis</span>
+0756 <span class="comment">%calcolo psi</span>
+0757 <span class="keyword">if</span> x&lt;1 <span class="comment">%ellisse</span>
+0758     beta=2*asin(sqrt((s-c)/2/a));
+0759     <span class="keyword">if</span> lw
+0760         beta=-beta;
+0761     <span class="keyword">end</span>
+0762     alfa=2*acos(x);
+0763     psi=(alfa-beta)/2;
+0764     eta2=2*a*sin(psi)^2/s;
+0765     eta=sqrt(eta2);
+0766 <span class="keyword">else</span> <span class="comment">%iperbole</span>
+0767     beta=2*asinh(sqrt((c-s)/2/a));
+0768     <span class="keyword">if</span> lw
+0769         beta=-beta;
+0770     <span class="keyword">end</span>
+0771     alfa=2*acosh(x);
+0772     psi=(alfa-beta)/2;
+0773     eta2=-2*a*sinh(psi)^2/s;
+0774     eta=sqrt(eta2);
+0775 <span class="keyword">end</span>
+0776 p=r2mod/am/eta2*sin(theta/2)^2;     <span class="comment">%parameter of the solution</span>
+0777 sigma1=1/eta/sqrt(am)*(2*lambda*am-(lambda+x*eta));
+0778 ih=<a href="#_sub8" class="code" title="subfunction v=vers(V)">vers</a>(<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(r1,r2)');
+0779 <span class="keyword">if</span> lw
+0780     ih=-ih;
+0781 <span class="keyword">end</span>
+0782 
+0783 vr1 = sigma1;
+0784 vt1 = sqrt(p);
+0785 v1  = vr1 * r1   +   vt1 * <a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(ih,r1)';
+0786 
+0787 vt2=vt1/r2mod;
+0788 vr2=-vr1+(vt1-vt2)/tan(theta/2);
+0789 v2=vr2*r2/r2mod+vt2*<a href="#_sub9" class="code" title="subfunction ansd = vett(r1,r2)">vett</a>(ih,r2/r2mod)';
+0790 v1=v1*V;
+0791 v2=v2*V;
+0792 a=a*R;
+0793 p=p*R;
+0794 
+0795 
+0796 
+0797 <span class="comment">%--------------------------------------------------------------------------</span>
+0798 <span class="comment">%Subfunction that evaluates the time of flight as a function of x</span>
+0799 <a name="_sub6" href="#_subfunctions" class="code">function t=x2tof(x,s,c,lw,N)  </a>
+0800 
+0801 am=s/2;
+0802 a=am/(1-x^2);
+0803 <span class="keyword">if</span> x&lt;1 <span class="comment">%ELLISSE</span>
+0804     beta=2*asin(sqrt((s-c)/2/a));
+0805     <span class="keyword">if</span> lw
+0806         beta=-beta;
+0807     <span class="keyword">end</span>
+0808     alfa=2*acos(x);
+0809 <span class="keyword">else</span>   <span class="comment">%IPERBOLE</span>
+0810     alfa=2*acosh(x);
+0811     beta=2*asinh(sqrt((s-c)/(-2*a)));
+0812     <span class="keyword">if</span> lw
+0813         beta=-beta;
+0814     <span class="keyword">end</span>
+0815 <span class="keyword">end</span>
+0816 t=<a href="#_sub7" class="code" title="subfunction t=tofabn(sigma,alfa,beta,N)">tofabn</a>(a,alfa,beta,N);
+0817 
+0818 
+0819 <span class="comment">%--------------------------------------------------------------------------</span>
+0820 <a name="_sub7" href="#_subfunctions" class="code">function t=tofabn(sigma,alfa,beta,N)</a>
+0821 <span class="comment">%</span>
+0822 <span class="comment">%subfunction that evaluates the time of flight via Lagrange expression</span>
+0823 <span class="comment">%</span>
+0824 <span class="keyword">if</span> sigma&gt;0
+0825     t=sigma*sqrt(sigma)*((alfa-sin(alfa))-(beta-sin(beta))+N*2*pi);
+0826 <span class="keyword">else</span>
+0827     t=-sigma*sqrt(-sigma)*((sinh(alfa)-alfa)-(sinh(beta)-beta));
+0828 <span class="keyword">end</span>
+0829 
+0830 <span class="comment">%--------------------------------------------------------------------------</span>
+0831 <a name="_sub8" href="#_subfunctions" class="code">function v=vers(V) </a>
+0832 <span class="comment">%subfunction that evaluates unit vectors</span>
+0833 v=V/sqrt(V'*V);
+0834 
+0835 
+0836 
+0837 <span class="comment">%--------------------------------------------------------------------------</span>
+0838 <a name="_sub9" href="#_subfunctions" class="code">function ansd = vett(r1,r2)  </a>
+0839 <span class="comment">%</span>
+0840 <span class="comment">%subfunction that evaluates vector product</span>
+0841 ansd(1)=(r1(2)*r2(3)-r1(3)*r2(2));
+0842 ansd(2)=(r1(3)*r2(1)-r1(1)*r2(3));
+0843 ansd(3)=(r1(1)*r2(2)-r1(2)*r2(1));
+0844 
+0845 
+0846 
+0847 
+0848 <span class="comment">%--------------------------------------------------------------------------</span>
+0849 <a name="_sub10" href="#_subfunctions" class="code">function  [r,v,E]=pleph_an ( mjd2000, planet);</a>
+0850 <span class="comment">%</span>
+0851 <span class="comment">%The original version of this file was written in Fortran 77</span>
+0852 <span class="comment">%and is part of ESOC library. The file has later been translated under the</span>
+0853 <span class="comment">%name uplanet.m in Matlab, but that version was affected by several</span>
+0854 <span class="comment">%mistakes. In particular Pluto orbit was affected by great uncertainties.</span>
+0855 <span class="comment">%As a consequence its analytical eph have been substituted by a fifth order</span>
+0856 <span class="comment">%polynomial least square fit generated by Dario Izzo (ESA ACT). JPL405</span>
+0857 <span class="comment">%ephemerides (Charon-Pluto barycenter) have been used to produce the</span>
+0858 <span class="comment">%coefficients. WARNING: Pluto ephemerides should not be used outside the</span>
+0859 <span class="comment">%range 2000-2100;</span>
+0860 <span class="comment">%</span>
+0861 <span class="comment">%The analytical ephemerides of the nine planets of our solar system are</span>
+0862 <span class="comment">%returned in rectangular coordinates referred to the ecliptic J2000</span>
+0863 <span class="comment">%reference frame. Using analytical ephemerides instead of real ones (for</span>
+0864 <span class="comment">%examples JPL ephemerides) is faster but not as accurate, especially for</span>
+0865 <span class="comment">%the outer planets</span>
+0866 <span class="comment">%</span>
+0867 <span class="comment">%Date:                  28/05/2004</span>
+0868 <span class="comment">%Revision:              1</span>
+0869 <span class="comment">%Tested by:             ----------</span>
+0870 <span class="comment">%</span>
+0871 <span class="comment">%</span>
+0872 <span class="comment">%Usage: [r,v,E]=pleph_an ( mjd2000 , IBODY );</span>
+0873 <span class="comment">%</span>
+0874 <span class="comment">%Inputs:</span>
+0875 <span class="comment">%           mjd2000:    Days elapsed from 1st of January 2000 counted from</span>
+0876 <span class="comment">%           midnight.</span>
+0877 <span class="comment">%           planet:     Integer form 1 to 9 containing the number</span>
+0878 <span class="comment">%           of the planet (Mercury, Venus, Earth, Mars, Jupiter, Saturn,</span>
+0879 <span class="comment">%           Uranus, Neptune, Pluto)</span>
+0880 <span class="comment">%</span>
+0881 <span class="comment">%Outputs:</span>
+0882 <span class="comment">%           r:         Column vector containing (in km) the position of the</span>
+0883 <span class="comment">%                      planet in the ecliptic J2000</span>
+0884 <span class="comment">%           v:         Column vector containing (in km/sec.) the velocity of</span>
+0885 <span class="comment">%                      the planet in the ecliptic J2000</span>
+0886 <span class="comment">%           E:         Column Vectors containing the six keplerian parameters,</span>
+0887 <span class="comment">%                      (a,e,i,OM,om,Eccentric Anomaly)</span>
+0888 <span class="comment">%</span>
+0889 <span class="comment">%Xref:      the routine needs a variable mu on the workspace whose 10th</span>
+0890 <span class="comment">%           element should be the sun gravitational parameter in KM^3/SEC^2</span>
+0891 
+0892 <span class="keyword">global</span> mu
+0893 <span class="keyword">global</span> AU
+0894 
+0895 
+0896 
+0897 RAD=pi/180;
+0898 KM  = 149597870.66;        <span class="comment">%Astronomical Unit</span>
+0899 <span class="comment">%KM=AU; % Roberto, global variable AU was not initialized</span>
+0900 
+0901 
+0902 <span class="comment">%</span>
+0903 <span class="comment">%  T = JULIAN CENTURIES SINCE 1900</span>
+0904 <span class="comment">%</span>
+0905 T   = (mjd2000 + 36525.00)/36525.00;
+0906 TT  = T*T;
+0907 TTT = T*TT;
+0908 <span class="comment">%</span>
+0909 <span class="comment">%  CLASSICAL PLANETARY ELEMENTS ESTIMATION IN MEAN ECLIPTIC OF DATE</span>
+0910 <span class="comment">%</span>
+0911 <span class="keyword">switch</span> planet
+0912     <span class="comment">%</span>
+0913     <span class="comment">%  MERCURY</span>
+0914     <span class="comment">%</span>
+0915     <span class="keyword">case</span> 1 
+0916         E(1) = 0.38709860;
+0917         E(2) = 0.205614210 + 0.000020460*T - 0.000000030*TT;
+0918         E(3) = 7.002880555555555560 + 1.86083333333333333e-3*T - 1.83333333333333333e-5*TT;
+0919         E(4) = 4.71459444444444444e+1 + 1.185208333333333330*T + 1.73888888888888889e-4*TT;
+0920         E(5) = 2.87537527777777778e+1 + 3.70280555555555556e-1*T +1.20833333333333333e-4*TT;
+0921         XM   = 1.49472515288888889e+5 + 6.38888888888888889e-6*T;
+0922         E(6) = 1.02279380555555556e2 + XM*T;
+0923         <span class="comment">%</span>
+0924         <span class="comment">%  VENUS</span>
+0925         <span class="comment">%</span>
+0926     <span class="keyword">case</span> 2
+0927         E(1) = 0.72333160;
+0928         E(2) = 0.006820690 - 0.000047740*T + 0.0000000910*TT;
+0929         E(3) = 3.393630555555555560 + 1.00583333333333333e-3*T - 9.72222222222222222e-7*TT;
+0930         E(4) = 7.57796472222222222e+1 + 8.9985e-1*T + 4.1e-4*TT;
+0931         E(5) = 5.43841861111111111e+1 + 5.08186111111111111e-1*T -1.38638888888888889e-3*TT;
+0932         XM   = 5.8517803875e+4 + 1.28605555555555556e-3*T;
+0933         E(6) = 2.12603219444444444e2 + XM*T;
+0934         <span class="comment">%</span>
+0935         <span class="comment">%  EARTH</span>
+0936         <span class="comment">%</span>
+0937     <span class="keyword">case</span> 3
+0938         E(1) = 1.000000230;
+0939         E(2) = 0.016751040 - 0.000041800*T - 0.0000001260*TT;
+0940         E(3) = 0.00;
+0941         E(4) = 0.00;
+0942         E(5) = 1.01220833333333333e+2 + 1.7191750*T + 4.52777777777777778e-4*TT + 3.33333333333333333e-6*TTT;
+0943         XM   = 3.599904975e+4 - 1.50277777777777778e-4*T - 3.33333333333333333e-6*TT;
+0944         E(6) = 3.58475844444444444e2 + XM*T;
+0945         <span class="comment">%</span>
+0946         <span class="comment">%  MARS</span>
+0947         <span class="comment">%</span>
+0948     <span class="keyword">case</span> 4
+0949         E(1) = 1.5236883990;
+0950         E(2) = 0.093312900 + 0.0000920640*T - 0.0000000770*TT;
+0951         E(3) = 1.850333333333333330 - 6.75e-4*T + 1.26111111111111111e-5*TT;
+0952         E(4) = 4.87864416666666667e+1 + 7.70991666666666667e-1*T - 1.38888888888888889e-6*TT - 5.33333333333333333e-6*TTT;
+0953         E(5) = 2.85431761111111111e+2 + 1.069766666666666670*T +  1.3125e-4*TT + 4.13888888888888889e-6*TTT;
+0954         XM   = 1.91398585e+4 + 1.80805555555555556e-4*T + 1.19444444444444444e-6*TT;
+0955         E(6) = 3.19529425e2 + XM*T;
+0956         
+0957         <span class="comment">%</span>
+0958         <span class="comment">%  JUPITER</span>
+0959         <span class="comment">%</span>
+0960     <span class="keyword">case</span> 5
+0961         E(1) = 5.2025610;
+0962         E(2) = 0.048334750 + 0.000164180*T  - 0.00000046760*TT -0.00000000170*TTT;
+0963         E(3) = 1.308736111111111110 - 5.69611111111111111e-3*T +  3.88888888888888889e-6*TT;
+0964         E(4) = 9.94433861111111111e+1 + 1.010530*T + 3.52222222222222222e-4*TT - 8.51111111111111111e-6*TTT;
+0965         E(5) = 2.73277541666666667e+2 + 5.99431666666666667e-1*T + 7.0405e-4*TT + 5.07777777777777778e-6*TTT;
+0966         XM   = 3.03469202388888889e+3 - 7.21588888888888889e-4*T + 1.78444444444444444e-6*TT;
+0967         E(6) = 2.25328327777777778e2 + XM*T;
+0968         <span class="comment">%</span>
+0969         <span class="comment">%  SATURN</span>
+0970         <span class="comment">%</span>
+0971     <span class="keyword">case</span> 6
+0972         E(1) = 9.5547470;
+0973         E(2) = 0.055892320 - 0.00034550*T - 0.0000007280*TT + 0.000000000740*TTT;
+0974         E(3) = 2.492519444444444440 - 3.91888888888888889e-3*T - 1.54888888888888889e-5*TT + 4.44444444444444444e-8*TTT;
+0975         E(4) = 1.12790388888888889e+2 + 8.73195138888888889e-1*T -1.52180555555555556e-4*TT - 5.30555555555555556e-6*TTT;
+0976         E(5) = 3.38307772222222222e+2 + 1.085220694444444440*T + 9.78541666666666667e-4*TT + 9.91666666666666667e-6*TTT;
+0977         XM   = 1.22155146777777778e+3 - 5.01819444444444444e-4*T - 5.19444444444444444e-6*TT;
+0978         E(6) = 1.75466216666666667e2 + XM*T;
+0979         <span class="comment">%</span>
+0980         <span class="comment">%  URANUS</span>
+0981         <span class="comment">%</span>
+0982     <span class="keyword">case</span> 7
+0983         E(1) = 19.218140;
+0984         E(2) = 0.04634440 - 0.000026580*T + 0.0000000770*TT;
+0985         E(3) = 7.72463888888888889e-1 + 6.25277777777777778e-4*T + 3.95e-5*TT;
+0986         E(4) = 7.34770972222222222e+1 + 4.98667777777777778e-1*T + 1.31166666666666667e-3*TT;
+0987         E(5) = 9.80715527777777778e+1 + 9.85765e-1*T - 1.07447222222222222e-3*TT - 6.05555555555555556e-7*TTT;
+0988         XM   = 4.28379113055555556e+2 + 7.88444444444444444e-5*T + 1.11111111111111111e-9*TT;
+0989         E(6) = 7.26488194444444444e1 + XM*T;
+0990         <span class="comment">%</span>
+0991         <span class="comment">%  NEPTUNE</span>
+0992         <span class="comment">%</span>
+0993     <span class="keyword">case</span> 8
+0994         E(1) = 30.109570;
+0995         E(2) = 0.008997040 + 0.0000063300*T - 0.0000000020*TT;
+0996         E(3) = 1.779241666666666670 - 9.54361111111111111e-3*T - 9.11111111111111111e-6*TT;
+0997         E(4) = 1.30681358333333333e+2 + 1.0989350*T + 2.49866666666666667e-4*TT - 4.71777777777777778e-6*TTT;
+0998         E(5) = 2.76045966666666667e+2 + 3.25639444444444444e-1*T + 1.4095e-4*TT + 4.11333333333333333e-6*TTT;
+0999         XM   = 2.18461339722222222e+2 - 7.03333333333333333e-5*T;
+1000         E(6) = 3.77306694444444444e1 + XM*T;
+1001         <span class="comment">%</span>
+1002         <span class="comment">%  PLUTO</span>
+1003         <span class="comment">%</span>
+1004     <span class="keyword">case</span> 9
+1005         <span class="comment">%Fifth order polynomial least square fit generated by Dario Izzo</span>
+1006         <span class="comment">%(ESA ACT). JPL405 ephemerides (Charon-Pluto barycenter) have been used to produce the coefficients.</span>
+1007         <span class="comment">%This approximation should not be used outside the range 2000-2100;</span>
+1008         T=mjd2000/36525;
+1009         TT=T*T;
+1010         TTT=TT*T;
+1011         TTTT=TTT*T;
+1012         TTTTT=TTTT*T;
+1013         E(1)=39.34041961252520 + 4.33305138120726*T - 22.93749932403733*TT + 48.76336720791873*TTT - 45.52494862462379*TTTT + 15.55134951783384*TTTTT;
+1014         E(2)=0.24617365396517 + 0.09198001742190*T - 0.57262288991447*TT + 1.39163022881098*TTT - 1.46948451587683*TTTT + 0.56164158721620*TTTTT;
+1015         E(3)=17.16690003784702 - 0.49770248790479*T + 2.73751901890829*TT - 6.26973695197547*TTT + 6.36276927397430*TTTT - 2.37006911673031*TTTTT;
+1016         E(4)=110.222019291707 + 1.551579150048*T - 9.701771291171*TT + 25.730756810615*TTT - 30.140401383522*TTTT + 12.796598193159 * TTTTT;
+1017         E(5)=113.368933916592 + 9.436835192183*T - 35.762300003726*TT + 48.966118351549*TTT - 19.384576636609*TTTT - 3.362714022614 * TTTTT;
+1018         E(6)=15.17008631634665 + 137.023166578486*T + 28.362805871736*TT - 29.677368415909*TTT - 3.585159909117*TTTT + 13.406844652829 * TTTTT;
+1019 <span class="keyword">end</span>
+1020 <span class="comment">%</span>
+1021 <span class="comment">%  CONVERSION OF AU INTO KM, DEG INTO RAD</span>
+1022 <span class="comment">%</span>
+1023 E(1)     =     E(1)*KM;
+1024 <span class="keyword">for</span>  I = 3: 6
+1025     E(I)     = E(I)*RAD;
+1026 <span class="keyword">end</span>
+1027 E(6)     = mod(E(6), 2*pi);
+1028 
+1029 <span class="comment">%Conversion from mean anomaly to eccentric anomaly via Kepler's equation</span>
+1030 EccAnom=<a href="#_sub12" class="code" title="subfunction E=M2E(M,e)">M2E</a>(E(6),E(2));
+1031 E(6)=EccAnom;
+1032 
+1033 <span class="comment">%Calcolo velocit�e posizione nel sistema J2000</span>
+1034 [r,v]=<a href="#_sub11" class="code" title="subfunction [r,v] = conversion (E)">conversion</a>(E);
+1035 
+1036 
+1037 
+1038 <span class="comment">%--------------------------------------------------------------------------</span>
+1039 <a name="_sub11" href="#_subfunctions" class="code">function [r,v] = conversion (E)</a>
+1040 <span class="comment">%</span>
+1041 <span class="comment">% Parametri orbitali</span>
+1042 
+1043 muSUN=  1.327124280000000e+011;       <span class="comment">%gravitational parameter for the sun</span>
+1044 
+1045 a=E(1);
+1046 e=E(2);
+1047 i=E(3);
+1048 omg=E(4);
+1049 omp=E(5);
+1050 EA=E(6);
+1051 
+1052 
+1053 <span class="comment">% Grandezze definite nel piano dell'orbita</span>
+1054 
+1055 b=a*sqrt(1-e^2);
+1056 n=sqrt(muSUN/a^3);
+1057 
+1058 xper=a*(cos(EA)-e);
+1059 yper=b*sin(EA);
+1060 
+1061 xdotper=-(a*n*sin(EA))/(1-e*cos(EA));
+1062 ydotper=(b*n*cos(EA))/(1-e*cos(EA));
+1063 
+1064 <span class="comment">% Matrice di trasformazione da perifocale a ECI</span>
+1065 
+1066 R(1,1)=cos(omg)*cos(omp)-sin(omg)*sin(omp)*cos(i);
+1067 R(1,2)=-cos(omg)*sin(omp)-sin(omg)*cos(omp)*cos(i);
+1068 R(1,3)=sin(omg)*sin(i);
+1069 R(2,1)=sin(omg)*cos(omp)+cos(omg)*sin(omp)*cos(i);
+1070 R(2,2)=-sin(omg)*sin(omp)+cos(omg)*cos(omp)*cos(i);
+1071 R(2,3)=-cos(omg)*sin(i);
+1072 R(3,1)=sin(omp)*sin(i);
+1073 R(3,2)=cos(omp)*sin(i);
+1074 R(3,3)=cos(i);
+1075 
+1076 <span class="comment">% Posizione nel sistema inerziale</span>
+1077 
+1078 r=R*[xper;yper;0];
+1079 v=R*[xdotper;ydotper;0];
+1080 
+1081 
+1082 
+1083 <span class="comment">%--------------------------------------------------------------------------</span>
+1084 <a name="_sub12" href="#_subfunctions" class="code">function E=M2E(M,e)</a>
+1085 <span class="comment">%</span>
+1086 i=0;
+1087 tol=1e-10;
+1088 err=1;
+1089 E=M+e*cos(M);   <span class="comment">%initial guess</span>
+1090 <span class="keyword">while</span> err&gt;tol &amp;&amp; i&lt;100
+1091     i=i+1;
+1092     Enew=E-(E-e*sin(E)-M)/(1-e*cos(E));
+1093     err=abs(E-Enew);
+1094     E=Enew;
+1095 <span class="keyword">end</span>
+1096 
+1097 
+1098 <span class="comment">%--------------------------------------------------------------------------</span>
+1099 <a name="_sub13" href="#_subfunctions" class="code">function M=E2M(E,e)</a>
+1100 <span class="comment">%</span>
+1101 <span class="comment">%Transforms the eccentric anomaly to mean anomaly. All i/o in radians</span>
+1102 <span class="comment">%</span>
+1103 <span class="comment">%Usage: M=E2M(E,e)</span>
+1104 <span class="comment">%</span>
+1105 <span class="comment">%Inputs :   E : Eccentric anomaly or Gudermannian if e&gt;1</span>
+1106 <span class="comment">%           e : Eccentricity of considered orbit</span>
+1107 <span class="comment">%</span>
+1108 <span class="comment">%Output :   M : Mean anomaly or N if e&gt;1</span>
+1109 
+1110 <span class="keyword">if</span> e&lt;1 <span class="comment">%Ellipse, E is the eccentric anomaly</span>
+1111     M=E-e*sin(E);
+1112 <span class="keyword">else</span>  <span class="comment">%Hyperbola, E is the Gudermannian</span>
+1113     M=e*tan(E)-log(tan(E/2+pi/4));
+1114 <span class="keyword">end</span>
+1115     
+1116 
+1117 
+1118 
+1119 <span class="comment">%--------------------------------------------------------------------------</span>
+1120 <a name="_sub14" href="#_subfunctions" class="code">function [r,v]=CUSTOMeph(jd,epoch,keplerian,flag)</a>
+1121 <span class="comment">%</span>
+1122 <span class="comment">%Returns the position and the velocity of an object having keplerian</span>
+1123 <span class="comment">%parameters epoch,a,e,i,W,w,M</span>
+1124 <span class="comment">%</span>
+1125 <span class="comment">%Usage:     [r,v]=CUSTOMeph(jd,name,list,data,flag)</span>
+1126 <span class="comment">%</span>
+1127 <span class="comment">%Inputs:    jd: julian date</span>
+1128 <span class="comment">%           epoch: mjd when the object was observed (referred to M)</span>
+1129 <span class="comment">%           keplerian: vector containing the keplerian orbital parameters</span>
+1130 <span class="comment">%</span>
+1131 <span class="comment">%Output:    r = object position with respect to the Sun (km if flag=1, AU otherwise)</span>
+1132 <span class="comment">%           v = object velocity ( km/s if flag=1, AU/days otherways )</span>
+1133 <span class="comment">%</span>
+1134 <span class="comment">%Revisions :    Function added 04/07</span>
+1135 
+1136 <span class="keyword">global</span> AU mu
+1137 
+1138 muSUN = mu(11);
+1139      a=keplerian(1)*AU; <span class="comment">%in km</span>
+1140      e=keplerian(2);
+1141      i=keplerian(3); 
+1142      W=keplerian(4);
+1143      w=keplerian(5);
+1144      M=keplerian(6);
+1145      jdepoch=<a href="#_sub17" class="code" title="subfunction jd = mjd2jed(mjd)">mjd2jed</a>(epoch);
+1146      DT=(jd-jdepoch)*60*60*24;
+1147      n=sqrt(muSUN/a^3);
+1148      M=M/180*pi;
+1149      M=M+n*DT;
+1150      M=mod(M,2*pi);
+1151      E=<a href="#_sub12" class="code" title="subfunction E=M2E(M,e)">M2E</a>(M,e);
+1152      [r,v]=<a href="#_sub4" class="code" title="subfunction [r0,v0]=par2IC(E,mu)">par2IC</a>([a,e,i/180*pi,W/180*pi,w/180*pi,E],muSUN);
+1153      <span class="keyword">if</span> flag~=1
+1154          r=r/AU;
+1155          v=v*86400/AU;
+1156      <span class="keyword">end</span>
+1157  
+1158 
+1159 <span class="comment">%--------------------------------------------------------------------------</span>
+1160 <a name="_sub15" href="#_subfunctions" class="code">function t = time2distance(r0,v0,rtarget)</a>
+1161 <span class="comment">%</span>
+1162 <span class="comment">%Usage: t = time2distance(r0,v0,rtarget)</span>
+1163 <span class="comment">%</span>
+1164 <span class="comment">%Inputs:</span>
+1165 <span class="comment">%           r0:    column vector for the position (mu=1)</span>
+1166 <span class="comment">%           v0:    column vector for the velocity (mu=1)</span>
+1167 <span class="comment">%           rtarget: distance to be reached</span>
+1168 <span class="comment">%</span>
+1169 <span class="comment">%Outputs:</span>
+1170 <span class="comment">%           t:     time taken to reach a given distance</span>
+1171 <span class="comment">%</span>
+1172 <span class="comment">%Comments:  everything works in non dimensional units</span>
+1173 
+1174 r0norm = norm(r0);
+1175 <span class="keyword">if</span> r0norm &lt; rtarget
+1176     out = sign(r0'*v0);
+1177     E = <a href="#_sub2" class="code" title="subfunction E=IC2par(r0,v0,mu)">IC2par</a>(r0,v0,1);
+1178     a = E(1); e = E(2); E0 = E(6); p = a * (1-e^2);
+1179     <span class="comment">%If the solution is an ellipse</span>
+1180     <span class="keyword">if</span> e&lt;1
+1181         ra = a * (1+e);
+1182         <span class="keyword">if</span> rtarget&gt;ra
+1183             t = NaN;
+1184         <span class="keyword">else</span> <span class="comment">%we find the anomaly where the target distance is reached</span>
+1185             ni = acos((p/rtarget-1)/e);         <span class="comment">%in 0-pi</span>
+1186             Et = <a href="#_sub3" class="code" title="subfunction E=ni2E(ni,e)">ni2E</a>(ni,e);          <span class="comment">%in 0-pi</span>
+1187             <span class="keyword">if</span> out==1
+1188                 t = a^(3/2)*(Et-e*sin(Et)-E0 +e*sin(E0));
+1189             <span class="keyword">else</span>
+1190                 E0 = -E0;
+1191                 t = a^(3/2)*(Et-e*sin(Et)+E0 - e*sin(E0));
+1192             <span class="keyword">end</span>
+1193         <span class="keyword">end</span>
+1194     <span class="keyword">else</span> <span class="comment">%the solution is a hyperbolae</span>
+1195         ni = acos((p/rtarget-1)/e);         <span class="comment">%in 0-pi</span>
+1196         Et = <a href="#_sub3" class="code" title="subfunction E=ni2E(ni,e)">ni2E</a>(ni,e);          <span class="comment">%in 0-pi</span>
+1197         <span class="keyword">if</span> out==1
+1198                 t = (-a)^(3/2)*(e*tan(Et)-log(tan(Et/2+pi/4))-e*tan(E0)+log(tan(E0/2+pi/4)));
+1199             <span class="keyword">else</span>
+1200                 E0 = -E0;
+1201                 t = (-a)^(3/2)*(e*tan(Et)-log(tan(Et/2+pi/4))+e*tan(E0)-log(tan(E0/2+pi/4)));
+1202         <span class="keyword">end</span>
+1203     <span class="keyword">end</span>
+1204 <span class="keyword">else</span>
+1205     t=12;
+1206 <span class="keyword">end</span>
+1207     
+1208 
+1209 <span class="comment">%--------------------------------------------------------------------------</span>
+1210 <a name="_sub16" href="#_subfunctions" class="code">function jd = mjd20002jed(mjd2000)</a>
+1211 <span class="comment">%This function converts mean julian date 2000 to julian date</span>
+1212 jd=mjd2000+2451544.5;
+1213 
+1214 
+1215 <span class="comment">%--------------------------------------------------------------------------</span>
+1216 <a name="_sub17" href="#_subfunctions" class="code">function jd = mjd2jed(mjd)</a>
+1217 <span class="comment">% This function converts mean Julian date into Julian date</span>
+1218 jd = mjd +2400000.5;
+1219</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

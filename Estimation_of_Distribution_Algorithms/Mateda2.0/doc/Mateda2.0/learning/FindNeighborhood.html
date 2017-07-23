@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FindNeighborhood</title>
+  <meta name="keywords" content="FindNeighborhood">
+  <meta name="description" content="[Cliques] = FindNeighborhood(MI,sizeconstraint,MIthreshold)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">learning</a> &gt; FindNeighborhood.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/learning&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>FindNeighborhood
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[Cliques] = FindNeighborhood(MI,sizeconstraint,MIthreshold)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Cliques] = FindNeighborhood(MI,sizeconstraint,MIthreshold) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Cliques] = FindNeighborhood(MI,sizeconstraint,MIthreshold)
+ FindNeighborhood:   Find the neighborhood of each variable using the values of the mutual
+                     information
+                     Neighbors are those variables whose interaction is above the MIthreshold 
+                     Each variable neighborhood is constrained to be at most of size sizeconstraint
+ INPUTS:  
+ T: Truncation parameter (when T=0, proportional selection is used)
+ F: Name of the function that has as an argument a vector or NumbVar variables
+ CantGen: Maximum number of generations 
+ MaximumFunction:  Maximum of the function that can be used as stop condition when it is known 
+ Card: Vector with the dimension of all the variables. 
+ Elitism: Number of the current population individuals that pass to the next one.  
+---Elistism=-1: The whole selected population (only for truncation) passes to the next generation  
+ OUTPUTS
+    Cliques: Structure of the model in a list of cliques that defines the neighborhood 
+    Each row of Cliques is a clique. The first value is the number of neighbors for variable i. 
+    The second, is the number of new variables (one new variable, i).
+    Then, neighbor variables are listed and  finally new variables (variable i) are listed
+    When Cliques is empty, the model is learned from the data
+
+ Last version 8/26/2008. Roberto Santana and Siddarta Shakya (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="LearnMOAModel.html" class="code" title="function [model] = LearnMOAModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)">LearnMOAModel</a>	[model] = LearnMOAModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Cliques] = FindNeighborhood(MI,sizeconstraint,MIthreshold)</a>
+0002 <span class="comment">% [Cliques] = FindNeighborhood(MI,sizeconstraint,MIthreshold)</span>
+0003 <span class="comment">% FindNeighborhood:   Find the neighborhood of each variable using the values of the mutual</span>
+0004 <span class="comment">%                     information</span>
+0005 <span class="comment">%                     Neighbors are those variables whose interaction is above the MIthreshold</span>
+0006 <span class="comment">%                     Each variable neighborhood is constrained to be at most of size sizeconstraint</span>
+0007 <span class="comment">% INPUTS:</span>
+0008 <span class="comment">% T: Truncation parameter (when T=0, proportional selection is used)</span>
+0009 <span class="comment">% F: Name of the function that has as an argument a vector or NumbVar variables</span>
+0010 <span class="comment">% CantGen: Maximum number of generations</span>
+0011 <span class="comment">% MaximumFunction:  Maximum of the function that can be used as stop condition when it is known</span>
+0012 <span class="comment">% Card: Vector with the dimension of all the variables.</span>
+0013 <span class="comment">% Elitism: Number of the current population individuals that pass to the next one.</span>
+0014 <span class="comment">%---Elistism=-1: The whole selected population (only for truncation) passes to the next generation</span>
+0015 <span class="comment">% OUTPUTS</span>
+0016 <span class="comment">%    Cliques: Structure of the model in a list of cliques that defines the neighborhood</span>
+0017 <span class="comment">%    Each row of Cliques is a clique. The first value is the number of neighbors for variable i.</span>
+0018 <span class="comment">%    The second, is the number of new variables (one new variable, i).</span>
+0019 <span class="comment">%    Then, neighbor variables are listed and  finally new variables (variable i) are listed</span>
+0020 <span class="comment">%    When Cliques is empty, the model is learned from the data</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% Last version 8/26/2008. Roberto Santana and Siddarta Shakya (roberto.santana@ehu.es)</span>
+0023 
+0024 NumbVars = size(MI,1);
+0025 epsilon = 1e-200; <span class="comment">% It is used to avoid bias when the mutual information is equal</span>
+0026 
+0027 <span class="comment">%for i=2:3:29,</span>
+0028 <span class="comment">% Cliques(i-1,:) = [2,1,i,i+1,i-1];</span>
+0029 <span class="comment">% Cliques(i,:) = [2,1,i-1,i+1,i];</span>
+0030 <span class="comment">% Cliques(i+1,:) = [2,1,i-1,i,i+1];</span>
+0031 <span class="comment">%end,</span>
+0032 <span class="comment">%return</span>
+0033 
+0034 <span class="keyword">for</span> i=1:NumbVars,   
+0035     candidates = find(MI(i,:)&gt;MIthreshold);
+0036     ncandidates = size(candidates,2);   
+0037     <span class="keyword">if</span>(ncandidates &gt; sizeconstraint)
+0038       [MIvals,VarOrder] = sort(MI(i,candidates)+rand(1,ncandidates)*epsilon,<span class="string">'descend'</span>);
+0039       <span class="comment">%shuffle = randperm(ncandidates);</span>
+0040       Cliques(i,1:sizeconstraint+3) = [sizeconstraint,1,candidates(VarOrder(1:sizeconstraint)),i];
+0041     <span class="keyword">elseif</span>(ncandidates &gt; 0)
+0042       Cliques(i,1:ncandidates+3) = [ncandidates,1,candidates,i];
+0043     <span class="keyword">else</span> <span class="comment">% No neighbor for variable i</span>
+0044      Cliques(i,1:3) = [0,1,i];
+0045     <span class="keyword">end</span>,
+0046 <span class="keyword">end</span>,    
+0047</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

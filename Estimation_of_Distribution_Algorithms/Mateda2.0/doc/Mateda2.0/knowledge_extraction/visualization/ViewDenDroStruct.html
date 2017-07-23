@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ViewDenDroStruct</title>
+  <meta name="keywords" content="ViewDenDroStruct">
+  <meta name="description" content="function[res_ordering] = ViewDenDroStruct(run_structures,viewparams)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">knowledge_extraction</a> &gt; <a href="index.html">visualization</a> &gt; ViewDenDroStruct.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction/visualization&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ViewDenDroStruct
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[res_ordering] = ViewDenDroStruct(run_structures,viewparams)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[res_ordering] = ViewDenDroStruct(run_structures,viewparams) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">   function[res_ordering] = ViewDenDroStruct(run_structures,viewparams)
+   ViewDenDroStruct:  Shows the dendrograms of the edges according to
+                       their co-occurrence in the structures learned by
+                       the EDAs. Allows to detect complex hierarchical
+                       relationships between the variables of the problem
+                       
+ INPUT
+ run_structures: Contain the data structures with all the structures
+ learned by the probability models in every run and generation (see
+ program ReadStructures.m for details.
+ viewparams{1} = fs; % fs: Font size for the images                       
+ viewparams{2} : Matrices with edges that will be shown. One row for each
+ edge. If viewparams{2}== [], the algorithm finds a subset of edges
+ according viewparams{3}
+ viewparams{3} = const_edg :  Minimal number of times that an edge has to appear in (all) the structures learned
+                             to be selected for visualization. Since the  clarity of the parallel coordinate
+                             visualization depend on the number of variables, this is an important parameter. 
+ viewparams{4} = min_edg :  Minimal number of edges in the substructures selected (min_edg&gt;0)
+ viewparams{5} = distance. Distance used to cluster edges from their
+ appearance in the structures (distances used by matlab command pdist (ex. 'correlation', 'euclidean',etc.) can
+ be used (see help pdist).
+ OUTPUT:
+ res_ordering{1} = T;
+ res_ordering{2} = PERM; % Ordering of the variables in the dendrogram
+ res_ordering{3} = List of the originals edges in the order they are shown
+                   in the dendrogram
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="ExtractSubstructures.html" class="code" title="function[AllRepVectors] = ExtractSubstructures(run_structures,RepEdges,NumbRep)">ExtractSubstructures</a>	[AllRepVectors] = ExtractSubstructures(run_structures,RepEdges,NumbRep)</li><li><a href="SelectEdgesToShow.html" class="code" title="function[sel_edges] = SelectEdgesToShow(run_structures,const_edg)">SelectEdgesToShow</a>	[sel_edges] = SelectEdgesToShow(run_structures,const_edg)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[res_ordering] = ViewDenDroStruct(run_structures,viewparams)</a>
+0002 <span class="comment">%   function[res_ordering] = ViewDenDroStruct(run_structures,viewparams)</span>
+0003 <span class="comment">%   ViewDenDroStruct:  Shows the dendrograms of the edges according to</span>
+0004 <span class="comment">%                       their co-occurrence in the structures learned by</span>
+0005 <span class="comment">%                       the EDAs. Allows to detect complex hierarchical</span>
+0006 <span class="comment">%                       relationships between the variables of the problem</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% INPUT</span>
+0009 <span class="comment">% run_structures: Contain the data structures with all the structures</span>
+0010 <span class="comment">% learned by the probability models in every run and generation (see</span>
+0011 <span class="comment">% program ReadStructures.m for details.</span>
+0012 <span class="comment">% viewparams{1} = fs; % fs: Font size for the images</span>
+0013 <span class="comment">% viewparams{2} : Matrices with edges that will be shown. One row for each</span>
+0014 <span class="comment">% edge. If viewparams{2}== [], the algorithm finds a subset of edges</span>
+0015 <span class="comment">% according viewparams{3}</span>
+0016 <span class="comment">% viewparams{3} = const_edg :  Minimal number of times that an edge has to appear in (all) the structures learned</span>
+0017 <span class="comment">%                             to be selected for visualization. Since the  clarity of the parallel coordinate</span>
+0018 <span class="comment">%                             visualization depend on the number of variables, this is an important parameter.</span>
+0019 <span class="comment">% viewparams{4} = min_edg :  Minimal number of edges in the substructures selected (min_edg&gt;0)</span>
+0020 <span class="comment">% viewparams{5} = distance. Distance used to cluster edges from their</span>
+0021 <span class="comment">% appearance in the structures (distances used by matlab command pdist (ex. 'correlation', 'euclidean',etc.) can</span>
+0022 <span class="comment">% be used (see help pdist).</span>
+0023 <span class="comment">% OUTPUT:</span>
+0024 <span class="comment">% res_ordering{1} = T;</span>
+0025 <span class="comment">% res_ordering{2} = PERM; % Ordering of the variables in the dendrogram</span>
+0026 <span class="comment">% res_ordering{3} = List of the originals edges in the order they are shown</span>
+0027 <span class="comment">%                   in the dendrogram</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0030 
+0031 
+0032 indexmatrix = run_structures{1};
+0033 fs = viewparams{1};
+0034 substruct = viewparams{2};
+0035 const_edg = viewparams{3};
+0036 min_edg = viewparams{4};
+0037 distance = viewparams{5};
+0038 
+0039 results = [];
+0040 
+0041 
+0042  <span class="keyword">if</span> isempty(substruct)
+0043    [RepEdges] = <a href="SelectEdgesToShow.html" class="code" title="function[sel_edges] = SelectEdgesToShow(run_structures,const_edg)">SelectEdgesToShow</a>(run_structures,const_edg); <span class="comment">% Edges are selected according to const_edg value</span>
+0044    <span class="keyword">if</span>(isempty(RepEdges))
+0045       disp(<span class="string">'No edges were selected. Reduce the number of times required to an edge to appear.'</span>) <span class="comment">%No edges were found</span>
+0046       <span class="keyword">return</span>
+0047    <span class="keyword">end</span>
+0048    <span class="keyword">for</span> i=1:size(RepEdges,2) 
+0049      [row,col] = find(indexmatrix==RepEdges(i));
+0050       dlabels{i} = [int2str(row(1)),<span class="string">'-'</span>,int2str(col(1))]; 
+0051    <span class="keyword">end</span>
+0052  <span class="keyword">else</span>
+0053   <span class="keyword">for</span> i=1:size(substruct,1)  
+0054    RepEdges(1,i) = indexmatrix(substruct(i,1),substruct(i,2));    <span class="comment">% Indices of the edges in indexmatrix</span>
+0055    dlabels{i} = [int2str(substruct(i,1)),<span class="string">'-'</span>,int2str(substruct(i,2))]; 
+0056   <span class="keyword">end</span>
+0057  <span class="keyword">end</span>      
+0058  
+0059   
+0060  [AllRepVectors] = <a href="ExtractSubstructures.html" class="code" title="function[AllRepVectors] = ExtractSubstructures(run_structures,RepEdges,NumbRep)">ExtractSubstructures</a>(run_structures,RepEdges,min_edg); <span class="comment">% The substructures to be shown are extracted</span>
+0061 
+0062  nedges = size(RepEdges,2)
+0063  
+0064  
+0065  y = pdist(AllRepVectors', distance);
+0066  z = linkage(y,<span class="string">'single'</span>)
+0067  
+0068  figure     <span class="comment">% Dendrogram figure</span>
+0069  axes(<span class="string">'Fontsize'</span>,fs);
+0070  [H,T,PERM] = dendrogram(z,nedges,<span class="string">'orientation'</span>,<span class="string">'left'</span>,<span class="string">'labels'</span>,dlabels);
+0071 
+0072   
+0073  res_ordering{1} = T;
+0074  res_ordering{2} = PERM; <span class="comment">% Ordering of the variables in the dendrogram</span>
+0075  
+0076  <span class="keyword">for</span> i=1:nedges
+0077   [row,col] = find(indexmatrix==RepEdges(PERM(i)));
+0078    res_ordering{3}(i,:) = [row(1),col(1)];
+0079  <span class="keyword">end</span>
+0080  
+0081  <span class="keyword">return</span>
+0082  
+0083  
+0084 
+0085  
+0086 
+0087  
+0088  
+0089  
+0090  
+0091</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

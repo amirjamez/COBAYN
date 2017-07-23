@@ -1,0 +1,213 @@
+\subsection{Exhaustive search and score decomposability}
+
+The first (but naive) idea as to finding the best network structure is the exploration and evaluation of all possible graphs in order to choose the best structure.
+Robinson \cite{rob77} has proven that $r(n)$, the number of different structures for a Bayesian network with $n$ nodes, is given by the recursive formula of equation \ref{robform}.
+
+\begin{equ}
+r(n)=\sum_{i=1}^{n}(-1)^{i+1}\binom{n}{i}2^{i(n-i)}r(n-i)=n^{2^{\mathcal{O}{(n)}}}
+\label{robform}
+\end{equ}
+This equation gives $r(2)=3,\,r(3)=25,\,r(5)=29281,\,r(10)\simeq 4,2\times 10^{18}$.
+\vspace{-\baselineskip}
+
+\mabox{BNT}{Gs = mk\_all\_dags(n, order)}{generates all DAGs with n nodes according to the optional ordering}
+\vspace{.5\baselineskip}
+
+Since equation \ref{robform} is super exponential, it is impossible to perform an exhaustive search in a decent time as soon as the node number exceeds $7$ or $8$. So, structure learning methods often use search heuristics.
+
+In order to explore the \textsc{dag}s space, we use operators like \emph{arc-insertion} or \emph{arc-deletion}. In order to make this search effective, we have to use a local score to limit the computation to the score variation between two neighboring \textsc{dag}s.
+
+\begin{de}\hspace*{-6pt}\textbf{.}
+A score S is said to be \emph{decomposable} if it can be written as the sum or the product of functions that depend only of one vertex and its parents.
+If $n$ is the numbers of vertices in the graph, a decomposable score S must be the sum of \emph{local scores} $s$:
+\begin{equ}\nonumber S(\mathcal{B})=\sum_{i=1}^n s(X_i,pa(X_i))
+\text{~~or~~}S(\mathcal{B})=\prod_{i=1}^n s(X_i,pa(X_i))
+\end{equ}
+\end{de}
+\vspace*{-2\baselineskip}
+
+\subsection{Markov equivalent set and Completed-\textsc{pdag}s}
+
+\begin{de}\label{equim}\hspace*{-6pt}\textbf{.}
+Two \textsc{dag}s are said to be \emph{equivalent} (noted $\equiv$) if they imply the same set of conditional (in)dependencies (\emph{i.e.} have the same joint distribution).
+The \emph{Markov equivalent classes set} (named $\mathcal{E}$) is defined as $\mathcal{E} = $\Large\sfrac{$\mathcal{A}$}{$\equiv$} \normalsize 
+where $\mathcal{A}$ is the \textsc{dag}s' set.
+\end{de}
+
+\begin{de}\label{cpdag}\hspace*{-6pt}\textbf{.}
+An arc is said to be \emph{reversible} if its reversion leads to a graph which is \emph{equivalent} to the first one.
+The space of Completed-PDAGs (\textsc{cpdag}s or also named essential graphs) is defined as the set of Partially Directed Acyclic Graphs (\textsc{pdag}s) that have only undirected arcs and \emph{unreversible} directed arcs.
+\end{de}
+
+\noindent For instance, as Bayes' rule gives\\
+\small $\mathbb{P}(A,B,C)=\mathbb{P}(A)\mathbb{P}(B|A)\mathbb{P}(C|B)=\mathbb{P}(A|B)\mathbb{P}(B)\mathbb{P}(C|B)=\mathbb{P}(A|B)\mathbb{P}(B|C)\mathbb{P}(C)$ \normalsize \\
+those structures, 
+\scriptsize $\xymatrix @C=15pt{*+[o][F]{A} \ar[r] & *+[o][F]{B} \ar[r] & *+[o][F]{C}}\equiv$
+$\xymatrix @C=15pt{*+[o][F]{A} & *+[o][F]{B} \ar[l] \ar[r] & *+[o][F]{C}}\equiv$
+$\xymatrix @C=15pt{*+[o][F]{A} & *+[o][F]{B} \ar[l] & *+[o][F]{C} \ar[l]}$ \normalsize 
+, are equivalent \\(they all imply $A\indep C|B$). \\
+Then, they can be schematized by the \textsc{cpdag} 
+\scriptsize $\xymatrix @C=15pt{*+[o][F]{A} \ar@{-}[r] & *+[o][F]{B} \ar@{-}[r] & *+[o][F]{C}}$ \normalsize without ambiguities.
+
+\noindent But they are not equivalent to
+\scriptsize $\xymatrix @C=15pt{*+[o][F]{A} \ar[r] & *+[o][F]{B} & *+[o][F]{C} \ar[l]}$ \normalsize
+(where \small $\mathbb{P}(A,B,C)=\mathbb{P}(A)\mathbb{P}(B|A,C)\mathbb{P}(C)$ \normalsize )
+for which the corresponding \textsc{cpdag} is the same graph, which is named a \textbf{V-structure}.
+
+ \noindent\cite{Ver90} have proven that \textsc{dag}s are \emph{equivalent} if, and only if, they have the same skeleton (\emph{i.e.} the same edge support) and the same set of V-structures (like \scriptsize$\xymatrix@C=10pt{*+[o][F]{A}\ar[r] & *+[o][F]{B} & *+[o][F]{C}\ar[l]}$\normalsize).
+Furthermore, we make the analogy between the Markov equivalence classes set ($\mathcal{E}$) and the set of Completed-PDAGs as they share a natural one-to-one relationship.
+\cite{Dor92} proposes a method to construct a consistent extension of a \textsc{dag}.
+\vspace*{-1\baselineskip}
+
+\mabox{v1.5}{dag = pdag\_to\_dag(pdag)}{gives an instantiation of a \textsc{pdag} in the \textsc{dag} space whenever it is possible.}
+\vspace{.5\baselineskip}
+
+\noindent\cite{Chi96} introduces a method for finding a \textsc{dag} which instantiates a \textsc{cdpag} and also proposes the method which permits to find the \textsc{cdpag} representing the equivalence classe of a \textsc{dag}.
+\vspace*{-1\baselineskip}
+
+\mabox{v1.5}{cpdag = dag\_to\_cpdag(dag)}{gives the complete \textsc{pdag} of a \textsc{dag} (also works with a cell array of cpdags, returning a cell array of dags).}
+
+\mabox{v1.5}{dag = cpdag\_to\_dag(cpdag)}{gives an instantiation of a \textsc{cpdag} in the \textsc{dag} space (also works with a cell array of cpdags, returning a cell array of dags).}
+\vspace*{-.5\baselineskip}
+
+\subsection{Score equivalence and dimensionality}
+
+\begin{de}\hspace*{-6pt}\textbf{.}
+A score is said to be \emph{equivalent} if it returns the same value for equivalent \textsc{dag}s.
+\end{de}
+
+For instance, the \textsc{bic} score is \emph{decomposable} and \emph{equivalent}.
+It is derived from principles stated in \cite{Sch78} and has the following formulation:
+\begin{equ}
+BIC(\mathcal{B},D)=\log \mathbb{P}(D|\mathcal{B},\theta^{ML})-\frac{1}{2}Dim(\mathcal{B})\log N
+\end{equ}
+where $D$ is the dataset,
+$\theta^{ML}$ are the parameter values obtained by \emph{likelihood maximisation}, and where the network dimension $Dim(\mathcal{B})$ is defined as follows.
+
+As we need $r_i-1$ parameters to describe the conditional probability distribution
+$\mathbb{P}(X_i/Pa(X_i)=pa_i)$ ,
+where $r_i$ is the size of $X_i$ and $pa_i$ a specific value of $X_i$ parents, 
+we need $Dim(X_i,\mathcal{B})$ ~parameters
+to describe $\mathbb{P}(X_i/Pa(X_i))$ ~with
+
+\begin{equ}Dim(X_i,\mathcal{B})=(r_i-1) q_i
+\text{~~~where~~~}
+q_i = \prod_{X_j\in Pa(X_i)}r_j\end{equ}
+And the dimension of the Bayesian network is defined by
+$Dim(\mathcal{B})=\sum_{i=1}^n Dim(X_i,\mathcal{B})$.
+
+\vspace*{-\baselineskip}
+\mabox{v1.5}{D = compute\_bnet\_nparams(bnet)}{gives the number of parameters of the Bayesian network bnet}
+\vspace{\baselineskip}
+
+The \textsc{bic}-score is the sum of a likelihood term and a penalty term which penalizes complex networks.
+As two equivalent graphs have the same likelihood and the same complexity, the \textsc{bic}-score is \emph{equivalent}.
+Using scores with these properties, it becomes possible to perform structure learning in Markov equivalent space (\emph{i.e.} $\mathcal{E} = $\Large\sfrac{$\mathcal{A}$}{$\equiv$}\normalsize). This space has good properties: since a algorithm using a score over the \textsc{dag}s space can happen to cycle on equivalent networks, the same method with the same score on the $\mathcal{E}$ space will progress (in practice, such a method will manipulate \textsc{cpdag}s).
+
+\mabox{v1.5}{score = score\_dags(Data, ns, G)}{
+compute the score ('Bayesian' by default or 'BIC' score) of a dag G\\
+This function exists in BNT, but the new version available in the Structure Package uses a cache to avoid recomputing all the local score in the score\_family sub-function when we compute a new global score.\\~\\
+INPUTS :\\
+\hspace*{20pt}Data\{i,m\} - value of node i in case m (can be a cell array).\\
+\hspace*{20pt}ns(i)       - size of node i.\\
+\hspace*{20pt}dags\{g\}   - g'th dag\vspace*{0.5\baselineskip}\\
+The following optional arguments can be specified in the form of ('name',value) pairs : [default value in brackets]\vspace*{0.5\baselineskip}\\
+\hspace*{20pt}scoring\_fn - 'Bayesian' or 'bic' ['Bayesian'] currently, \\
+  \hspace*{40pt}only networks with all tabular nodes support Bayesian scoring.\\
+\hspace*{20pt}type        - type\{i\} is the type of CPD to use for node i, where the type is a\\
+  \hspace*{40pt}string of the form 'tabular', 'noisy\_or', 'gaussian', etc.\\
+  \hspace*{40pt}[all cells contain 'tabular']\\
+\hspace*{20pt}params      - params\{i\} contains optional arguments passed to the CPD\\
+  \hspace*{40pt}constructor for node i, or [] if none.\\
+  \hspace*{40pt}[all cells contain \{'prior', 1\}, meaning use uniform Dirichlet priors]\\
+\hspace*{20pt}discrete    - the list of discrete nodes [1:N]\\
+\hspace*{20pt}clamped     - clamped(i,m) = 1 if node i is clamped in case m\\
+  \hspace*{40pt}[zeros(N, ncases)]\\
+\hspace*{20pt}cache       - data structure used to memorize local score computations
+  \hspace*{40pt}(cf. SCORE\_INIT\_CACHE function) [ [] ]\vspace*{0.5\baselineskip}\\
+OUTPUT :\\
+\hspace*{20pt}score(g) is the score of the i'th dag\vspace*{0.5\baselineskip}\\
+e.g., score = score\_dags(Data, ns, mk\_all\_dags(n), 'scoring\_fn', 'bic',
+  \hspace*{40pt}'params', [],'cache',cache);
+}
+\vspace{.75\baselineskip}
+
+\noindent In particular, \textsc{cpdag}s can be evaluated with
+\vspace{-1.25\baselineskip}
+
+\mabox{v1.5}{score = score\_dags(Data, ns, cpdag\_to\_dag(CPDAGs), 'scoring\_fn', 'bic')}{}
+\vspace{.5\baselineskip}
+
+As the global score of a \textsc{dag} is the product (or the summation is our case as we take the logarithm) of local scores, 
+caching previously computed local scores can prove to be judicious.
+We can do so by using a cache matrix.
+\vspace{-1.5\baselineskip}
+
+\mabox{v1.5}{cache = score\_init\_cache(N,S);}{
+INPUTS:\\
+\hspace*{20pt}N - the number of nodes\\
+\hspace*{20pt}S - the lentgh of the cache\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}cache - entries are the parent set, the son node, the score of the\\
+  \hspace*{40pt}familly, and the scoring method
+}
+\vspace{-.5\baselineskip}
+
+\subsection{discretization}
+
+Most structure learning implementations work solely with \texttt{tabular nodes}.
+Therefore, the SLP package comprises a discretizing function.
+This function, proposed in \cite{Col94}, returns an optimal discretization.
+\vspace{-1.25\baselineskip}
+
+\mabox{v1.5}{[n,edges,nbedges,xechan] = hist\_ic(ContData,crit)}{
+Optimal Histogram based on IC information criterion bins the elements of ContData into an optimal number of bins according to a cost function based on Akaike's Criterion.\vspace*{0.5\baselineskip}\\
+INPUTS:\\
+\hspace*{20pt}ContData(m,i) - case m for the node i\\
+\hspace*{20pt}crit - different penalty terms (1,2,3) for AIC criterion or can ask the
+  \hspace*{40pt}function to return the initial histogram (4) [3]\vspace*{0.5\baselineskip}\\
+OUTPUTS:\\
+\hspace*{20pt}n - cell array containing the distribution of each column of X\\
+\hspace*{20pt}edges - cell array containing the bin edges of each column of X\\
+\hspace*{20pt}nbedges - vector containing the number of bin edges for each column of X\\
+\hspace*{20pt}xechan - discretized version of ContData
+}
+\vspace{.5\baselineskip}
+
+\noindent When the bin \texttt{edges} are given, the discretization can be done directly.
+\vspace{-1.25\baselineskip}
+
+\mabox{v1.5}{[n,xechan] = histc\_ic(ContData,edges)}{
+Counts the number of values in ContData that fall between the elements in the edges vector\vspace*{0.5\baselineskip}\\
+INPUTS:\\
+\hspace*{20pt}ContData(m,i) - case m for the node i\\
+\hspace*{20pt}edges - cell array containing the bin edges of each column of X\vspace*{0.5\baselineskip}\\
+OUTPUT:\\
+\hspace*{20pt}n - cell array containing these counts\\
+\hspace*{20pt}xechan - discretized version of ContData
+}
+
+\begin{comment}
+\noindent This is an exemple for treating a learning dataset and a test dataset where missing value are coded by \texttt{-9999} and continuous nodes are in \texttt{Continuous}.
+
+\mabox{v1.5}{\vspace{-9.5pt}[n, edges, nbedges, learning\_xechan] = }{
+\hspace*{20pt}hist\_ic(learningData(Continuous,Complete\_cases)');\\
+{[}n2learn, learning\_xechan] = histc\_ic(learningData(Continuous,:)', edges);\\
+{[}n2test, test\_xechan] = histc\_ic(testData(Continuous,:), edges);\\
+{[}I J]=find(learningData(Continuous,:)==-9999);\\
+{[}I2 J2]=find(testData(Continuous,:)==-9999);\\
+for i = 1:length(Continuous)\\
+\hspace*{20pt}learningData(Continuous(i),:) = learning\_xechan(:,i);\\
+\hspace*{20pt}testData(Continuous(i),:) = test\_xechan(:,i);\\
+end\\
+for k=1:length(I)\\
+\hspace*{20pt}learningData(I(k),J(k))=-9999;\\
+end\\
+for l=1:length(I2)\\
+\hspace*{20pt}testData(I2(k),J2(k))=-9999;\\
+end
+}
+
+\noindent Faire une fonction qui fait ca tout seul ???
+\end{comment}
+

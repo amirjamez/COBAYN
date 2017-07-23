@@ -1,0 +1,393 @@
+%%
+%% This is file `ltugcomn.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% tugboat.dtx  (with options: `common,latex,latex2e,ltugcomn')
+%% 
+%% Copyright (C) 1994,1995,1996 TeX Users Group
+%% All rights reserved.
+%% 
+%% This file is part of the tugboat package.
+%% -----------------------------------------
+%% 
+%% This is a generated file.  Permission is granted to customize the
+%% declarations in this file to serve the needs of your installation.
+%% However, no permission is granted to distribute a modified version of
+%% this file under its original name.
+%% 
+%% 
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+   \ProvidesPackage{ltugcomn}
+                   [2000/10/19 v1.4y
+                          TUGboat `common macros' package%
+                   ]
+\IfFileExists{mflogo.sty}%
+  {\RequirePackage{mflogo}}%
+  {\PackageWarning{ltugcomn}
+     {Package mflogo.sty not available --\MessageBreak
+       Proceeding to emulate mflogo.sty}
+   \DeclareRobustCommand\logofamily{%
+     \not@math@alphabet\logofamily\relax
+     \fontencoding{U}\fontfamily{logo}\selectfont}
+   \DeclareTextFontCommand{\textlogo}{\logofamily}
+   \def\MF{\textlogo{META}\-\textlogo{FONT}\@}
+   \def\MP{\textlogo{META}\-\textlogo{POST}\@}
+   \DeclareFontFamily{U}{logo}{}
+   \DeclareFontShape{U}{logo}{m}{n}{%
+     <8><9>gen*logo%
+     <10><10.95><12><14.4><17.28><20.74><24.88>logo10%
+   }{}
+   \DeclareFontShape{U}{logo}{m}{sl}{%
+     <8><9>gen*logosl%
+     <10><10.95><12><14.4><17.28><20.74><24.88>logosl10%
+   }{}
+   \DeclareFontShape{U}{logo}{m}{it}{%
+     <->ssub*logo/m/sl%
+   }{}%
+  }
+\def\makeescape#1{\catcode`#1=\z@}
+\def\makebgroup#1{\catcode`#1=\@ne}
+\def\makeegroup#1{\catcode`#1=\tw@}
+\def\makemath  #1{\catcode`#1=\thr@@}
+\def\makealign #1{\catcode`#1=4 }
+\def\makeeol   #1{\catcode`#1=5 }
+\def\makeparm  #1{\catcode`#1=6 }
+\def\makesup   #1{\catcode`#1=7 }
+\def\makesub   #1{\catcode`#1=8 }
+\def\makeignore#1{\catcode`#1=9 }
+\def\makespace #1{\catcode`#1=10 }
+\def\makeletter#1{\catcode`#1=11 }
+\chardef\other=12
+\let\makeother\@makeother
+\def\makeactive#1{\catcode`#1=13 }
+\def\makecomment#1{\catcode`#1=14 }
+\def\savecat#1{%
+  \expandafter\xdef\csname\string#1savedcat\endcsname{\the\catcode`#1}}
+\def\restorecat#1{\catcode`#1=\csname\string#1savedcat\endcsname}
+\def\SaveCS#1{\expandafter\let\csname saved@@#1\expandafter\endcsname
+  \csname#1\endcsname}
+\def\RestoreCS#1{\expandafter\let\csname#1\expandafter\endcsname
+  \csname saved@@#1\endcsname}
+\def\plaintubstyle{plain}
+\def\latextubstyle{latex}
+\providecommand\hb@xt@{\hbox to}
+\providecommand\textsuperscript[1]{\ensuremath{\m@th
+                                     ^{\mbox{\fontsize\sf@size\z@
+                                         \selectfont #1}}}}
+\def\AllTeX{(\La\kern-.075em)\kern-.075em\TeX}
+\def\AMS{American Mathematical Society}
+\def\AmS{$\mathcal{A}$\kern-.1667em\lower.5ex\hbox
+    {$\mathcal{M}$}\kern-.125em$\mathcal{S}$}
+\def\AmSLaTeX{\AmS-\LaTeX}
+\def\AmSTeX{\AmS-\TeX}
+\def\aw{A\kern.1em-W}
+\def\AW{Addison\kern.1em-\penalty\z@\hskip\z@skip Wesley}
+\def\BibTeX{\textsc{Bib}\kern-.08em\TeX}
+\def\CandT{\textsl{Computers \& Typesetting}}
+\def\CTAN{\acro{CTAN}}
+\def\DTD{\acro{DTD}}
+\def\DVItoVDU{DVIto\kern-.12em VDU}
+\DeclareRobustCommand\eTeX{\ensuremath{\varepsilon}-\kern-.125em\TeX}
+\def\HTML{\acro{HTML}}
+\def\ISBN{\acro{ISBN}}
+\def\ISSN{\acro{ISSN}}
+\def\JTeX{\leavevmode\hbox{\lower.5ex\hbox{J}\kern-.18em\TeX}}
+\def\JoT{\textsl{The Joy of \TeX}}
+\def\LAMSTeX{L\raise.42ex\hbox{\kern-.3em
+                   $\m@th$\fontsize\sf@size\z@\selectfont
+                   $\m@th\mathcal{A}$}%
+    \kern-.2em\lower.376ex\hbox{$\m@th\mathcal{M}$}\kern-.125em
+    {$\m@th\mathcal{S}$}-\TeX}
+\newcommand{\La}%
+   {L\kern-.36em
+        {\setbox0\hbox{T}%
+         \vbox to\ht0{\hbox{$\m@th$%
+                            \csname S@\f@size\endcsname
+                            \fontsize\sf@size\z@
+                            \math@fontsfalse\selectfont
+                            A}%
+                      \vss}%
+        }}
+\def\Mc{\setbox\TestBox=\hbox{M}M\vbox
+   to\ht\TestBox{\hbox{c}\vfil}} %  for Robert McGaffey
+\def\mf{\textsc{Metafont}}
+\def\MFB{\textsl{The \MF book}}
+\let\TB@@mp\mp
+\DeclareRobustCommand\mp{\ifmmode\TB@@mp\else MetaPost\fi}
+\DeclareTextSymbol{\textohm}{OT1}{'012}
+\DeclareTextSymbolDefault{\textohm}{OT1}
+\newcommand\OMEGA{\textohm}
+\DeclareRobustCommand{\OTP}{\OMEGA\acro{TP}}
+\def\mtex{T\kern-.1667em\lower.424ex\hbox{\^E}\kern-.125emX\@}
+\DeclareRobustCommand\NTS{$\mathcal{N}$\lower.5ex\hbox
+    {$\mathcal{T}$}$\mathcal{S}$\@}
+\def\pcMF{\leavevmode\raise.5ex\hbox{p\kern-.3\p@ c}MF\@}
+\def\PCTeX{PC\thinspace\TeX}
+\def\pcTeX{\leavevmode\raise.5ex\hbox{p\kern-.3\p@ c}\TeX}
+\def\Pas{Pascal}
+\def\PiC{P\kern-.12em\lower.5ex\hbox{I}\kern-.075emC\@}
+\def\PiCTeX{\PiC\kern-.11em\TeX}
+\def\plain{\texttt{plain}}
+\def\POBox{P.\thinspace O.~Box }
+\def\PS{{Post\-Script}}
+\def\SC{Steering Committee}
+\def\SGML{\acro{SGML}}
+\def\SliTeX{\textrm{S\kern-.06em\textsc{l\kern-.035emi}%
+                     \kern-.06em\TeX}}
+ \def\slMF{\textsl{\MF}} % should never be used
+ \def\stTeX{\textsc{st}\kern-0.13em\TeX}
+\def\TANGLE{\texttt{TANGLE}\@}
+\def\TB{\textsl{The \TeX book}}
+\def\TP{\textsl{\TeX}: \textsl{The Program}}
+\DeclareRobustCommand\TeX{T\kern-.1667em\lower.424ex\hbox{E}\kern-.125emX\@}
+\def\TeXhax{\TeX hax}
+\def\TeXMaG{\TeX M\kern-.1667em\lower.5ex\hbox{A}%
+   \kern-.2267emG\@}
+\def\TeXtures{\textit{Textures}}
+\let\Textures=\TeXtures
+\def\TeXXeT{\TeX-{}-\XeT}
+\def\ttn{\textsl{TTN}\@}
+\def\TTN{\textsl{\TeX{} and TUG News}}
+\let\texttub\textsl              % redefined in other situations
+\def\TUB{\texttub{TUGboat}}
+\def\TUG{\TeX\ \UG}
+\def\tug{\acro{TUG}}
+\def\UG{Users Group}
+\def\UNIX{\acro{UNIX}}
+\def\VAX{V\kern-.12em A\kern-.1em X\@}
+\def\VorTeX{V\kern-2.7\p@\lower.5ex\hbox{O\kern-1.4\p@ R}\kern-2.6\p@\TeX}
+\def\XeT{X\kern-.125em\lower.424ex\hbox{E}\kern-.1667emT\@}
+\def\WEB{\texttt{WEB}\@}
+\def\WEAVE{\texttt{WEAVE}\@}
+\newlinechar=`\^^J
+\normallineskiplimit=\p@
+\clubpenalty=10000
+\widowpenalty=10000
+\def\NoParIndent{\parindent=\z@}
+\newdimen\normalparindent
+\normalparindent=20\p@
+\def\NormalParIndent{\global\parindent=\normalparindent}
+\NormalParIndent
+\def\BlackBoxes{\overfullrule=5\p@}
+\def\NoBlackBoxes{\overfullrule=\z@}
+\def\newline{\hskip\z@\@plus\pagewd\break}
+\edef\allowhyphens{\noexpand\hyphenpenalty\the\hyphenpenalty\relax
+  \noexpand\exhyphenpenalty\the\exhyphenpenalty\relax}
+\def\nohyphens{\hyphenpenalty\@M\exhyphenpenalty\@M}
+\newbox\T@stBox                 \newbox\TestBox
+\newcount\T@stCount             \newcount\TestCount
+\newdimen\T@stDimen             \newdimen\TestDimen
+\newif\ifT@stIf                 \newif\ifTestIf
+\def\ifundefined#1{\expandafter\ifx\csname#1\endcsname\relax }
+\newif\iftop@           \newif\ifbot@
+\def\topsmash{\top@true\bot@false\smash@}
+\def\botsmash{\top@false\bot@true\smash@}
+\def\smash{\top@true\bot@true\smash@}
+\def\smash@{\relax\ifmmode\def\next{\mathpalette\mathsm@sh}%
+        \else\let\next\makesm@sh\fi \next }
+\def\finsm@sh{\iftop@\ht\z@\z@\fi\ifbot@\dp\z@\z@\fi\box\z@}
+\long\def\ulap#1{\vbox to \z@{\vss#1}}
+\long\def\dlap#1{\vbox to \z@{#1\vss}}
+\def\xlap#1{\hb@xt@\z@{\hss#1\hss}}
+\long\def\ylap#1{\vbox to \z@{\vss#1\vss}}
+\long\def\zlap#1{\ylap{\xlap{#1}}}
+\def\basezero{\baselineskip\z@skip \lineskip\z@skip}
+\def\nullhrule{\hrule \@height\z@ \@depth\z@ \@width\z@ }
+\def\nullvrule{\vrule \@height\z@ \@depth\z@ \@width\z@ }
+\def\makestrut[#1;#2]{\vrule \@height#1 \@depth#2 \@width\z@ }
+\def\drawoutlinebox[#1;#2;#3]{\T@stDimen=#3
+        \vbox to#1{\hrule \@height\T@stDimen \@depth\z@
+            \vss\hb@xt@#2{\vrule \@width\T@stDimen
+                \hfil\makestrut[#1;\z@]%
+                \vrule \@width\T@stDimen}\vss
+            \hrule \@height\T@stDimen \@depth\z@}}
+\newcount\hours
+\newcount\minutes
+\def\SetTime{\hours=\time
+        \global\divide\hours by 60
+        \minutes=\hours
+        \multiply\minutes by 60
+        \advance\minutes by-\time
+        \global\multiply\minutes by-1 }
+\SetTime
+\def\now{\number\hours:\ifnum\minutes<10 0\fi\number\minutes}
+\def\Now{\today\ \now}
+\newif\ifPrelimDraft
+\def\midrtitle{\ifPrelimDraft {\textsl{preliminary draft, \Now}}\fi}
+\newdimen\raggedskip    \raggedskip=\z@
+\newdimen\raggedstretch \raggedstretch=5em    % ems of font set now (10pt)
+\newskip\raggedparfill  \raggedparfill=\z@\@plus 1fil
+\def\raggedspaces{\spaceskip=.3333em \relax \xspaceskip=.5em \relax }
+\def\raggedright{%
+  \nohyphens
+  \rightskip=\raggedskip\@plus\raggedstretch \raggedspaces
+  \parfillskip=\raggedparfill }
+\def\raggedleft{%
+  \nohyphens
+  \leftskip=\raggedskip\@plus\raggedstretch \raggedspaces
+  \parfillskip=\z@skip }
+\def\raggedcenter{%
+  \nohyphens
+  \leftskip=\raggedskip\@plus\raggedstretch
+  \rightskip=\leftskip \raggedspaces
+  \parindent=\z@ \parfillskip=\z@skip }
+\def\normalspaces{\spaceskip\z@skip \xspaceskip\z@skip }
+\DeclareRobustCommand{\nobreakspace}{%
+  \unskip\nobreak\ \ignorespaces}
+\def\boxcs#1{\box\csname#1\endcsname}
+\def\setboxcs#1{\setbox\csname#1\endcsname}
+\def\newboxcs#1{\expandafter\newbox\csname#1\endcsname}
+\let\gobble\@gobble
+\def\vellipsis{%
+  \leavevmode\kern0.5em
+  \raise\p@\vbox{\baselineskip6\p@\vskip7\p@\hbox{.}\hbox{.}\hbox{.}}
+  }
+\def\bull{\vrule \@height 1ex \@width .8ex \@depth -.2ex }
+\def\cents{{\rm\raise.2ex\rlap{\kern.05em$\scriptstyle/$}c}}
+\def\Dag{\raise .6ex\hbox{$\scriptstyle\dagger$}}
+\def\careof{\leavevmode\hbox{\raise.75ex\hbox{c}\kern-.15em
+                /\kern-.125em\smash{\lower.3ex\hbox{o}}} \ignorespaces}
+\DeclareRobustCommand\sfrac[1]{\@ifnextchar/{\@sfrac{#1}}%
+                                            {\@sfrac{#1}/}}
+\def\@sfrac#1/#2{\leavevmode\kern.1em\raise.5ex
+         \hbox{$\m@th\mbox{\fontsize\sf@size\z@
+                           \selectfont#1}$}\kern-.1em
+         /\kern-.15em\lower.25ex
+          \hbox{$\m@th\mbox{\fontsize\sf@size\z@
+                            \selectfont#2}$}}
+\DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}}
+\DeclareRobustCommand\meta[1]{%
+  \ensuremath{\langle}\emph{#1}\ensuremath{\rangle}}
+\DeclareRobustCommand\env[1]{%
+  \cs{begin}\texttt{\char`\{#1\char`\}}}
+\def\thinskip{\hskip 0.16667em\relax}
+\def\endash{--}
+\def\emdash{\endash-}
+\def\d@sh#1#2{\unskip#1\thinskip#2\thinskip\ignorespaces}
+\def\dash{\d@sh\nobreak\endash}
+\def\Dash{\d@sh\nobreak\emdash}
+\def\ldash{\d@sh\empty{\hbox{\endash}\nobreak}}
+\def\rdash{\d@sh\nobreak\endash}
+\def\Ldash{\d@sh\empty{\hbox{\emdash}\nobreak}}
+\def\Rdash{\d@sh\nobreak\emdash}
+\def\hyph{-\penalty\z@\hskip\z@skip }
+\def\slash{/\penalty\z@\hskip\z@skip }
+\def\nth#1{%
+    \def\reserved@a##1##2\@nil{\ifcat##1n%
+           0%
+   \let\reserved@b\ensuremath
+      \else##1##2%
+   \let\reserved@b\relax
+      \fi}%
+    \TestCount=\reserved@a#1\@nil\relax
+    \ifnum\TestCount <0 \multiply\TestCount by\m@ne \fi % subdue negatives
+    \T@stCount=\TestCount
+    \divide\T@stCount by 100 \multiply\T@stCount by 100
+    \advance\TestCount by-\T@stCount     % n mod 100
+    \ifnum\TestCount >20 \T@stCount=\TestCount
+      \divide\T@stCount by 10 \multiply\T@stCount by 10
+      \advance\TestCount by-\T@stCount   % n mod 10
+    \fi
+     \reserved@b{#1}%
+       \textsuperscript{\ifcase\TestCount th%    0th
+                        \or   st%                1st
+                        \or   nd%                2nd
+                        \or   rd%                3rd
+                        \else th%                nth
+                        \fi}%
+     }
+\def\Review{\@ifnextchar:{\@Review}{\@Review:}}
+\def\@Review:{\@ifnextchar[%]
+  {\@Rev}%
+  {\@Rev[Book review]}}
+\def\@Rev[#1]#2{{\ignorespaces#1\unskip:\enspace\ignorespaces
+                                        \slshape\mdseries#2}}
+\def\reviewitem{\addvspace{\BelowTitleSkip}%
+  \def\revauth##1{\def\therevauth{##1, }\ignorespaces}%
+  \def\revtitle##1{\def\therevtitle{{\slshape##1}. }\ignorespaces}%
+  \def\revpubinfo##1{\def\therevpubinfo{##1.}\ignorespaces}%
+  }
+\def\endreviewitem{{\noindent\interlinepenalty=10000
+  \therevauth\therevtitle\therevpubinfo\endgraf}%
+  \vskip\medskipamount
+  }
+\def\booktitle#1{{\slshape#1\/}}
+\newcount\issueseqno            \issueseqno=-1
+\def\v@lx{\gdef\volx{Volume~\volno~(\volyr), No.~\issno}}
+\def\volyr{}
+\def\volno{}
+\def\vol #1,#2.{\gdef\volno{#1\unskip}%
+        \gdef\issno{\ignorespaces#2\unskip}%
+        \setbox\TestBox=\hbox{\volyr}%
+        \ifdim \wd\TestBox > .2em \v@lx \fi }
+\def\issdate #1#2 #3.{\gdef\issdt{#1#2 #3}\gdef\volyr{#3}%
+        \gdef\bigissdt{#1{\smc\uppercase{#2}} #3}%
+        \setbox\TestBox=\hbox{\volno}%
+        \ifdim \wd\TestBox > .2em \v@lx \fi }
+\vol 0, 0.
+\issdate Thermidor, 2060.
+\def\tubissue#1{\@ifnextchar(%)
+  {\@tubissue@b{#1}}
+  {\@tubissue@a{#1}}}
+\def\@tubissue@b#1(#2){\@tubissue@a{#1}{#2}}
+\def\@tubissue@a#1#2%
+  {\TUB~#1, no.~#2}
+\def\infil@{\jobname}
+\def\Input #1 {\ifnum\issueseqno<0
+    \def\infil@{#1}%
+  \else
+    \def\infil@{tb\number\issueseqno#1}
+  \fi
+  \edef\jobname{\infil@}\@readFLN
+  \@@input \infil@\relax
+  \if@RMKopen
+    \immediate\closeout\@TBremarkfile\@RMKopenfalse
+  \fi
+}
+\newif\if@RMKopen        \@RMKopenfalse
+\newwrite\@TBremarkfile
+\def\@TBremark#1{%
+  \if@RMKopen
+  \else
+    \@RMKopentrue\immediate\openout\@TBremarkfile=\infil@.rmk
+  \fi
+  \toks@={#1}%
+  \immediate\write\@TBremarkfile{^^J\the\toks@}%
+  \immediate\write16{^^JTBremark:: \the\toks@^^J}%
+}
+\let\TBremark=\gobble
+\def\TBEnableRemarks{\let\TBremark\@TBremark}
+\def\TUBedit#1{}
+\def\TUBfilename#1#2{\expandafter\def\csname file@@#1\endcsname{#2}}
+\InputIfFileExists{\jobname.fln}%
+     {\TBInfo{Reading alternative file file \jobname.fln}}{}
+\def\@tubfilename#1{\expandafter\ifx\csname file@@#1\endcsname\relax
+  #1\else\csname file@@#1\endcsname\fi}
+\def\fileinput#1{\@@input\@tubfilename{#1} }
+\def\pagexrefON#1{%
+        \write-1{\def\expandafter\noexpand\csname#1\endcsname{\number\c@page}}%
+        \write\ppoutfile{%
+                \def\expandafter\noexpand\csname#1\endcsname{\number\c@page}}%
+        }
+\def\PageXrefON#1{%
+        \immediate\write-1{\def\expandafter
+                        \noexpand\csname#1\endcsname{\number\c@page}}%
+        \immediate\write\ppoutfile{\def\expandafter
+                        \noexpand\csname#1\endcsname{\number\c@page}}}
+\def\pagexrefOFF#1{}
+\let\pagexref=\pagexrefOFF
+\def\PageXrefOFF#1{}
+\let\PageXref=\PageXrefOFF
+\def\xreftoON#1{%
+  \ifundefined{#1}%
+    ???\TBremark{Need cross reference for #1.}%
+  \else\csname#1\endcsname\fi}
+\def\xreftoOFF#1{???}
+\let\xrefto=\xreftoOFF
+\let\TBdriver\gobble
+\hyphenation{Eijk-hout Hara-lam-bous man-u-script man-u-scripts}
+\endinput
+%%
+%% End of file `ltugcomn.sty'.

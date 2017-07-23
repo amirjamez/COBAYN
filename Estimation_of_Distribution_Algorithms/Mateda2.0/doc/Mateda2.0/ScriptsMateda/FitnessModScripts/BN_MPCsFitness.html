@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of BN_MPCsFitness</title>
+  <meta name="keywords" content="BN_MPCsFitness">
+  <meta name="description" content="EXAMPLE 5:">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">FitnessModScripts</a> &gt; BN_MPCsFitness.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/FitnessModScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>BN_MPCsFitness
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EXAMPLE 5:</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EXAMPLE 5:  
+ An EDA based on Bayesian networks is used for the solution of the evalfuncntrap function
+ The algorithm stops after a maxgen number of generations is reached.
+ The fitness values of the most probable explanations the computation of the probabilities given by the model to
+ the best solutions found by the algorithm are computed.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li><li><a href="../../../Mateda2.0/knowledge_extraction/Most_probable_explanations.html" class="code" title="function[MPEs] = Most_probable_explanations(bnets,func)">Most_probable_explanations</a>	function[MPEs] = Most_probable_explanations(bnets,func)</li><li><a href="../../../Mateda2.0/knowledge_extraction/Probability_monitor.html" class="code" title="function [Probs] =  Probability_monitor(bnets, point)">Probability_monitor</a>	function [Probs] =  Probability_monitor(bnets, point)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001  <span class="comment">% EXAMPLE 5:</span>
+0002  <span class="comment">% An EDA based on Bayesian networks is used for the solution of the evalfuncntrap function</span>
+0003  <span class="comment">% The algorithm stops after a maxgen number of generations is reached.</span>
+0004  <span class="comment">% The fitness values of the most probable explanations the computation of the probabilities given by the model to</span>
+0005  <span class="comment">% the best solutions found by the algorithm are computed.</span>
+0006  
+0007  
+0008   PopSize = 500; n = 30; cache  = [1,1,1,1,1]; Card = 2*ones(1,n); maxgen = 10;
+0009   F = <span class="string">'evalfunctrapn'</span>; <span class="comment">% Trap function of parameter k=5;</span>
+0010   <span class="keyword">global</span> ntrapparam;
+0011   ntrapparam = 5;           <span class="comment">% The parameter of the function is passed as a global variable</span>
+0012   
+0013  edaparams{1} = {<span class="string">'replacement_method'</span>,<span class="string">'elitism'</span>,{10,<span class="string">'fitness_ordering'</span>}};
+0014  selparams(1:2) = {0.3,<span class="string">'ParetoRank_ordering'</span>};
+0015  edaparams{2} = {<span class="string">'selection_method'</span>,<span class="string">'truncation_selection'</span>,selparams};
+0016  BN_params(1:6) = {<span class="string">'k2'</span>,10,0.05,<span class="string">'pearson'</span>,<span class="string">'bayesian'</span>,<span class="string">'no'</span>};
+0017  edaparams{3} = {<span class="string">'learning_method'</span>,<span class="string">'LearnBN'</span>,BN_params};
+0018  edaparams{4} = {<span class="string">'stop_cond_method'</span>,<span class="string">'max_gen'</span>,{maxgen}};
+0019  [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,n,F,Card,cache,edaparams)
+0020   
+0021   
+0022  <span class="keyword">for</span> i=1:maxgen
+0023    bnets{i}=Cache{3,i};            <span class="comment">% The Bayesian networks are extracted from the Cache</span>
+0024  <span class="keyword">end</span>
+0025  [MPEs] = <a href="../../../Mateda2.0/knowledge_extraction/Most_probable_explanations.html" class="code" title="function[MPEs] = Most_probable_explanations(bnets,func)">Most_probable_explanations</a>(bnets, F); <span class="comment">% Most probable explanations are found</span>
+0026 
+0027  <span class="comment">% The most probable explanation given by the Bayesian network in</span>
+0028  <span class="comment">% each generation is computed and the function values at each generation for the most probable</span>
+0029  <span class="comment">% explanations are plotted.</span>
+0030  
+0031  <span class="keyword">for</span> i=1:maxgen
+0032    fo_mpes(i)=MPEs{3,i};           <span class="comment">% The fitness values of the most probable explanations are displayed</span>
+0033  <span class="keyword">end</span>
+0034  X=[1:maxgen];
+0035  plot(X,fo_mpes);
+0036 
+0037  <span class="comment">%%%  The best point reached by the algorithm is found and the probabilities given by the models</span>
+0038  <span class="comment">%%%  to this point are computed and ploted</span>
+0039 
+0040  optimal_point = AllStat{maxgen,2};  <span class="comment">%The best point reached by the algorithm is found</span>
+0041  [P] = <a href="../../../Mateda2.0/knowledge_extraction/Probability_monitor.html" class="code" title="function [Probs] =  Probability_monitor(bnets, point)">Probability_monitor</a>(bnets, optimal_point); <span class="comment">% The probabilities given by the models to this point are computed.</span>
+0042                                                   <span class="comment">% and ploted</span>
+0043  figure 
+0044  plot(X,P);
+0045</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

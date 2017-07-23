@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of SampleGaussianFullModel</title>
+  <meta name="keywords" content="SampleGaussianFullModel">
+  <meta name="description" content="[NewPop] = SampleGaussianFullModel(NumbVar,model,RangeValues,AuxPop,AuxFunVal,sampling_params)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">sampling</a> &gt; SampleGaussianFullModel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/sampling&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>SampleGaussianFullModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[NewPop] = SampleGaussianFullModel(NumbVar,model,RangeValues,AuxPop,AuxFunVal,sampling_params)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [NewPop] =  SampleGaussianFullModel(NumbVar,model,RangeValues,AuxPop,AuxFunVal,sampling_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [NewPop] = SampleGaussianFullModel(NumbVar,model,RangeValues,AuxPop,AuxFunVal,sampling_params)
+ SampleGaussianFullModel:         Samples a population of individuals from
+                                  a full multivariate Gaussian  model
+ INPUTS
+ NumbVar: Number of variables
+ model: model{1} = mean of the variables
+        model{2} = matrix of covariances between the variables 
+ RangeValues: Matrix of two vectors with the minimum and maximum real values 
+              each variable can take 
+ AuxPop: Auxiliary (selected) population (May be use for partial sampling or resampling)
+ AuxFunVal: Evaluation of the data set (required for some sampling algorithms, not for this one)
+ sampling_params{1,1} = N: Number of generated individuals 
+ sampling_params{1,2} = var_scaling: Scaling for the covariance values. A
+                        very low variance tends to move the algorith to stagnation. Scaling is a partial 
+                        solution to this problem. Dynamic scaling should
+                        be implemented as a more robust solution
+ OUTPUTS
+ NewPop: Sampled individuals
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [NewPop] =  SampleGaussianFullModel(NumbVar,model,RangeValues,AuxPop,AuxFunVal,sampling_params)</a>
+0002 <span class="comment">% [NewPop] = SampleGaussianFullModel(NumbVar,model,RangeValues,AuxPop,AuxFunVal,sampling_params)</span>
+0003 <span class="comment">% SampleGaussianFullModel:         Samples a population of individuals from</span>
+0004 <span class="comment">%                                  a full multivariate Gaussian  model</span>
+0005 <span class="comment">% INPUTS</span>
+0006 <span class="comment">% NumbVar: Number of variables</span>
+0007 <span class="comment">% model: model{1} = mean of the variables</span>
+0008 <span class="comment">%        model{2} = matrix of covariances between the variables</span>
+0009 <span class="comment">% RangeValues: Matrix of two vectors with the minimum and maximum real values</span>
+0010 <span class="comment">%              each variable can take</span>
+0011 <span class="comment">% AuxPop: Auxiliary (selected) population (May be use for partial sampling or resampling)</span>
+0012 <span class="comment">% AuxFunVal: Evaluation of the data set (required for some sampling algorithms, not for this one)</span>
+0013 <span class="comment">% sampling_params{1,1} = N: Number of generated individuals</span>
+0014 <span class="comment">% sampling_params{1,2} = var_scaling: Scaling for the covariance values. A</span>
+0015 <span class="comment">%                        very low variance tends to move the algorith to stagnation. Scaling is a partial</span>
+0016 <span class="comment">%                        solution to this problem. Dynamic scaling should</span>
+0017 <span class="comment">%                        be implemented as a more robust solution</span>
+0018 <span class="comment">% OUTPUTS</span>
+0019 <span class="comment">% NewPop: Sampled individuals</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0022 
+0023 PopSize = cell2num(sampling_params{1}(1)); 
+0024 var_scaling = cell2num(sampling_params{1}(2)); 
+0025 
+0026 vars_means = model{1};
+0027 vars_cov = model{2}*var_scaling;
+0028 
+0029  <span class="comment">% Generate the new population</span>
+0030 
+0031   NewPop = mvnrnd(vars_means,vars_cov,PopSize); 
+0032   
+0033      
+0034 <span class="keyword">return</span>;</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

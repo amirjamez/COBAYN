@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of VariantsGaussianEDAs_trajectory</title>
+  <meta name="keywords" content="VariantsGaussianEDAs_trajectory">
+  <meta name="description" content="EXAMPLE 13:  Different variants of continuous EDAs for a spacecraft">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">OptimizationScripts</a> &gt; VariantsGaussianEDAs_trajectory.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/OptimizationScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>VariantsGaussianEDAs_trajectory
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EXAMPLE 13:  Different variants of continuous EDAs for a spacecraft</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EXAMPLE 13:  Different variants of continuous EDAs for a spacecraft
+ trajectory problem.
+ For a description of the spacecraft trajectory problem and links
+ to the problem instances see:
+ Benchmarking different global optimisation techniques for preliminary 
+ space trajectory design (2007). Tamas Vinko and Dario Izzo and Claudio 
+ Bombardelli. Proceedings of 58th International Astronautical Congress</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001  <span class="comment">% EXAMPLE 13:  Different variants of continuous EDAs for a spacecraft</span>
+0002  <span class="comment">% trajectory problem.</span>
+0003  <span class="comment">% For a description of the spacecraft trajectory problem and links</span>
+0004  <span class="comment">% to the problem instances see:</span>
+0005  <span class="comment">% Benchmarking different global optimisation techniques for preliminary</span>
+0006  <span class="comment">% space trajectory design (2007). Tamas Vinko and Dario Izzo and Claudio</span>
+0007  <span class="comment">% Bombardelli. Proceedings of 58th International Astronautical Congress</span>
+0008 
+0009  <span class="keyword">global</span> MGADSMproblem
+0010  cd ../trajectory
+0011  load EdEdJ  <span class="comment">% This instance can be downloaded for ESA web page</span>
+0012  cd ../Mateda2.0
+0013  
+0014  NumbVar = 12;
+0015  PopSize = 1000; 
+0016  F = <span class="string">'EvalSaga'</span>; <span class="comment">% The function should be modified to enforce maximization, i.e g(x) = -1*f(x)</span>
+0017  Card(1,:) = [7000,0,0,0,50,300,0.01,0.01,1.05,8,-1*pi,-1*pi];
+0018  Card(2,:) = [9100,7,1,1,2000,2000,0.90,0.90,7.00,500,pi,pi]; 
+0019  cache  = [0,0,0,0,0]; 
+0020  edaparams{1} = {<span class="string">'learning_method'</span>,<span class="string">'LearnGaussianUnivModel'</span>,{}};
+0021  <span class="comment">%edaparams{1} = {'learning_method','LearnGaussianFullModel',{}};</span>
+0022  <span class="comment">% edaparams{1} = {'learning_method','LearnGaussianNetwork',BN_params};</span>
+0023  edaparams{2} = {<span class="string">'sampling_method'</span>,<span class="string">'SampleGaussianUnivModel'</span>,{PopSize,1}};
+0024  <span class="comment">% edaparams{2} = {'sampling_method','SampleGaussianFullModel',{PopSize,2}};</span>
+0025  <span class="comment">% BN_params(1:6) = {'k2',10,0.05,'pearson','bic','no'};</span>
+0026  <span class="comment">% edaparams{2} = {'sampling_method','SampleBN',{PopSize,1}};</span>
+0027  edaparams{3} = {<span class="string">'replacement_method'</span>,<span class="string">'best_elitism'</span>,{<span class="string">'fitness_ordering'</span>}};
+0028  selparams(1:2) = {0.1,<span class="string">'fitness_ordering'</span>};
+0029  edaparams{4} = {<span class="string">'selection_method'</span>,<span class="string">'truncation_selection'</span>,selparams};
+0030  edaparams{5} = {<span class="string">'repairing_method'</span>,<span class="string">'SetWithinBounds_repairing'</span>,{}};
+0031  edaparams{6} = {<span class="string">'stop_cond_method'</span>,<span class="string">'max_gen'</span>,{5000}};
+0032  [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,NumbVar,F,Card,cache,edaparams)</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

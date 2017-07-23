@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ViewStructures</title>
+  <meta name="keywords" content="ViewStructures">
+  <meta name="description" content="[results] = ViewStructures(run_structures,n,maxgen,nruns,varargin)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">knowledge_extraction</a> &gt; <a href="index.html">visualization</a> &gt; ViewStructures.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction/visualization&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ViewStructures
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[results] = ViewStructures(run_structures,n,maxgen,nruns,varargin)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[results] = ViewStructures(run_structures,n,maxgen,nruns,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [results] = ViewStructures(run_structures,n,maxgen,nruns,varargin)
+ ViewStructures: Allows the visualization of the structures using
+                 different visualization methods.
+ INPUTS
+ namefile: file that contains the structures
+ n: Number of variables
+ mangen: maximum number of generations
+ nruns: number of runs of the algorithm
+ Optional INPUTS
+ 'viewmatrix_method' followed by  'viewproc_filename' and array &quot;viewparams&quot;: determines the procedure
+ to view the data. The procedure is implemented in the matlab program:
+ 'viewproc_filename.m' which receives as parameters the structures computed 
+  by the program ReadStructures.m  and the array of parameters &quot;viewparams&quot;
+ Currently, the following procedures have been implemented:
+
+ 'ViewSummStruct'    : Show one image where each edge has a color proportional 
+                       to the times it has been present in the structures learned in all generations.
+ viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the  images. fs: Font size for the images                       
+                   
+ 'ViewInGenStruct'   : Shows images where each edge has a color
+                       proportional (relative to nruns)   to the times it has been present in the structures
+                       learned in those generations included in viewparams{2}.
+                       There is one figure for each generation.
+                       For showing all the generations, set viewparams{2}=[1:ngen]. 
+ viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the  images. fs: Font size for the images                       
+
+                       
+ 'ViewEdgDepStruct'  : Searches for substructures in the set of all the structures learned
+                       and show the adjacency matrices corresponding to
+                       the structures
+ viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the
+ images. fs: Font size for the images
+ viewparams{2}: Describe the substructure by giving values of
+ absence/presence to a subset of edges. (see Example below)
+ viewparams{3}:   % Vector of with the selected runs  that will be
+ inspected
+ viewparams{4};  % Vector of with the selected generations  that will be
+ inspected
+ viewparams{5}; % Display type that could be one of the following:
+   'all_graphs': There is an image for each structure that contain the
+    substructure.
+   'one_graph': an image adding all the structures that contain the
+    substructure.
+   'no_graph': no image is generated. This option is for the cases where we only
+    want the list of runs and generations where the substructure is
+    included. This is an output of the function (see ViewEdgDepStruct.m
+    for details)
+ 
+ 'ViewPCStruct'  : Searches for substructures in the set of all the structures learned
+                   and show the parallel coordinates of the edges and the
+                   generations at which they are learned. 
+ viewparams{1} = fs; % fs: Font size for the images                       
+ viewparams{2} : Vector with indices of edges that will be shown. For showing all the edges, set viewparams{2}=[1:m]. 
+ viewparams{3} = const_edg :  Minimal number of times that an edge has to appear in (all) the structures learned
+                             to be selected for visualization.  
+ viewparams{4} : Method used to order the variables before displaying them
+ using  parallel coordinates. Ordering may help to reduce cluttering, improving
+ visualization.  viewparams{4} = 'none' if no ordering method is used. 
+ Ordering methods can be implemented by the user. Currently implemented is
+ 'ClusterUsingCorr' which clusters togethers variables with strong
+ correlation.
+
+ More than one than one kind of graphs can be generated in the same call to
+ the function by including several options together (see examples below)
+ User can add more methods for visualization by passing them the
+ appropriate output computed by ReadStructures.m (see program Help)
+
+ OUTPUTS
+
+ EXAMPLES 
+
+ First Example
+ [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);
+ [results] = ViewStructures(run_structures,20,maxgen,nruns,'viewmatrix_method','ViewSummStruct',{[150,14]},'viewmatrix_method','ViewInGenStruct',{[150,14];[1,5,10]})
+ The first figure corresponds to edges learned in all runs, all
+ generations. The following figures corresponds to structures learned at
+ generations 1, 5, 10 computed using all runs. 
+
+ Second Example
+ We want to see all adjacency matrices of those structures learned in all runs
+ such that edges (3,4) and (4,5) appear together and edge (3,5) does not appear
+ viewparams{1} = [100,14];
+ viewparams{2} = [3 4 1; 4 5 1; 3 5 0]; % The substructure is described
+ viewparams{3} = [1:nruns]; % Selected runs (All)
+ viewparams{4} = [1:maxgen]; % Selected generations (All)
+ viewparams{5} = 'all_graphs'; % Graphs to be seen (All)
+ [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);
+ [results] = ViewStructures(run_structures,20,maxgen,nruns, 'viewmatrix_method','ViewEdgDepStruct',viewparams)
+
+ Third Example
+ Parallel coordinate visualization of the generations at which most
+ frequent edges appearing in the structures  learned by an EDA
+
+ viewparams{1} = [14];
+ viewparams{2} = []; % The edges will be found by the algorithm
+ viewparams{3} = 60; % Only those edges that appear at least 20 times will be shown
+ viewparams{4} = 2;  % Only substructures that have at least two edges are visualized in the PC
+ viewparams{5} = 'ClusterUsingDist'; % Variables will be ordered according correlation
+ viewparams{6} = 'correlation';
+ [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);
+ [results] = ViewStructures(run_structures,20,maxgen,nruns,  'viewmatrix_method','ViewPCStruct',viewparams)
+
+ Fourth Example
+ Glyph visualization of the generations at which most
+ frequent edges appearing in the structures  learned by an EDA
+
+ viewparams{1} = [14];
+ viewparams{2} = results{3}; % The edges will be found by the algorithm
+ viewparams{3} = [1:10];   % Vector with the selected runs  that will be  inspected
+ viewparams{4} = [1:13];   % Vector of the selected generations  that will be inspected
+ [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);
+ [newresults] = ViewStructures(run_structures,20,maxgen,nruns, 'viewmatrix_method','ViewGlyphStruct',viewparams)
+
+ Fith Example
+ Dendrogram visualization of the generations at which most
+ frequent edges appearing in the structures  learned by an EDA
+
+ viewparams{1} = [14];
+ viewparams{2} = []; % The edges will be found by the algorithm
+ viewparams{3} = 60; % Only those edges that appear at least 20 times will be shown
+ viewparams{4} = 2;  % Only substructures that have at least two edges are visualized in the PC
+ viewparams{5} = 'correlation';
+ [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);
+ [results] = ViewStructures(run_structures,20,maxgen,nruns, 'viewmatrix_method','ViewDendroStruct',viewparams)
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[results] = ViewStructures(run_structures,n,maxgen,nruns,varargin)</a>
+0002 <span class="comment">% [results] = ViewStructures(run_structures,n,maxgen,nruns,varargin)</span>
+0003 <span class="comment">% ViewStructures: Allows the visualization of the structures using</span>
+0004 <span class="comment">%                 different visualization methods.</span>
+0005 <span class="comment">% INPUTS</span>
+0006 <span class="comment">% namefile: file that contains the structures</span>
+0007 <span class="comment">% n: Number of variables</span>
+0008 <span class="comment">% mangen: maximum number of generations</span>
+0009 <span class="comment">% nruns: number of runs of the algorithm</span>
+0010 <span class="comment">% Optional INPUTS</span>
+0011 <span class="comment">% 'viewmatrix_method' followed by  'viewproc_filename' and array &quot;viewparams&quot;: determines the procedure</span>
+0012 <span class="comment">% to view the data. The procedure is implemented in the matlab program:</span>
+0013 <span class="comment">% 'viewproc_filename.m' which receives as parameters the structures computed</span>
+0014 <span class="comment">%  by the program ReadStructures.m  and the array of parameters &quot;viewparams&quot;</span>
+0015 <span class="comment">% Currently, the following procedures have been implemented:</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% 'ViewSummStruct'    : Show one image where each edge has a color proportional</span>
+0018 <span class="comment">%                       to the times it has been present in the structures learned in all generations.</span>
+0019 <span class="comment">% viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the  images. fs: Font size for the images</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% 'ViewInGenStruct'   : Shows images where each edge has a color</span>
+0022 <span class="comment">%                       proportional (relative to nruns)   to the times it has been present in the structures</span>
+0023 <span class="comment">%                       learned in those generations included in viewparams{2}.</span>
+0024 <span class="comment">%                       There is one figure for each generation.</span>
+0025 <span class="comment">%                       For showing all the generations, set viewparams{2}=[1:ngen].</span>
+0026 <span class="comment">% viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the  images. fs: Font size for the images</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% 'ViewEdgDepStruct'  : Searches for substructures in the set of all the structures learned</span>
+0030 <span class="comment">%                       and show the adjacency matrices corresponding to</span>
+0031 <span class="comment">%                       the structures</span>
+0032 <span class="comment">% viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the</span>
+0033 <span class="comment">% images. fs: Font size for the images</span>
+0034 <span class="comment">% viewparams{2}: Describe the substructure by giving values of</span>
+0035 <span class="comment">% absence/presence to a subset of edges. (see Example below)</span>
+0036 <span class="comment">% viewparams{3}:   % Vector of with the selected runs  that will be</span>
+0037 <span class="comment">% inspected</span>
+0038 <span class="comment">% viewparams{4};  % Vector of with the selected generations  that will be</span>
+0039 <span class="comment">% inspected</span>
+0040 <span class="comment">% viewparams{5}; % Display type that could be one of the following:</span>
+0041 <span class="comment">%   'all_graphs': There is an image for each structure that contain the</span>
+0042 <span class="comment">%    substructure.</span>
+0043 <span class="comment">%   'one_graph': an image adding all the structures that contain the</span>
+0044 <span class="comment">%    substructure.</span>
+0045 <span class="comment">%   'no_graph': no image is generated. This option is for the cases where we only</span>
+0046 <span class="comment">%    want the list of runs and generations where the substructure is</span>
+0047 <span class="comment">%    included. This is an output of the function (see ViewEdgDepStruct.m</span>
+0048 <span class="comment">%    for details)</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% 'ViewPCStruct'  : Searches for substructures in the set of all the structures learned</span>
+0051 <span class="comment">%                   and show the parallel coordinates of the edges and the</span>
+0052 <span class="comment">%                   generations at which they are learned.</span>
+0053 <span class="comment">% viewparams{1} = fs; % fs: Font size for the images</span>
+0054 <span class="comment">% viewparams{2} : Vector with indices of edges that will be shown. For showing all the edges, set viewparams{2}=[1:m].</span>
+0055 <span class="comment">% viewparams{3} = const_edg :  Minimal number of times that an edge has to appear in (all) the structures learned</span>
+0056 <span class="comment">%                             to be selected for visualization.</span>
+0057 <span class="comment">% viewparams{4} : Method used to order the variables before displaying them</span>
+0058 <span class="comment">% using  parallel coordinates. Ordering may help to reduce cluttering, improving</span>
+0059 <span class="comment">% visualization.  viewparams{4} = 'none' if no ordering method is used.</span>
+0060 <span class="comment">% Ordering methods can be implemented by the user. Currently implemented is</span>
+0061 <span class="comment">% 'ClusterUsingCorr' which clusters togethers variables with strong</span>
+0062 <span class="comment">% correlation.</span>
+0063 <span class="comment">%</span>
+0064 <span class="comment">% More than one than one kind of graphs can be generated in the same call to</span>
+0065 <span class="comment">% the function by including several options together (see examples below)</span>
+0066 <span class="comment">% User can add more methods for visualization by passing them the</span>
+0067 <span class="comment">% appropriate output computed by ReadStructures.m (see program Help)</span>
+0068 <span class="comment">%</span>
+0069 <span class="comment">% OUTPUTS</span>
+0070 <span class="comment">%</span>
+0071 <span class="comment">% EXAMPLES</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">% First Example</span>
+0074 <span class="comment">% [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);</span>
+0075 <span class="comment">% [results] = ViewStructures(run_structures,20,maxgen,nruns,'viewmatrix_method','ViewSummStruct',{[150,14]},'viewmatrix_method','ViewInGenStruct',{[150,14];[1,5,10]})</span>
+0076 <span class="comment">% The first figure corresponds to edges learned in all runs, all</span>
+0077 <span class="comment">% generations. The following figures corresponds to structures learned at</span>
+0078 <span class="comment">% generations 1, 5, 10 computed using all runs.</span>
+0079 <span class="comment">%</span>
+0080 <span class="comment">% Second Example</span>
+0081 <span class="comment">% We want to see all adjacency matrices of those structures learned in all runs</span>
+0082 <span class="comment">% such that edges (3,4) and (4,5) appear together and edge (3,5) does not appear</span>
+0083 <span class="comment">% viewparams{1} = [100,14];</span>
+0084 <span class="comment">% viewparams{2} = [3 4 1; 4 5 1; 3 5 0]; % The substructure is described</span>
+0085 <span class="comment">% viewparams{3} = [1:nruns]; % Selected runs (All)</span>
+0086 <span class="comment">% viewparams{4} = [1:maxgen]; % Selected generations (All)</span>
+0087 <span class="comment">% viewparams{5} = 'all_graphs'; % Graphs to be seen (All)</span>
+0088 <span class="comment">% [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);</span>
+0089 <span class="comment">% [results] = ViewStructures(run_structures,20,maxgen,nruns, 'viewmatrix_method','ViewEdgDepStruct',viewparams)</span>
+0090 <span class="comment">%</span>
+0091 <span class="comment">% Third Example</span>
+0092 <span class="comment">% Parallel coordinate visualization of the generations at which most</span>
+0093 <span class="comment">% frequent edges appearing in the structures  learned by an EDA</span>
+0094 <span class="comment">%</span>
+0095 <span class="comment">% viewparams{1} = [14];</span>
+0096 <span class="comment">% viewparams{2} = []; % The edges will be found by the algorithm</span>
+0097 <span class="comment">% viewparams{3} = 60; % Only those edges that appear at least 20 times will be shown</span>
+0098 <span class="comment">% viewparams{4} = 2;  % Only substructures that have at least two edges are visualized in the PC</span>
+0099 <span class="comment">% viewparams{5} = 'ClusterUsingDist'; % Variables will be ordered according correlation</span>
+0100 <span class="comment">% viewparams{6} = 'correlation';</span>
+0101 <span class="comment">% [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);</span>
+0102 <span class="comment">% [results] = ViewStructures(run_structures,20,maxgen,nruns,  'viewmatrix_method','ViewPCStruct',viewparams)</span>
+0103 <span class="comment">%</span>
+0104 <span class="comment">% Fourth Example</span>
+0105 <span class="comment">% Glyph visualization of the generations at which most</span>
+0106 <span class="comment">% frequent edges appearing in the structures  learned by an EDA</span>
+0107 <span class="comment">%</span>
+0108 <span class="comment">% viewparams{1} = [14];</span>
+0109 <span class="comment">% viewparams{2} = results{3}; % The edges will be found by the algorithm</span>
+0110 <span class="comment">% viewparams{3} = [1:10];   % Vector with the selected runs  that will be  inspected</span>
+0111 <span class="comment">% viewparams{4} = [1:13];   % Vector of the selected generations  that will be inspected</span>
+0112 <span class="comment">% [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);</span>
+0113 <span class="comment">% [newresults] = ViewStructures(run_structures,20,maxgen,nruns, 'viewmatrix_method','ViewGlyphStruct',viewparams)</span>
+0114 <span class="comment">%</span>
+0115 <span class="comment">% Fith Example</span>
+0116 <span class="comment">% Dendrogram visualization of the generations at which most</span>
+0117 <span class="comment">% frequent edges appearing in the structures  learned by an EDA</span>
+0118 <span class="comment">%</span>
+0119 <span class="comment">% viewparams{1} = [14];</span>
+0120 <span class="comment">% viewparams{2} = []; % The edges will be found by the algorithm</span>
+0121 <span class="comment">% viewparams{3} = 60; % Only those edges that appear at least 20 times will be shown</span>
+0122 <span class="comment">% viewparams{4} = 2;  % Only substructures that have at least two edges are visualized in the PC</span>
+0123 <span class="comment">% viewparams{5} = 'correlation';</span>
+0124 <span class="comment">% [run_structures,maxgen,nruns] = ReadStructures('ProteinStructsExR.txt',20);</span>
+0125 <span class="comment">% [results] = ViewStructures(run_structures,20,maxgen,nruns, 'viewmatrix_method','ViewDendroStruct',viewparams)</span>
+0126 <span class="comment">%</span>
+0127 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0128 
+0129 
+0130 <span class="comment">% Default params value</span>
+0131 
+0132 viewparams{1}(1) = 100; <span class="comment">% Range of colors</span>
+0133 viewparams{1}(2) = 14;  <span class="comment">% Font size</span>
+0134 
+0135 viewmethod = <span class="string">'ViewSummStruct'</span>; <span class="comment">% Default view method</span>
+0136 
+0137 args = varargin;
+0138 nargs = length(args);
+0139 <span class="keyword">if</span> length(args) &gt; 0
+0140     <span class="keyword">if</span> isstr(args{1})
+0141         <span class="keyword">for</span> i = 1:3:nargs
+0142             <span class="keyword">switch</span> args{i}
+0143              <span class="keyword">case</span> <span class="string">'viewmatrix_method'</span>, viewmethod = args{i+1};, viewparams = args{i+2};
+0144             <span class="keyword">end</span>;
+0145             results = eval([viewmethod,<span class="string">'(run_structures,viewparams)'</span>]);
+0146         <span class="keyword">end</span>;
+0147     <span class="keyword">end</span>;
+0148 <span class="keyword">end</span>;
+0149 
+0150 
+0151 
+0152 
+0153</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

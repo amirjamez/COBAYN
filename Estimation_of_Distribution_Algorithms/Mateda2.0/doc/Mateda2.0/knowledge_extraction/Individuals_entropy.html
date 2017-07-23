@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Individuals_entropy</title>
+  <meta name="keywords" content="Individuals_entropy">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">knowledge_extraction</a> &gt; Individuals_entropy.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>Individuals_entropy
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function S_H = Individuals_entropy(Inds,Card,laplace) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">
+ function S_H = Individuals_entropy(Inds,Card,laplace)
+
+ Population_entropy: This function calculates the accumulated entropy  for all
+                     the variables in a given set of individual. It can be
+                     the whole population or the selected individuals.
+
+ INPUT
+ Inds: Population or selected individuals. It is obtained from Cache{1,gen}
+       or Cache{2,gen} respectively
+ Card: Cardinalities of the variables
+ laplace: Determines wether or not Laplace correction is used in the computation
+ of the probabilities. laplace=1 (It is used), otherwise  it is not.
+
+ OUTPUT
+ S_H: The accumulate entropy value.
+
+ Example:
+ Pop = Cache{1,1};
+ Inds_sel = Cache{2,1}; 
+ S_H_pop = Individuals_entropy(Inds,Card,1);
+ S_H_sel = Individuals_entropy(Inds_sel,Card,1);
+
+ Last version 5/11/08. Carlos Echegoyen (carlos.echegoyen@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="entropy.html" class="code" title="function H = entropy(var,min,max,laplace)">entropy</a>	function H = entropy(var,min,max,laplace)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/ScriptsMateda/AnalysisScripts/FitnessMeasuresComp.html" class="code" title="">FitnessMeasuresComp</a>	%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</li><li><a href="Generations_entropy.html" class="code" title="function H_gens = Generations_entropy(inds_gens,Card,laplace)">Generations_entropy</a>	function H_gens = Generations_entropy(inds_gens,Card,laplace)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function S_H = Individuals_entropy(Inds,Card,laplace)</a>
+0002 <span class="comment">%</span>
+0003 <span class="comment">% function S_H = Individuals_entropy(Inds,Card,laplace)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Population_entropy: This function calculates the accumulated entropy  for all</span>
+0006 <span class="comment">%                     the variables in a given set of individual. It can be</span>
+0007 <span class="comment">%                     the whole population or the selected individuals.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% INPUT</span>
+0010 <span class="comment">% Inds: Population or selected individuals. It is obtained from Cache{1,gen}</span>
+0011 <span class="comment">%       or Cache{2,gen} respectively</span>
+0012 <span class="comment">% Card: Cardinalities of the variables</span>
+0013 <span class="comment">% laplace: Determines wether or not Laplace correction is used in the computation</span>
+0014 <span class="comment">% of the probabilities. laplace=1 (It is used), otherwise  it is not.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% OUTPUT</span>
+0017 <span class="comment">% S_H: The accumulate entropy value.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Example:</span>
+0020 <span class="comment">% Pop = Cache{1,1};</span>
+0021 <span class="comment">% Inds_sel = Cache{2,1};</span>
+0022 <span class="comment">% S_H_pop = Individuals_entropy(Inds,Card,1);</span>
+0023 <span class="comment">% S_H_sel = Individuals_entropy(Inds_sel,Card,1);</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Last version 5/11/08. Carlos Echegoyen (carlos.echegoyen@ehu.es)</span>
+0026 
+0027 num_vars = size(Inds,2);
+0028 
+0029 S_H = 0;
+0030 
+0031 <span class="keyword">for</span> i=1:num_vars
+0032     min = 0;
+0033     max = Card(i)-1;
+0034     S_H = S_H + <a href="entropy.html" class="code" title="function H = entropy(var,min,max,laplace)">entropy</a>(Inds(:,i),min,max,laplace);
+0035 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

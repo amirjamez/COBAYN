@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EvalChain</title>
+  <meta name="keywords" content="EvalChain">
+  <meta name="description" content="[Collisions,Overlappings,Pos] =  EvalChain(vector)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; EvalChain.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>EvalChain
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Collisions,Overlappings,Pos] =  EvalChain(vector)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Collisions,Overlappings,Pos] =  EvalChain(vector) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Collisions,Overlappings,Pos] =  EvalChain(vector)
+ EvalChain: Given a chain of molecules in the HP model, calculates the numer of Collisions with 
+ neighboring same sign molecules, and the number of Overlappings molecules.
+ For reference on the  HP model see:
+--- R. Santana, P. Larra�aga, and J. A. Lozano (2004) Protein folding in 2-dimensional lattices with estimation of distribution algorithms. 
+--- In Proceedings of the First International Symposium on Biological and Medical Data Analysis, 
+--- Volume 3337 of Lecture Notes in Computer Science, pages 388-398, Barcelona, Spain, 2004. Springer Verlag. 
+ INPUTS
+ vector: Sequence of residues ( (H)ydrophobic or (P)olar, respectively represented by zero and one)
+ OUTPUTS
+ Collisions:   Number of non contiguous H residues that are neighbors in the lattice 
+ Ovelappings:  Number of residues that self-intersect in the lattice
+ Pos:    Position of the residues
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="PutMoveAtPos.html" class="code" title="function[Pos] = PutMoveAtPos(Pos,pos,mov)">PutMoveAtPos</a>	PutMoveAtPos:    updates the lattice given a mov</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="EvaluateEnergy.html" class="code" title="function[energy] =  EvaluateEnergy(vector)">EvaluateEnergy</a>	EvaluateEnergy:    Evaluates  the energy corresponding to the sequence lattice configuration determined by the lattice in vector.</li><li><a href="MakePajekGraphOfProtein.html" class="code" title="function[Pos] =  MakePajekGraphOfProtein(vector,pajekfilename)">MakePajekGraphOfProtein</a>	[Pos] =  MakePajekGraphOfProtein(vector)</li><li><a href="PrintProtein.html" class="code" title="function[Pos] =  PrintProtein(vector)">PrintProtein</a>	[Pos] =  PrintProtein(vector)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Collisions,Overlappings,Pos] =  EvalChain(vector)</a>
+0002 <span class="comment">% [Collisions,Overlappings,Pos] =  EvalChain(vector)</span>
+0003 <span class="comment">% EvalChain: Given a chain of molecules in the HP model, calculates the numer of Collisions with</span>
+0004 <span class="comment">% neighboring same sign molecules, and the number of Overlappings molecules.</span>
+0005 <span class="comment">% For reference on the  HP model see:</span>
+0006 <span class="comment">%--- R. Santana, P. Larra�aga, and J. A. Lozano (2004) Protein folding in 2-dimensional lattices with estimation of distribution algorithms.</span>
+0007 <span class="comment">%--- In Proceedings of the First International Symposium on Biological and Medical Data Analysis,</span>
+0008 <span class="comment">%--- Volume 3337 of Lecture Notes in Computer Science, pages 388-398, Barcelona, Spain, 2004. Springer Verlag.</span>
+0009 <span class="comment">% INPUTS</span>
+0010 <span class="comment">% vector: Sequence of residues ( (H)ydrophobic or (P)olar, respectively represented by zero and one)</span>
+0011 <span class="comment">% OUTPUTS</span>
+0012 <span class="comment">% Collisions:   Number of non contiguous H residues that are neighbors in the lattice</span>
+0013 <span class="comment">% Ovelappings:  Number of residues that self-intersect in the lattice</span>
+0014 <span class="comment">% Pos:    Position of the residues</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0017 
+0018 
+0019 <span class="keyword">global</span> HPInitConf;
+0020 
+0021 
+0022 sizeChain = size(vector,2);
+0023 
+0024 Collisions = 0;
+0025 Overlappings = 0;
+0026 
+0027 
+0028 Pos = zeros(sizeChain,2);
+0029 
+0030 Pos(1,1) = 0;  <span class="comment">%Position for the initial molecule</span>
+0031 Pos(1,2) = 0;
+0032  
+0033 Pos(2,1) = 1;  <span class="comment">%Position for the second molecule</span>
+0034 Pos(2,2) = 0;
+0035 
+0036  <span class="keyword">for</span> i=3:sizeChain
+0037 
+0038  [Pos] = <a href="PutMoveAtPos.html" class="code" title="function[Pos] = PutMoveAtPos(Pos,pos,mov)">PutMoveAtPos</a>(Pos,i,vector(i));
+0039   
+0040    <span class="keyword">for</span> j=1:i-2,   <span class="comment">% Check for Overlappings and Collissions in all the    molecules except the previous one</span>
+0041     <span class="keyword">if</span>(Pos(i,1)==Pos(j,1) &amp; Pos(i,2)==Pos(j,2))
+0042       Overlappings = Overlappings + 1;
+0043     <span class="keyword">elseif</span> (HPInitConf(i)==0  &amp; HPInitConf(j)==0)   
+0044      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1) &amp; Pos(i,2)==Pos(j,2)-1)
+0045         Collisions =   Collisions + 1;
+0046      <span class="keyword">end</span>
+0047      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1)+1 &amp; Pos(i,2)==Pos(j,2))
+0048         Collisions =   Collisions + 1;
+0049      <span class="keyword">end</span>
+0050      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1) &amp; Pos(i,2)==Pos(j,2)+1)
+0051         Collisions =   Collisions + 1;
+0052      <span class="keyword">end</span>
+0053      <span class="keyword">if</span> (Pos(i,1)==Pos(j,1)-1 &amp; Pos(i,2)==Pos(j,2))
+0054         Collisions =   Collisions + 1;
+0055      <span class="keyword">end</span>
+0056     <span class="keyword">end</span>
+0057   <span class="keyword">end</span>
+0058  <span class="keyword">end</span>
+0059    
+0060 
+0061 
+0062 
+0063 
+0064  
+0065</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

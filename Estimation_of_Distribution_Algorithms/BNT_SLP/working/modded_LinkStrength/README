@@ -1,0 +1,58 @@
+LinkStrength Package for BNT  
+Available at www.DataOnStage.com
+
+By Imme Ebert-Uphoff 
+
+Documentation: 
+   BNT_LinkStrength_Package.pdf (available at www.DataOnStage.com)
+
+FILES IN THIS DIRECTORY:
+
+get_key.m
+   NEEDS TO BE MOVED to directory FullBNT-1.0.2/BNT/@assocarray  !!!
+
+Files demonstrating use of Package:
+   SAMPLE_USE_GRAPHS.m
+   SAMPLE_USE_SCREEN_OUTPUT.m
+
+Package core files:
+1) For Calculation
+   calc_entropy.m
+   calc_link_strength.m
+   calc_mutual_information.m
+
+2) For Printing on Screen
+   print_DAG_structure.m
+   print_all_entropy.m
+   print_all_link_strength.m
+   print_all_mutual_information.m
+
+3) For Writing to Graph Files
+   graph_plain_to_dot.m
+   graph_with_entropy_to_dot.m
+   graph_with_link_strength_to_dot.m
+   graph_with_mutual_info_to_dot.m
+
+4) Auxiliary files (only for internal use):
+   AUX_*
+
+===================================================
+Installation Instructions:
+
+1.  Download and Unpack the LinkStrength Package.
+    (All available at www.DataOnStage.com.)
+
+2.  Place folder LinkStrength somewhere (for example at
+    FullBNT-1.0.2/BNT/LinkStrength).
+
+3.  Move file 'get_key.m' into directory FullBNT-1.0.2/BNT/@assocarray
+
+4.  Add the LinkStrength folder to the Matlab path
+    OR set the Matlab working directory to the LinkStrength folder
+
+5.  If you only want to use the text output of the measures of the
+    LinkStrength package, you're done.
+    Otherwise, if not already installed, get the Graphviz package 
+    (available at http://www.graphviz.org for most platforms).
+===================================================
+

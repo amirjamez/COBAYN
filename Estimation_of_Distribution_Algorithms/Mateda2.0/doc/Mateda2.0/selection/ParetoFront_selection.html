@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ParetoFront_selection</title>
+  <meta name="keywords" content="ParetoFront_selection">
+  <meta name="description" content="[SelPop,SelFunVal]=truncation_selection(Pop,FunVal,selection_params)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">selection</a> &gt; ParetoFront_selection.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/selection&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ParetoFront_selection
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[SelPop,SelFunVal]=truncation_selection(Pop,FunVal,selection_params)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[SelPop,SelFunVal]=truncation_selection(Pop,FunVal,selection_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [SelPop,SelFunVal]=truncation_selection(Pop,FunVal,selection_params)
+ truncation_selection:        Truncation selection
+                              Individuals are ordered according fitness values (best is the maximum)                          
+                              For multiobjetive functions, individuals are selected according 
+                              average ranking for all the objectives. (i.e. for each objective a truncation 
+                              is done) 
+ INPUTS 
+ Pop:                 Original population
+ FunVal:              A matrix of function evaluations, one vector of m objectives for each individual
+ selection_params{1}: Truncation parameter T \in (0,1)
+ OUTPUTS
+ SelPop: Selected population
+ SelFunVal:  A vector of function evaluations for each selected individual
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/ordering/fitness_ordering.html" class="code" title="function[Index]=fitness_ordering(Pop,FunVal)">fitness_ordering</a>	[Index]=fitness_ordering(Pop,FunVal)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[SelPop,SelFunVal]=truncation_selection(Pop,FunVal,selection_params)</a>
+0002 <span class="comment">% [SelPop,SelFunVal]=truncation_selection(Pop,FunVal,selection_params)</span>
+0003 <span class="comment">% truncation_selection:        Truncation selection</span>
+0004 <span class="comment">%                              Individuals are ordered according fitness values (best is the maximum)</span>
+0005 <span class="comment">%                              For multiobjetive functions, individuals are selected according</span>
+0006 <span class="comment">%                              average ranking for all the objectives. (i.e. for each objective a truncation</span>
+0007 <span class="comment">%                              is done)</span>
+0008 <span class="comment">% INPUTS</span>
+0009 <span class="comment">% Pop:                 Original population</span>
+0010 <span class="comment">% FunVal:              A matrix of function evaluations, one vector of m objectives for each individual</span>
+0011 <span class="comment">% selection_params{1}: Truncation parameter T \in (0,1)</span>
+0012 <span class="comment">% OUTPUTS</span>
+0013 <span class="comment">% SelPop: Selected population</span>
+0014 <span class="comment">% SelFunVal:  A vector of function evaluations for each selected individual</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0017  
+0018    PopSize = size(Pop,1);
+0019    
+0020    T = cell2num(selection_params{1}(1));   <span class="comment">% The parameter used by truncation selection is the truncation parameter</span>
+0021    number_objectives = size(FunVal,2);
+0022    SelPopSize = floor(T*PopSize);
+0023    
+0024    [Index] = <a href="../../Mateda2.0/ordering/fitness_ordering.html" class="code" title="function[Index]=fitness_ordering(Pop,FunVal)">fitness_ordering</a>(Pop,FunVal,SelPopSize);
+0025   
+0026    SelPop = Pop(Index,:);  
+0027    SelFunVal = FunVal(Index,:); 
+0028   
+0029    <span class="keyword">return</span>
+0030  
+0031    
+0032    
+0033</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

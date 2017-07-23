@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of LearnMOAParameters</title>
+  <meta name="keywords" content="LearnMOAParameters">
+  <meta name="description" content="[Tables] = LearnMOAParameters(Cliques,SelPop,NumbVar,Card)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">learning</a> &gt; LearnMOAParameters.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/learning&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>LearnMOAParameters
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[Tables] = LearnMOAParameters(Cliques,SelPop,NumbVar,Card)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[Tables] = LearnMOAParameters(Cliques,SelPop,NumbVar,Card) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Tables] = LearnMOAParameters(Cliques,SelPop,NumbVar,Card)
+ LearnMOAModel: The parameters of the Markov network model of the Markov Optimization Algorithm (MOA) 
+                are learned from data
+ INPUTS
+    Cliques: Structure of the model in a list of cliques that defines the  
+    Each row of Cliques is a clique. The first value is the number of neighbor for variable i. 
+    The second, is the number of new variables (one new variable, i).
+    Then, neighbor variables are listed and  finally new variables (variable i) are listed
+ NumbVar: Number of variables
+ Card: Vector with the dimension of all the variables. 
+ SelPop:  Population from which the model is learned         
+ OUTPUTS
+ Tables: Probability tables for each variable conditioned on its neighbors
+
+ Last version 8/26/2008. Roberto Santana and Siddarta Shakya (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/otherfiles/FindAccCard.html" class="code" title="function [AccCard] = FindAccCard(length,Card)">FindAccCard</a>	[AccCard] = FindAccCard(length,Card)</li><li><a href="../../Mateda2.0/otherfiles/IndexconvertCard.html" class="code" title="function [num] = IndexconvertCard(valindex,length,AccCard)">IndexconvertCard</a>	[num] = IndexconvertCard(valindex,length,AccCard)</li><li><a href="../../Mateda2.0/otherfiles/NumconvertCard.html" class="code" title="function [valindex] = NumconvertCard(num,length,AccCard)">NumconvertCard</a>	[valindex] = NumconvertCard(num,length,AccCard)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Tables] = LearnMOAParameters(Cliques,SelPop,NumbVar,Card)</a>
+0002 <span class="comment">% [Tables] = LearnMOAParameters(Cliques,SelPop,NumbVar,Card)</span>
+0003 <span class="comment">% LearnMOAModel: The parameters of the Markov network model of the Markov Optimization Algorithm (MOA)</span>
+0004 <span class="comment">%                are learned from data</span>
+0005 <span class="comment">% INPUTS</span>
+0006 <span class="comment">%    Cliques: Structure of the model in a list of cliques that defines the</span>
+0007 <span class="comment">%    Each row of Cliques is a clique. The first value is the number of neighbor for variable i.</span>
+0008 <span class="comment">%    The second, is the number of new variables (one new variable, i).</span>
+0009 <span class="comment">%    Then, neighbor variables are listed and  finally new variables (variable i) are listed</span>
+0010 <span class="comment">% NumbVar: Number of variables</span>
+0011 <span class="comment">% Card: Vector with the dimension of all the variables.</span>
+0012 <span class="comment">% SelPop:  Population from which the model is learned</span>
+0013 <span class="comment">% OUTPUTS</span>
+0014 <span class="comment">% Tables: Probability tables for each variable conditioned on its neighbors</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Last version 8/26/2008. Roberto Santana and Siddarta Shakya (roberto.santana@ehu.es)</span>
+0017 
+0018 
+0019 NumberCliques = size(Cliques,1);
+0020 
+0021 
+0022 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%  First step  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0023 
+0024 <span class="comment">% The tables of all the cliques are filled</span>
+0025 
+0026 
+0027 <span class="keyword">for</span> i=1:size(Cliques,1)
+0028 
+0029   sizeCliqOther = Cliques(i,2);
+0030   sizeCliqSolap = Cliques(i,1);
+0031 
+0032   CliqOther = Cliques(i,Cliques(i,1)+3:Cliques(i,1)+Cliques(i,2)+2);
+0033   AccCardOther = <a href="../../Mateda2.0/otherfiles/FindAccCard.html" class="code" title="function [AccCard] = FindAccCard(length,Card)">FindAccCard</a>(sizeCliqOther,Card(CliqOther));
+0034   dimOther =   <a href="../../Mateda2.0/otherfiles/NumconvertCard.html" class="code" title="function [valindex] = NumconvertCard(num,length,AccCard)">NumconvertCard</a>(Card(CliqOther)-1,sizeCliqOther,AccCardOther)+1;
+0035 
+0036   <span class="keyword">if</span>(sizeCliqSolap &gt; 0)
+0037     CliqSolap = Cliques(i,3:(Cliques(i,1)+2));
+0038     AccCardSolap = <a href="../../Mateda2.0/otherfiles/FindAccCard.html" class="code" title="function [AccCard] = FindAccCard(length,Card)">FindAccCard</a>(sizeCliqSolap,Card(CliqSolap));
+0039     dimSolap =   <a href="../../Mateda2.0/otherfiles/NumconvertCard.html" class="code" title="function [valindex] = NumconvertCard(num,length,AccCard)">NumconvertCard</a>(Card(CliqSolap)-1,sizeCliqSolap,AccCardSolap)+1;
+0040     aux=zeros(dimSolap,dimOther);
+0041   <span class="keyword">else</span> 
+0042     AccCardSolap = [];
+0043     CliqSolap = [];
+0044     aux=zeros(1,dimOther);
+0045     dimSolap = 1;
+0046   <span class="keyword">end</span>
+0047    
+0048   AllVars = [CliqSolap,CliqOther];
+0049 
+0050  
+0051  <span class="keyword">for</span> j=1:dimSolap
+0052     <span class="keyword">if</span> (sizeCliqSolap&gt;0) 
+0053       solapval = <a href="../../Mateda2.0/otherfiles/IndexconvertCard.html" class="code" title="function [num] = IndexconvertCard(valindex,length,AccCard)">IndexconvertCard</a>(j-1,sizeCliqSolap,AccCardSolap);
+0054     <span class="keyword">else</span>
+0055       solapval=[];
+0056     <span class="keyword">end</span>
+0057 
+0058     <span class="keyword">for</span> k=1:dimOther
+0059      auxSelPop=SelPop(:,[CliqSolap,CliqOther]);
+0060      otherval =  <a href="../../Mateda2.0/otherfiles/IndexconvertCard.html" class="code" title="function [num] = IndexconvertCard(valindex,length,AccCard)">IndexconvertCard</a>(k-1,sizeCliqOther,AccCardOther);
+0061      allvarvalues = [solapval,otherval];
+0062     
+0063      <span class="keyword">if</span>(size(allvarvalues,2)==1)
+0064        aux(j,k) =  sum((auxSelPop==repmat(allvarvalues,size(SelPop,1),1))');
+0065      <span class="keyword">else</span> 
+0066        aux(j,k)=sum( sum((auxSelPop==repmat(allvarvalues,size(SelPop,1),1))') == size(allvarvalues,2)); 
+0067      <span class="keyword">end</span>
+0068     <span class="keyword">end</span> 
+0069    <span class="comment">% aux(j,:) = (aux(j,:))/(sum(aux(j,:)));</span>
+0070     aux(j,:) = (aux(j,:)+1)/(sum(aux(j,:))+dimOther); <span class="comment">% Laplace Estimator</span>
+0071   <span class="keyword">end</span>
+0072  <span class="comment">%aux=aux/sum(sum(aux)); % Normalization</span>
+0073  
+0074  
+0075  <span class="comment">% En Table i se guardan las probabilidades del clique i</span>
+0076 
+0077  eval([<span class="string">'Tables{'</span>,num2str(i),<span class="string">'}=aux;'</span>]);
+0078          
+0079 <span class="keyword">end</span>
+0080</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

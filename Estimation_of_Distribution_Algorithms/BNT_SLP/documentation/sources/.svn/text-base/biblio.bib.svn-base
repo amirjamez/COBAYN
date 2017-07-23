@@ -1,0 +1,2200 @@
+This file was created with JabRef 1.19.
+
+@BOOK{Aho98,
+  title = {Concepts fondamentaux de l'informatique},
+  publisher = {Dunod},
+  year = {1998},
+  author = {A. Aho and J. Ullman},
+}
+
+@ARTICLE{Aka70,
+  author = {Akaike , H},
+  title = {Statistical Predictor Identification},
+  journal = {Ann. Inst. Statist. Math.},
+  year = {1970},
+  volume = {22},
+  pages = {203-217},
+}
+
+@INPROCEEDINGS{Aka73,
+  author = {H. Akaike},
+  title = {Information Theory and Extension of the Maximum Likelihood Principle},
+  booktitle = {Proceedings of the 2nd International Symposium of Information Theory},
+  year = {1973},
+  editor = {B.N.Petrov and F.Csaki (eds.)},
+  pages = {267-281},
+  address = {Akademiai Kiado, Budapest},
+}
+
+@ARTICLE{HUGIN,
+  author = {S.K. Andersen and K.G. Olesen and F.V. Jensen and F. Jensen},
+  title = {HUGIN - A shell for building Bayesian belief universes for expert systems},
+  journal = {Proceedings of the 11th International Joint Conference on Artificial Intelligence},
+  year = {1989},
+  pages = {1080-1085},
+  note = {\texttt{http://www.hugin.com/}},
+  publisher = {Morgan Kaufmann Publishers, San Mateo, CA},
+}
+
+@INPROCEEDINGS{Att99,
+  author = {Hagai Attias},
+  title = {Inferring Parameters and Structure of Latent Variable Models by Variational Bayes},
+  booktitle = {Proceedings of the 15th Conference on Uncertainty in Artificial Intelligence ({UAI}-99)},
+  year = {1999},
+  editor = {Kathryn B. Laskey and Henri Prade},
+  pages = {21--30},
+  address = {S.F., Cal.},
+  month = jul # { ~30--} # aug # {~1},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@INPROCEEDINGS{Auv02,
+  author = {Vincent Auvray and Louis Wehenkel},
+  title = {On the Construction of the Inclusion Boundary Neighbourhood for Markov Equivalence Classes of Bayesian Network Structures},
+  booktitle = {Proceedings of the 18th Conference on Uncertainty in Artificial Intelligence ({UAI}-02)},
+  year = {2002},
+  editor = {Adnan Darwiche and Nir Friedman},
+  pages = {26--35},
+  address = {S.F., Cal.},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@TECHREPORT{Bat96,
+  author = {K. Bathe},
+  title = {Finite Element Procedures},
+  institution = {Englewood Cliffs},
+  year = {1996},
+}
+
+@BOOK{Bec99,
+  title = {Les R\'eseaux Bayesiens: Mod\`eles Graphiques de Connaissance},
+  publisher = {Editions Eyrolles},
+  year = {1999},
+  author = {Becker, A. and Na{\"{\i}}m, P},
+}
+
+@INPROCEEDINGS{Ben96,
+  author = {Y. Bennani and F. Bossaert},
+  title = {Predictive neural networks for traffic disturbance detection in the telephone network},
+  booktitle = {Proceedings of IMACS-CESA'96},
+  year = {1996},
+  address = {Lille, France},
+}
+
+@BOOK{ber73,
+  title = {Graphs and Hypergraphs},
+  publisher = {North-Holland},
+  year = {1973},
+  editor = {?},
+  author = {Berge, C.},
+  address = {Amsterdam},
+}
+
+@BOOK{ber58,
+  title = {Th{\'e}orie des graphes et ses Applications},
+  publisher = {Dunod},
+  year = {1958},
+  editor = {Dunod},
+  author = {Berge, C.},
+}
+
+@ARTICLE{Bis98,
+  author = {C.M. Bishop and M.E. Tipping},
+  title = {A Hierarchical Latent Variable Model for Data Visualisation},
+  journal = {IEEE T-PAMI},
+  year = {1998},
+  volume = {3},
+  number = {20},
+  pages = {281-293},
+}
+
+@MISC{UCI98,
+  author = {C.L. Blake and C.J. Merz},
+  title = {{UCI} Repository of machine learning databases},
+  year = {1998},
+  note = {\texttt{http://www.ics.uci.edu/\~{}mlearn/MLRepository.html}},
+  institution = {University of California, Irvine, Dept. of Information and Computer Sciences},
+}
+
+@BOOK{Bor02,
+  title = {Graphical Models - Methods for Data Analysis and Mining},
+  publisher = {John Wiley \& Sons, Chichester, United Kingdom},
+  year = {2002},
+  author = {C. Borgelt and R. Kruse},
+}
+
+@ARTICLE{Bou93,
+  author = {R. R. Bouckaert},
+  title = {Probabilistic Network Construction Using the Minimum Description Length Principle},
+  journal = {Lecture Notes in Computer Science},
+  year = {1993},
+  volume = {747},
+  pages = {41--48},
+}
+
+@INPROCEEDINGS{Boy99,
+  author = {Xavier Boyen and Nir Friedman and Daphne Koller},
+  title = {Discovering the Hidden Structure of Complex Dynamic Systems},
+  booktitle = {Proceedings of the 15th Conference on Uncertainty in Artificial Intelligence ({UAI}-99)},
+  year = {1999},
+  editor = {Kathryn B. Laskey and Henri Prade},
+  pages = {91--100},
+  address = {S.F., Cal.},
+  month = jul # { ~30--} # aug # {~1},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@ARTICLE{Bro04,
+  author = {Mark Brodie and Irina Rish and Sheng Ma},
+  title = {Intelligent probing: A cost-effective approach to fault diagnosis in computer networks},
+  journal = {IBM Systems Journal},
+  year = {2002},
+  volume = {41},
+  number = {3},
+  pages = {372-385},
+}
+
+@ARTICLE{Bun96,
+  author = {Buntine , W},
+  title = {Aguide to the Literature on Learning Probabilistic Networks from Data},
+  journal = {IEEE Trans. On Knowledge and data Engineering},
+  year = {1996},
+  volume = {8},
+  pages = {195-210},
+}
+
+@ARTICLE{Bun94,
+  author = {W. Buntine},
+  title = {Operations for Learning with Graphical Models},
+  journal = {Journal of Artificial Intelligence Research},
+  year = {1994},
+  volume = {2},
+  pages = {159-225},
+}
+
+@INPROCEEDINGS{Bun91,
+  author = {W. Buntine},
+  title = {Theory Refinement on Bayesian Networks},
+  booktitle = {Proceedings of the 7th Conference on Uncertainty in Artificial Intelligence},
+  year = {1991},
+  editor = {Bruce {D'Ambrosio} and Philippe Smets and Piero Bonissone},
+  pages = {52--60},
+  address = {San Mateo, CA, USA},
+  month = jul,
+  publisher = {Morgan Kaufmann Publishers},
+  isbn = {1-55860-203-8},
+}
+
+@MISC{DEAL,
+  author = {Susanne G. Bøttcher and Claus Dethlefsen},
+  title = {DEAL: A package for learning Bayesian networks},
+  year = {2003},
+  url = {http://www.math.auc.dk/novo/deal/},
+}
+
+@MANUAL{Cal86,
+  title = {Cours De Calcul Des Probabilit\'es},
+  author = {Calot, G},
+  organization = {Dunod d\'ecision Paris},
+  year = {1986},
+}
+
+@TECHREPORT{Cas02,
+  author = {R. Castelo and T. Kocka},
+  title = {Towards an inclusion driven learning of bayesian networks},
+  institution = {Institute of information and computing sciences, University of Utrecht},
+  year = {2002},
+  number = {UU-CS-2002-05},
+}
+
+@INPROCEEDINGS{Cau00,
+  author = {D. Cau and P. Munteanu},
+  title = {Efficient Learning of Equivalence Classes of Bayesian Networks},
+  booktitle = {Proceedings of the 4th European Conf. on Principles and Practice of Knowledge Discovery in Databases, PKDD, Lyon},
+  year = {2000},
+  pages = {96-105},
+}
+
+@INCOLLECTION{Che96,
+  author = {P. Cheeseman and J. Stutz},
+  title = {Bayesian Classification ({AUTOCLASS}): Theory and Results},
+  booktitle = {Advances in Knowledge Discovery and Data Mining},
+  publisher = {AAAI Press/MIT Press},
+  year = {1996},
+  editor = {U. M. Fayyad and G. Piatetsky-Shapiro and P Smyth and R. Uthurusamy},
+}
+
+@ARTICLE{Che02,
+  author = {J. Cheng and R. Greiner and J. Kelly and D. Bell and W. Liu},
+  title = {Learning {B}ayesian Networks from Data: An Information-Theory Based Approach},
+  journal = {Artificial Intelligence},
+  year = {2002},
+  volume = {137},
+  number = {1--2},
+  pages = {43--90},
+}
+
+@INPROCEEDINGS{Che97b,
+  author = {Jie Cheng and David A. Bell and Weiru Liu},
+  title = {Learning Belief Networks from Data: An Information Theory Based Approach},
+  booktitle = {Proceedings of the sixth ACM International Conference on Information and Knowledge Management {CIKM}},
+  year = {1997},
+  pages = {325-331},
+}
+
+@INPROCEEDINGS{Che97a,
+  author = {Jie Cheng and David A. Bell and Weiru Liu},
+  title = {An algorithm for Bayesian network construction from data},
+  booktitle = {Proceedings of the 6th International Workshop on Artificial Intelligence and Statistics {AI\&STAT'97}},
+  year = {1997},
+  pages = {83-90},
+}
+
+@INPROCEEDINGS{Che01,
+  author = {Jie Cheng and Russell Greiner},
+  title = {Learning {Bayesian} Belief Network Classifiers: Algorithms and System},
+  booktitle = {Proceedings of the Canadian Conference on AI 2001},
+  year = {2001},
+  volume = {2056},
+  pages = {141--151},
+}
+
+@INPROCEEDINGS{Che99,
+  author = {Cheng, Jie and Greiner, Russell},
+  title = {Comparing Bayesian Network Classifiers},
+  booktitle = {Proceedings of the Fifteenth Annual Conference on Uncertainty in Artificial Intelligence (UAI--99)},
+  year = {1999},
+  pages = {101--108},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@INPROCEEDINGS{Chi95b,
+  author = {D. Chickering and D. Geiger and D. Heckerman},
+  title = {Learning Bayesian networks: Search methods and experimental results},
+  booktitle = {In Proceedings of Fifth Conference on Artificial Intelligence and Statistics},
+  year = {1995},
+  pages = {112--128},
+}
+
+@TECHREPORT{Chi94,
+  author = {D. Chickering and D. Geiger and D.E. Heckerman},
+  title = {Learning Bayesian Networks is {NP}-Hard},
+  institution = {Microsoft Research Technical Report},
+  year = {1994},
+  number = {MSR-TR-94-17},
+}
+
+@INPROCEEDINGS{Chi96b,
+  author = {D. Chickering and D. Heckerman},
+  title = {Efficient {A}pproximation for the {M}arginal {L}ikelihood of {I}ncomplete {D}ata given a {B}ayesian {N}etwork},
+  booktitle = {UAI'96},
+  year = {1996},
+  pages = {158--168},
+  publisher = {Morgan Kaufmann},
+  editors = {Horviz,E. and Jensen,F.},
+}
+
+@INPROCEEDINGS{Chi96,
+  author = {David Chickering},
+  title = {Learning Equivalence Classes of {Bayesian} Network Structures},
+  booktitle = {Proceedings of the 12th Conference on Uncertainty in Artificial Intelligence ({UAI}-96)},
+  year = {1996},
+  editor = {Eric Horvitz and Finn Jensen},
+  pages = {150--157},
+  address = {San Francisco},
+  month = aug # {~1--4},
+  publisher = {Morgan Kaufmann Publishers},
+  isbn = {1-55860-412-X},
+}
+
+@INPROCEEDINGS{Chi95,
+  author = {David Chickering},
+  title = {A Transformational Characterization of Equivalent {Bayesian} Network Structures},
+  booktitle = {Proceedings of the 11th Conference on Uncertainty in Artificial Intelligence ({UAI}'95)},
+  year = {1995},
+  editor = {Philippe Besnard and Steve Hanks},
+  pages = {87--98},
+  address = {San Francisco, CA, USA},
+  month = aug,
+  publisher = {Morgan Kaufmann Publishers},
+  isbn = {1-55860-385-9},
+}
+
+@INPROCEEDINGS{Chi02b,
+  author = {David Chickering and Christopher Meek},
+  title = {Finding Optimal Bayesian Networks},
+  booktitle = {Proceedings of the 18th Conference on Uncertainty in Artificial Intelligence ({UAI}-02)},
+  year = {2002},
+  editor = {Adnan Darwiche and Nir Friedman},
+  pages = {94-102},
+  address = {S.F., Cal.},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@ARTICLE{Chi02,
+  author = {David Maxwell Chickering},
+  title = {Learning equivalence classes of bayesian-network structures},
+  journal = {Journal of machine learning research},
+  year = {2002},
+  volume = {2},
+  pages = {445-498},
+}
+
+@ARTICLE{Chi02c,
+  author = {David Maxwell Chickering},
+  title = {Optimal Structure Identification with Greedy Search},
+  journal = {Journal of Machine Learning Research},
+  year = {2002},
+  volume = {3},
+  pages = {507-554},
+  month = {November},
+  url = {http://www.ai.mit.edu/projects/jmlr/papers/volume2/chickering02a/chickering02b.pdf},
+}
+
+@MISC{Cho02,
+  author = {T. Choudhury and J. M. Rehg and V. Pavlovic and A. Pentland},
+  title = {Boosting and structure learning in dynamic bayesian networks for audio-visual speaker detection},
+  year = {2002},
+  institution = {Media Laboratory of Massachussets Institue of technology, Cambridge},
+}
+
+@ARTICLE{Cho68,
+  author = {Chow, C.K. and Liu, C.N.},
+  title = {Approximating discrete probability distributions with dependence trees},
+  journal = {IEEE Transactions on Information Theory},
+  year = {1968},
+  volume = {14},
+  number = {3},
+  pages = {462-467},
+}
+
+@ARTICLE{Coo92b,
+  author = {Cooper, G},
+  title = {The Computational Complexity of Probabilistic Inference Using Bayesian Belief Networks},
+  journal = {Artificial intelligence},
+  year = {1992},
+  volume = {42},
+  pages = {393-347},
+}
+
+@ARTICLE{Coo92a,
+  author = {Cooper, G. and Herskovits, E.},
+  title = {A Bayesian Method for the Induction of Probabilistic Networks from Data},
+  journal = {Maching Learning},
+  year = {1992},
+  volume = {9},
+  pages = {309-347},
+}
+
+@TECHREPORT{Coo88b,
+  author = {Cooper, G. F.},
+  title = {Probabilistic Inference Using Belief Network Is NP-Hard},
+  institution = {Medical Computer Science, Stanford University},
+  year = {1988},
+  number = {KSL-87-27},
+  address = {Stanford, California},
+}
+
+@ARTICLE{Coo90,
+  author = {Cooper, G.F.},
+  title = {Computational complexity of probabilistic inference using {B}ayesian belief networks},
+  journal = {Artificial Intelligence},
+  year = {1990},
+  volume = {42},
+  number = {2},
+  pages = {393--405},
+  note = {research note},
+}
+
+@BOOK{Cor94,
+  title = {Introduction à l'algorithmique},
+  publisher = {Dunod},
+  year = {1994},
+  author = {T. Cormen and C. Leiserson and R. Rivest},
+}
+
+@INPROCEEDINGS{Cow01,
+  author = {R.G. Cowel},
+  title = {Conditions Under Which Conditionnal Independence and Scoring Methods Lead to Identical Selection of Bayesian Network Models},
+  booktitle = {Proceedings of the Seventeenth Conference on Uncertainty in Artificial Intelligence ({UAI}-01)},
+  year = {2001},
+  editor = {Jack Breese and Daphne Koller},
+  pages = {91--97},
+  address = {San Francisco, CA},
+  month = aug,
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@BOOK{Cow99,
+  title = {Probabilistic Networks and Expert Systems},
+  publisher = {Springer-Verlag},
+  year = {1999},
+  author = {Robert G. Cowell and A. Philip Dawid and Steffen L. Lauritzen and David J. Spiegelhalter},
+  series = {Statistics for Engineering and Information Science},
+}
+
+@INPROCEEDINGS{Coz02,
+  author = {Fabio G. Cozman and Ira Cohen},
+  title = {Unlabeled data can degrade classification performance of generative classifiers},
+  booktitle = {Fifteenth International Florida Artificial Intelligence Society Conference},
+  year = {2002},
+  pages = {327-331},
+}
+
+@INPROCEEDINGS{Dam93,
+  author = {D'ambrosio, Bruce},
+  title = {Incremental Probabilistic Inference},
+  booktitle = {Proceedings of the ninth Conference on Uncertainty in Artificial Intelligence},
+  year = {1993},
+  pages = {301-308},
+  publisher = {Morgan Kaufmann},
+}
+
+@ARTICLE{Dag93,
+  author = {Dagum, P and Luby, M},
+  title = {Approximating Probabilistic Inference in Bayesian Belief Networks is {NP}-Hard},
+  journal = {Artificiel Intelligence},
+  year = {1993},
+  volume = {60},
+  pages = {141-153},
+}
+
+@INPROCEEDINGS{Das02,
+  author = {D. Dash and G.F. Cooper},
+  title = {Model averaging with discrete bayesian network classifers},
+  booktitle = {ICML'02},
+  year = {2002},
+  pages = {252--262},
+}
+
+@INPROCEEDINGS{Dav00,
+  author = {Scott Davies and Andrew Moore},
+  title = {Mix-nets: Factored Mixtures of Gaussians in Bayesian Networks with Mixed Continuous And Discrete Variables},
+  booktitle = {Proceedings of the 16th Conference on Uncertainty in Artificial Intelligence ({UAI}-00)},
+  year = {2000},
+  editor = {C. Boutilier and M. Goldszmidt},
+  pages = {168--175},
+  address = {SF, CA},
+  month = jun # { ~30-- } # jul # { ~3},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@INCOLLECTION{Daw98,
+  author = {Dawid, A.P.},
+  title = {Conditionnal independence},
+  booktitle = {Encyclopedia of Statistical Science},
+  publisher = {Wiley-interscience},
+  year = {1998},
+  editor = {Kotz, S. and Read, S.C. and Banks, D.L.},
+  pages = {146--155},
+  address = {New York},
+}
+
+@ARTICLE{daw79,
+  author = {Dawid, A.P.},
+  title = {Conditionnal independence in statistical theory},
+  journal = jrssb,
+  year = {1979},
+  volume = {41},
+  number = {1},
+  pages = {1--39},
+}
+
+@ARTICLE{Daw92,
+  author = {Dawid, P.},
+  title = {Applications of a General Propagation Algorithm for Probabilistic Expert Systemes},
+  journal = {Statistics and Computing},
+  year = {1992},
+  volume = {2},
+  pages = {25-36},
+}
+
+@INPROCEEDINGS{Dec00,
+  author = {R. Dechter },
+  title = {An Anytime Approximation For Optimizing Policies Under Uncertainty},
+  booktitle = {workshop of Decision Theoretic Planning, AIPS2000},
+  year = {2000},
+}
+
+@ARTICLE{Dem77,
+  author = {A. Dempster and N. Laird and D. Rubin},
+  title = {Maximum Likelihood from Incompete Data Via the {EM} Algorithm},
+  journal = {Journal of the Royal Statistical Society},
+  year = {1977},
+  volume = {B 39},
+  pages = {1-38},
+}
+
+@INPROCEEDINGS{Dev02,
+  author = {M. Deviren and K. Daoudi},
+  title = {Apprentissage de structures de r\'eseaux bay\'esiens dynamiques pour la reconnaissance de la parole},
+  booktitle = {XXIV\`emes Journ\'ees d'\'etude sur la parole},
+  year = {2002},
+}
+
+@ARTICLE{Dom72,
+  author = {F. De~Dombal and D. Leaper and J. Staniland and A. McCann and J. Horrocks},
+  title = {Computer-Aided Diagnosis of Acute Abdominal Pain},
+  journal = {Br Med J},
+  year = {1972},
+  volume = {2},
+  pages = {9-13},
+}
+
+@ARTICLE{Die97,
+  author = {F. Diez and J. Mira and E. Iturralde and S. Zubillage},
+  title = {DIAVAL: a Bayesian expert system for echocardiography},
+  journal = {Articial Intelligence in Medicine},
+  year = {1997},
+  volume = {10},
+  pages = {59-73},
+}
+
+@INPROCEEDINGS{Die93,
+  author = {F. J. Diez},
+  title = {Parameter adjustement in {B}ayes networks. {T}he generalized noisy {OR}--gate},
+  booktitle = {Proceedings of the 9th Conference on Uncertainty in Artificial Intelligence},
+  year = {1993},
+  pages = {99--105},
+  address = {Washington D.C.},
+  publisher = {Morgan Kaufmann, San Mateo, CA},
+}
+
+@ARTICLE{Dji98,
+  author = {D. Djian and P Rives},
+  title = {Reconnaissance D'objets 3D Par Vision Active: Apprentissage Par R\'eseaux Bayesiens},
+  journal = {RFIA},
+  year = {1998},
+  pages = {77-86},
+}
+
+@TECHREPORT{Dor92,
+  author = {D. Dor and M. Tarsi},
+  title = {A simple algorithm to construct a consistent extension of a partially oriented graph},
+  institution = {Cognitive Systems Laboratory, UCLA Computer Science Department},
+  year = {1992},
+  number = {R-185},
+}
+
+@ARTICLE{Dra95,
+  author = {Draper, D.},
+  title = {Assessment and Propagation of Model Uncertainty},
+  journal = {Journal of the Royal Statistical Society, series B},
+  year = {1995},
+  volume = {57},
+  number = {1},
+  pages = {45-70},
+}
+
+@ARTICLE{Dru00,
+  author = {M. Druzdel and L. {Van~der~Gaag} and M. Henrion and F. Jensen},
+  title = {Building Probabilistic Networks: ``Where Do the Numbers Come From?'' Guest Editors Introduction},
+  journal = {IEEE Transactions on Knowledge and Data Engineering},
+  year = {2000},
+  volume = {12},
+}
+
+@INPROCEEDINGS{Dru00b,
+  author = {Druzdzel, Marek and D\'{\i}ez, F. Javier},
+  title = {Criteria for Combining Knowledge from Different Sources in Probabilistic Models},
+  booktitle = {Working Notes of the workshop on {\em Fusion of Domain Knowledge with Data for Decision Support}, Sixteenth Annual Conference on Uncertainty in Artificial Intelligence (UAI--2000)},
+  year = {2000},
+  pages = {23--29},
+  address = {Stanford, CA},
+  month = {30 June},
+}
+
+@BOOK{Dub90,
+  title = {Diagnostic et Reconnaissance Des Formes},
+  publisher = {Edition Herm\`es},
+  year = {1990},
+  author = {Bernard Dubuisson},
+}
+
+@INPROCEEDINGS{Eli01,
+  author = {Elidan, Gal and Friedman, Nir},
+  title = {Learning the Dimensionality of Hidden Variables},
+  booktitle = {Uncertainty in Artificial Intelligence: Proceedings of the Seventeenth Conference (UAI-2001)},
+  year = {2001},
+  pages = {144-151},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@TECHREPORT{Elk97,
+  author = {C. Elkan},
+  title = {Boosting and naive bayesian learning},
+  institution = {Dept of computer science and engineering, University of California, San Diego},
+  year = {1997},
+  number = {CS97-557},
+}
+
+@INPROCEEDINGS{Fra03,
+  author = {O. François and P. Leray},
+  title = {Etude Comparative d'Algorithmes d'Apprentissage de Structure dans les Réseaux Bayésiens},
+  booktitle = {RJCIA2003 - 6emes Rencontres Nationales des Jeunes Chercheurs en Intelligence Artificielle},
+  year = {2003},
+  editor = {Florence Dupin de Saint-Cyr},
+  pages = {167-180},
+  publisher = {Presses Universitaires de Grenoble},
+  isbn = {2-7061-11434-7},
+}
+
+@INPROCEEDINGS{Fra04,
+  author = {O. François and Ph. Leray},
+  title = {\'Evaluation d'algorithme d'apprentissage de structure dans les réseaux bayésiens},
+  booktitle = {14ieme Congrès francophone de Reconnaissance des formes et d'Intelligence artificielle},
+  year = {2004},
+  pages = {1453-1460},
+  publisher = {LAAS-CNRS},
+}
+
+@ARTICLE{Fre95,
+  author = {Y. Freund},
+  title = {Boosting a week learning algorithm by majority},
+  journal = {Information and Computation},
+  year = {1995},
+}
+
+@ARTICLE{Fri97b,
+  author = {N. Friedman and D. Geiger and M. Goldszmidt},
+  title = {Bayesian Network Classifiers},
+  journal = {Machine Learning},
+  year = {1997},
+  volume = {29},
+  number = {2-3},
+  pages = {131-163},
+}
+
+@INPROCEEDINGS{Fri96,
+  author = {N. Friedman and M. Goldszmidt},
+  title = {Learning {Bayesian} Networks with Local Structure},
+  booktitle = {M. I. Jordan ed. Learning and Inference in Graphical Models},
+  year = {1996},
+  pages = {252--262},
+}
+
+@MISC{BNR97,
+  author = {N. Friedman and M. Goldszmidt and D. Heckerman and S. Russell},
+  title = {Challenge: What is the Impact of Bayesian Networks on Learning?, \textit{Proceedings of the 15'th International Joint Conference on Artificial Intelligence (NIL-97)}, 10-15},
+  year = {1997},
+  note = {\texttt{http://www.cs.huji.ac.il/labs/compbio/Repository/}},
+}
+
+@INPROCEEDINGS{Fri98b,
+  author = {Nir Friedman},
+  title = {The {Bayesian} Structural {EM} Algorithm},
+  booktitle = {Proceedings of the 14th Conference on Uncertainty in Artificial Intelligence ({UAI}-98)},
+  year = {1998},
+  editor = {Gregory F. Cooper and Seraf{\'{\i}}n Moral},
+  pages = {129--138},
+  address = {San Francisco},
+  month = jul # {~24--26},
+  publisher = {Morgan Kaufmann},
+  isbn = {1-55860-555-X},
+}
+
+@INPROCEEDINGS{Fri97,
+  author = {Nir Friedman},
+  title = {Learning belief networks in the presence of missing values and hidden variables},
+  booktitle = {Proc. 14th International Conference on Machine Learning},
+  year = {1997},
+  pages = {125--133},
+  publisher = {Morgan Kaufmann},
+}
+
+@MISC{LibB,
+  author = {Nir Friedman and Gal Elidan},
+  title = {LibB},
+  year = {1900},
+  url = {http://www.cs.huji.ac.il/labs/compbio/LibB/},
+}
+
+@INPROCEEDINGS{Fri99,
+  author = {Friedman, Nir and Goldszmidt, Moises and Wyner, Abraham J.},
+  title = {Data Analysis with Bayesian Networks: A Bootstrap Approach},
+  booktitle = {Proceedings of the Fifteenth Annual Conference on Uncertainty in Artificial Intelligence (UAI--99)},
+  year = {1999},
+  pages = {206--215},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@INPROCEEDINGS{Fri00,
+  author = {Nir Friedman and Daphne Koller},
+  title = {Being Bayesian about Network Structure},
+  booktitle = {Proceedings of the 16th Conference on Uncertainty in Artificial Intelligence ({UAI}-00)},
+  year = {2000},
+  editor = {C. Boutilier and M. Goldszmidt},
+  pages = {201--210},
+  address = {SF, CA},
+  month = jun # { ~30-- } # jul # { ~3},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@INPROCEEDINGS{Fri98,
+  author = {Nir Friedman and Kevin Murphy and Stuart Russell},
+  title = {Learning the Structure of Dynamic Probabilistic Networks},
+  booktitle = {Proceedings of the 14th Conference on Uncertainty in Artificial Intelligence ({UAI}-98)},
+  year = {1998},
+  editor = {Gregory F. Cooper and Seraf{\'{\i}}n Moral},
+  pages = {139--147},
+  address = {San Francisco},
+  month = jul # {~24--26},
+  publisher = {Morgan Kaufmann},
+  isbn = {1-55860-555-X},
+}
+
+@ARTICLE{Fri95,
+  author = {Friedman, R. J},
+  title = {Early Detection of Malignant Melanoma: The Role of Physician Examination and Self Examination of the Skin},
+  journal = {C.A},
+  year = {1995},
+  volume = {35},
+  pages = {130-151},
+}
+
+@ARTICLE{Fun94,
+  author = {R. Fung and B. Favero},
+  title = {Backward Simulation in Bayesian Networks},
+  journal = {Uncertainty and Artificial Intelligence: Procedings of the Tenth Conference. San Mateo, CA: Morgan Kaufmann},
+  year = {1994},
+}
+
+@ARTICLE{Gei91,
+  author = {Geiger, D. and Paz, A. and Pearl, J.},
+  title = {Axioms and algorithms for inferences involving probabilistic independence},
+  journal = {Information and Computation},
+  year = {1991},
+  volume = {91},
+  number = {1},
+  pages = {128--141},
+}
+
+@ARTICLE{Gei90b,
+  author = {Geiger, D. and Pearl, J.},
+  title = {Logical and Algorithmic Properties of Independence and Their Application to {B}ayesian networks},
+  journal = {Annals of Mathematics and AI},
+  year = {1990},
+  volume = {2},
+  number = {1--4},
+  pages = {165--178},
+}
+
+@INPROCEEDINGS{Gei92,
+  author = {Geiger, Dan},
+  title = {An Entropy-based Learning Algorithm of Bayesian Conditional Trees },
+  booktitle = {Uncertainty in Artificial Intelligence: Proceedings of the Eighth Conference (UAI-1992)},
+  year = {1992},
+  pages = {92-97},
+  address = {San Mateo, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@ARTICLE{Gei96,
+  author = {Dan Geiger and David Heckerman},
+  title = {Knowledge Representation and Inference in Similarity Networks and Bayesian Multinets},
+  journal = {Artificial Intelligence},
+  year = {1996},
+  volume = {82},
+  number = {1--2},
+  pages = {45-74},
+}
+
+@ARTICLE{Gem84,
+  author = {Geman, S. and Geman, D.},
+  title = {Stochastic Relaxation, {G}ibbs Distributions, and the {B}ayesian Restoration of Images},
+  journal = ieee-tpami,
+  year = {1984},
+  volume = {6},
+  number = {6},
+  pages = {721--741},
+  month = nov,
+}
+
+@ARTICLE{Gha98,
+  author = {Zoubin Ghahramani},
+  title = {Learning Dynamic Bayesian Networks},
+  journal = {Lecture Notes in Computer Science},
+  year = {1998},
+  volume = {1387},
+  pages = {168--187},
+}
+
+@INPROCEEDINGS{Gha96,
+  author = {Zoubin Ghahramani and Michael I. Jordan},
+  title = {Factorial Hidden Markov Models},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year = {1996},
+  editor = {David S. Touretzky and Michael C. Mozer and Michael E. Hasselmo},
+  volume = {8},
+  pages = {472--478},
+  publisher = {The {MIT} Press},
+}
+
+@ARTICLE{Gil93,
+  author = {Gilks, W. R. and Clayto, D. G. and Spiegelhalter, D. J. and Best, N. G. and Mcneil, A. J. and Sharples, L. D. and Kirby, A. J.},
+  title = {Modelling Complexity: Applications of the Gibbs Sampling in Medecine},
+  journal = {journal of the Royal Statistical Society},
+  year = {1993},
+  volume = {55},
+  pages = {39-52},
+}
+
+@BOOK{Gil96,
+  title = {Markov Chain Monte Carlo in Practice},
+  publisher = {Chapman \& Hall},
+  year = {1996},
+  author = {Gilks, W.R. and Richardson,S. and Spiegelhalter, D.J.},
+  series = {Interdisciplinary Statistics},
+}
+
+@ARTICLE{BUGS,
+  author = {W.R. Gilks and A. Thomas and D.J Spiegelhalter},
+  title = {BUGS: a language and program for complex Bayesian modelling},
+  journal = {The Statistician 43},
+  year = {1994},
+  pages = {169-178},
+  note = {\texttt{http://www.mrc-bsu.cam.ac.uk/bugs/}},
+}
+
+@INPROCEEDINGS{Gil01,
+  author = {Gillispie, Steven B. and Lemieux, Christiane},
+  title = {Enumerating Markov Equivalence Classes of Acyclic Digraph Models},
+  booktitle = {Uncertainty in Artificial Intelligence: Proceedings of the Seventeenth Conference (UAI-2001)},
+  year = {2001},
+  pages = {171-177},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@BOOK{gol:80,
+  title = {Algorithmic Graph Theory and Perfect Graphs},
+  publisher = {Academic Press},
+  year = {1980},
+  editor = {?},
+  author = {Golumbic, M.C.},
+  address = {New York},
+}
+
+@INPROCEEDINGS{Gre97,
+  author = {Greiner, Russell and Grove, Adam J. and Schuurmans, Dale},
+  title = {Learning {B}ayesian Nets that Perform Well},
+  booktitle = {Proceedings of the Thirteenth Annual Conference on Uncertainty in Artificial Intelligence (UAI--97)},
+  year = {1997},
+  pages = {198--207},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@TECHREPORT{Han96,
+  author = {L.K. Hansen},
+  title = {Bayesian averaging is well-temperated},
+  institution = {Technical University of Denmark, DK-2800 Lyngby, Denmark},
+  year = {1996},
+}
+
+@ARTICLE{Hec96,
+  author = {D. Heckerman},
+  title = {Bayesian Networks for Data Mining},
+  journal = {Data Mining and Knowledge Discovery},
+  year = {1997},
+  volume = {1},
+  pages = {79-119},
+  publisher = {Usama Fayyad},
+}
+
+@INPROCEEDINGS{Hec94,
+  author = {D. Heckerman and D. Geiger and M. Chickering},
+  title = {Learning {B}ayesian networks: {T}he combination of knowledge and statistical data},
+  booktitle = {Proceedings of the 10th Conference on Uncertainty in Artificial Intelligence},
+  year = {1994},
+  editor = {Ramon Lopez de Mantaras and David Poole},
+  pages = {293--301},
+  address = {San Francisco, CA, USA},
+  month = jul,
+  publisher = {Morgan Kaufmann Publishers},
+  isbn = {1-55860-3328},
+}
+
+@TECHREPORT{Hec97,
+  author = {D. Heckerman and C. Meek and G. Cooper},
+  title = {A Bayesian approach to causal discovery},
+  institution = {Microsoft Research},
+  year = {1997},
+  number = {MSR-TR-97-05},
+}
+
+@ARTICLE{Hec92,
+  author = {D. Heckerman and B. Nathwani},
+  title = {An Evaluation of the Diagnostic Accurency of Pathfinder},
+  journal = {Comput Biomed Res},
+  year = {1992},
+  volume = {25},
+  pages = {56-74},
+}
+
+@INCOLLECTION{Hec98,
+  author = {David Heckerman},
+  title = {A Tutorial on Learning with Bayesian Network},
+  booktitle = {Learning in Graphical Models},
+  publisher = {Kluwer Academic Publishers, Boston},
+  year = {1998},
+  editor = {Michael I. Jordan},
+  optpages = {301-354},
+}
+
+@INCOLLECTION{Hen89,
+  author = {M. Henrion},
+  title = {Some Practical Issues in Constructing Belief Networks},
+  booktitle = {Uncertainty in Artificial Intelligence 3},
+  publisher = {North-Holland},
+  year = {1989},
+  editor = {L. N. Kanal and T. S. Levitt and J. F. Lemmer},
+  volume = {8},
+  series = {Machine Intelligence and Pattern Recognition},
+  pages = {161--174},
+  address = {Amsterdam},
+}
+
+@INCOLLECTION{hen88,
+  author = {Max Henrion},
+  title = {Propagating uncertainty in {B}ayesian networks by probabilistic logic sampling},
+  booktitle = {Uncertainty in Artificial Intelligence~2},
+  publisher = elsevier,
+  year = {1988},
+  editor = {John F. Lemmer and Laveen M. Kanal},
+  pages = {149--163},
+  address = {Amsterdam},
+}
+
+@ARTICLE{Her98,
+  author = {L. Hernandez and S. Mora and A. Salmeron},
+  title = {A Monte Carlo Algorithm for Probabilistic Propagation in Belief Networks Besed on Importance Sampling and Stratified Simulation Techniques},
+  journal = {International journal of Approximate Reasoning},
+  year = {1998},
+  volume = {18},
+  pages = {53-91},
+}
+
+@INPROCEEDINGS{Hor89,
+  author = {Horvitz, E and Suermondt, J and Cooper, G},
+  title = {Bounded Conditioning: Flexible Inference for Decisions under Scarce Resources},
+  booktitle = {Proceedings of the fifth Conference on Uncertainty in Artificial Intelligence},
+  year = {1989},
+  pages = {182-193},
+  publisher = {North Holland},
+}
+
+@ARTICLE{Hor88,
+  author = {E. J. Horvitz and J. S. Breese and M. Henrion},
+  title = {Decision theory in expert systems and artificial intelligence},
+  journal = {International Journal of Approximate Reasoning},
+  year = {1988},
+  volume = {2},
+  pages = {247--302},
+}
+
+@ARTICLE{Hov92,
+  author = {R. Hovorka and S. Andreassen and J. Benn and K. Olsen and G. Carson},
+  title = {Causal Probabilistic Network Modeling: An Illustration of its Role in the Managment of Chronic Diseases},
+  journal = {IBM systems journal},
+  year = {1992},
+  volume = {31, N4},
+  pages = {635-648},
+}
+
+@ARTICLE{How81,
+  author = {Howard, R. and Matheson, J.},
+  title = {Influence Diagrams},
+  journal = {In Howard, R. and Matheson, J., editors, Readings on the Principles and Applications of Decision Analysis},
+  year = {1981},
+  volume = {volume Il},
+  pages = {721--762},
+}
+
+@INPROCEEDINGS{May01,
+  author = {Pedrito {Maynard-Reid II} and Urszula Chajewska},
+  title = {Aggregating Learned Probabilistic Beliefs},
+  booktitle = {Proceedings of the Seventeenth Conference on Uncertainty in Artificial Intelligence ({UAI}-01)},
+  year = {2001},
+  editor = {Jack Breese and Daphne Koller},
+  pages = {354--361},
+  address = {San Francisco, CA},
+  month = aug # { ~2--5},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@ARTICLE{Jaa00,
+  author = {T. Jaakkola},
+  title = {Tutorial on Variational Approximation Methods},
+  journal = {MIT Arti cial Intelligence Laboratory 545 Technology Square Cambridge, MA 02139},
+  year = {2000},
+}
+
+@ARTICLE{Jaa99,
+  author = {T. Jaakkola and M. Jordan},
+  title = {Variational Methods and the {QMR}-{DT} Database},
+  journal = {Journal of Articial Intelligence},
+  year = {1999},
+  volume = {10},
+  pages = {291-322},
+}
+
+@ARTICLE{Jac91,
+  author = {R.A. Jacobs and M.I. Jordan and S.J. Nowlan and G.E. Hinton},
+  title = {Adaptive mixtures of local experts},
+  journal = {Neural Computation},
+  year = {1991},
+  volume = {3},
+  pages = {79-87},
+}
+
+@ARTICLE{Jen90,
+  author = {F. V. Jensen and S. L. Lauritzen and K. G. Olesen},
+  title = {Bayesian Updating in Causal Probabilistic Networks by Local Computations},
+  journal = {Computational Statistics Quaterly},
+  year = {1990},
+  volume = {4},
+  pages = {269--282.},
+}
+
+@BOOK{Jen96,
+  title = {An introduction to {B}ayesian Networks},
+  publisher = {Taylor and Francis, London, United Kingdom},
+  year = {1996},
+  author = {Finn V. Jensen},
+}
+
+@INPROCEEDINGS{Jen94,
+  author = {Frank Jensen and Finn V. Jensen and Søren L. Dittmer },
+  title = {From Influence Diagrams to junction Trees},
+  booktitle = {Proceedings of the 10th Conference on Uncertainty in Artificial Intelligence},
+  year = {1994},
+  editor = {Ramon Lopez de Mantaras and David Poole},
+  pages = {367--373},
+  address = {San Francisco, CA, USA},
+  month = jul,
+  publisher = {Morgan Kaufmann Publishers},
+  isbn = {1-55860-3328},
+}
+
+@BOOK{Jor98b,
+  title = {Learning in Graphical Models},
+  publisher = {Kluwer Academic Publishers},
+  year = {1998},
+  author = {Jordan, M. I},
+  address = {The Netherlands},
+}
+
+@INCOLLECTION{Jor98,
+  author = {Michael I. Jordan and Zoubin Ghahramani and Tommi S. Jaakkola and Lawrence Saul},
+  title = {An Introduction to Variational Methods for Graphical Models},
+  booktitle = {Learning in Graphical Models},
+  publisher = {Kluwer Academic Publishers, Boston},
+  year = {1998},
+  editor = {Michael I. Jordan},
+  optpages = {105-162},
+}
+
+@INPROCEEDINGS{Jor97,
+  author = {Michael I. Jordan and Zoubin Ghahramani and Lawrence K. Saul},
+  title = {Hidden Markov Decision Trees},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year = {1997},
+  editor = {Michael C. Mozer and Michael I. Jordan and Thomas Petsche},
+  volume = {9},
+  pages = {501-507},
+  publisher = {The {MIT} Press},
+}
+
+@INPROCEEDINGS{Jou01,
+  author = {L. Jouffe and P. Munteanu},
+  title = {New Search Strategies for Learning Bayesian Networks},
+  booktitle = {Proceedings of Tenth International Symposium on Applied Stochastic Models and Data Analysis, ASMDA, Compiègne},
+  year = {2001},
+  month = jun,
+}
+
+@INPROCEEDINGS{Jou00,
+  author = {L. Jouffe and P. Munteanu},
+  title = {Smart-Greedy+ : Apprentissage hybride de réseaux bayésiens},
+  booktitle = {Colloque francophone sur l'apprentissage, CAP, St. Etienne},
+  year = {2000},
+  month = jun,
+}
+
+@INPROCEEDINGS{Kay02,
+  author = {M. Kayaalp and G.F. Cooper},
+  title = {A Bayesian Network Scoring Metric That Is Base on Globally Uniform Parameter Priors},
+  booktitle = {Proceedings of the 18th Conference on Uncertainty in Artificial Intelligence ({UAI}-02)},
+  year = {2002},
+  editor = {Adnan Darwiche and Nir Friedman},
+  pages = {251-258},
+  address = {S.F., Cal.},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@INPROCEEDINGS{Keo99,
+  author = {E. Keogh and M. Pazzani},
+  title = {Learning Augmented Bayesian Classifiers: A Comparison of Distribution-based and Classification-based Approaches},
+  booktitle = {Proceedings of the Seventh International Workshop on Artificial Intelligence and Statistics},
+  year = {1999},
+  pages = {225-230},
+}
+
+@ARTICLE{kii84,
+  author = {Kiiveri, H. and Speed, T.P. and Carlin, J.B.},
+  title = {Recursive causal models},
+  journal = {Journal of Australian Math Society},
+  year = {1984},
+  volume = {36},
+  pages = {30--52},
+}
+
+@ARTICLE{Kim87,
+  author = {J.H. Kim and J. Pearl},
+  title = {CONVICE; a conversational inference consolidation engine},
+  journal = {IEEE Trans. on Systems, Man and Cybernetics},
+  year = {1987},
+  volume = {17},
+  pages = {120-132},
+}
+
+@INPROCEEDINGS{Kim83,
+  author = {Kim, J.H. and Pearl, J.},
+  title = {A computational model for combined causal and diagnostic reasoning in inference systems},
+  booktitle = {Proceedings IJCAI-83},
+  year = {1983},
+  pages = {190--193},
+  address = {Karlsruhe, Germany},
+}
+
+@TECHREPORT{Kja90,
+  author = {U. Kjaerulff},
+  title = {Triangulation of Graphs: Algorithms Giving Small Total State Space},
+  institution = {Departement of Matematics and computer science, Aalborg Univercity Denmark},
+  year = {1990},
+}
+
+@INPROCEEDINGS{Kja94,
+  author = {Uffe Kj{\ae}rulff},
+  title = {Reduction of Computational Complexity in {B}ayesian Networks through Removal of Weak Dependences},
+  booktitle = uai-94,
+  year = {1994},
+  pages = {374--382},
+  address = {San Francisco, California},
+  month = jul,
+  organization = {Association for Uncertainty in Artificial Intelligence},
+  publisher = kaufmann,
+  url = {ftp://ftp.cs.auc.dk/pub/reports/papers/kjaerulff94c.ps.Z},
+}
+
+@TECHREPORT{Kja93,
+  author = {Uffe Kj{\ae}rulff},
+  title = {Approximation of {B}ayesian networks through edge removals},
+  institution = cs-aau,
+  year = {1993},
+  type = {Research Report},
+  number = {IR-93-2007},
+  month = aug,
+}
+
+@ARTICLE{kja92,
+  author = {Kjærulff, U.},
+  title = {Optimal Decomposition of Probabilistic Networks by Simulated Annealing},
+  journal = {Statistics and Computing},
+  year = {1992},
+  volume = {2},
+  pages = {7--17},
+}
+
+@INPROCEEDINGS{Koc02,
+  author = {T. Kocka and N. L. Zhang},
+  title = {Dimension Correction for Hierarchical Latent Class Models},
+  booktitle = {Proceedings of the 18th Conference on Uncertainty in Artificial Intelligence ({UAI}-02)},
+  year = {2002},
+  editor = {Adnan Darwiche and Nir Friedman},
+  pages = {267-274},
+  address = {S.F., Cal.},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@MISC{kra98,
+  author = {Paul J. Krause},
+  title = {Learning Probabilistic Networks},
+  year = {1998},
+  annote = {Tutorial published in some journal},
+}
+
+@INPROCEEDINGS{Lam93,
+  author = {Wai Lam and Fahiem Bacchus},
+  title = {Using Causal Information and Local Measures to Learn Bayesian Networks},
+  booktitle = {Proceedings of the 9th Conference on Uncertainty in Artificial Intelligence},
+  year = {1993},
+  editor = {David Heckerman and Abe Mamdani},
+  pages = {243--250},
+  address = {San Mateo, CA, USA},
+  month = jul,
+  publisher = {Morgan Kaufmann Publishers},
+  isbn = {1-55860-258-5},
+}
+
+@ARTICLE{Lau92b,
+  author = {S. Lauritzen},
+  title = {Propagation of Probabilistics, Means and Variances in Mixed Graphical Association Models},
+  journal = {Journal of the American Statistical Association},
+  year = {1992},
+  volume = {87},
+  pages = {1098-1108},
+}
+
+@ARTICLE{Lau88,
+  author = {Lauritzen, S. and Speigelhalter, D.},
+  title = {Local Computations with Probabilities on Graphical Structures and their Application to Expert Systems},
+  journal = {Royal statistical Society B},
+  year = {1988},
+  volume = {50},
+  pages = {157-224},
+}
+
+@TECHREPORT{Lau92a,
+  author = {S. Lauritzen and B. Thiesson and D. Spigelhalter},
+  title = {Diagnostic Systems Created by Model Selaction Methods : A Case Study},
+  institution = {Aalborg University},
+  year = {1992},
+  number = {R-92-2088},
+}
+
+@ARTICLE{Lau89,
+  author = {S. Lauritzen and N. Wermuth},
+  title = {Graphical Models for Associations Between Variables, some of Which are Qualitative and some Quantitative},
+  journal = {The Annals of Statistics},
+  year = {1989},
+  volume = {17},
+  pages = {31-57},
+}
+
+@BOOK{Lau96,
+  title = {Graphical models},
+  publisher = {Clarendon Press, Oxford},
+  year = {1996},
+  author = {Steffen L. Lauritzen},
+  number = {17},
+  series = {Oxford Statistical Science Series},
+}
+
+@ARTICLE{Lep92,
+  author = {E. Lepage and al.},
+  title = {Syst\`eme D'aide \`A la D\'ecision Fond\'e sur un Mod\`ele de R\'eseau Bay\'esien Application \`a la Surveillance Transfusionnelle},
+  journal = {Informatique et sant\'e},
+  year = {1992},
+  volume = {5},
+  pages = {76-87},
+}
+
+@PHDTHESIS{Ler98,
+  author = {P. Leray},
+  title = {Apprentissage et Diagnostic de Systemes Complexes: R\'eseaux de Neurones et R\'eseaux Bayesiens. Application \`A La Gestion En Temps R\'eel Du Trafic T\'el\'ephonique Fran\c cais},
+  school = {Universit\'e Paris 6},
+  year = {1998},
+}
+
+@ARTICLE{Ler04b,
+  author = {P. Leray and O. Francois},
+  title = {Réseaux Bayésiens pour la Classification -- Méthodologie et Illustration dans le cadre du Diagnostic Médical},
+  journal = {à paraître dans la Revue d'Intelligence Artificielle},
+  year = {2004},
+}
+
+@MISC{INSA,
+  author = {P. Leray and S. Guilmineau and G. Noizet and O. Francois and E. Feasson and B. Minoc},
+  title = {French {BNT} Site},
+  year = {2003},
+  note = {\texttt{http://bnt.insa-rouen.fr/}},
+}
+
+@INPROCEEDINGS{Mad93,
+  author = {D. Madigan and A.E. Raftery and J. York and J.M. Bradshaw and R.G. Almond},
+  title = {Strategies for graphical model selection},
+  booktitle = {Selecting Models from Data: Artificial Intelligence and Statistics IV},
+  year = {1993},
+  editor = {P. Cheeseman and R. Oldford},
+  pages = {91-100},
+  publisher = {Springer},
+}
+
+@ARTICLE{Mal91,
+  author = {Malvestuto, F.M.},
+  title = {A unique formal system for binary decompositions of database relations, probability distributions, and graphs},
+  journal = {Information Science},
+  year = {1991},
+}
+
+@ARTICLE{Mar98,
+  author = {E. Marchand and F. Chaumette},
+  title = {Active Reconstruction Strategies: A Bayesian Nets-Based Approach},
+  journal = {RFIA},
+  year = {1998},
+  pages = {67-76},
+}
+
+@ARTICLE{Mce96,
+  author = {R. McEliece and D. MacKay and J.F. Cheng},
+  title = {Turbo Decoding as an Instance of Pearl's " Belief Propagation Algorithme"},
+  journal = {IEEE journal on Selected Areas in communication},
+  year = {1996},
+}
+
+@PHDTHESIS{Mee97,
+  author = {Meek, C.},
+  title = {Graphical Models: Selecting causal and statistical models},
+  school = {Carnegie Mellon University},
+  year = {1997},
+}
+
+@INPROCEEDINGS{Mee02,
+  author = {C. Meek and Bo Thiesson and D. Heckerman},
+  title = {Stage Mixture Modeling and Boosting},
+  booktitle = {Proceedings of the 18th Conference on Uncertainty in Artificial Intelligence ({UAI}-02)},
+  year = {2002},
+  editor = {Adnan Darwiche and Nir Friedman},
+  pages = {335--343},
+  address = {S.F., Cal.},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@ARTICLE{Met53,
+  author = {Metropolis,N. and Rosenbluth,A.W. and Rosenbluth,M.N. and Teller,A.H. and Teller,E.},
+  title = {Equation of state calculations by fast computing machines},
+  journal = {Journal of Chemical Physics},
+  year = {1953},
+  volume = {21},
+  pages = {1087-1092},
+}
+
+@MISC{Mic94,
+  author = {D. Michie and D. J. Spiegelhalter and C. C. Taylor},
+  title = {\textit{Machine Learning}, \textit{Neural and Statistical Classification}},
+  year = {1994},
+  note = {\texttt{http://www.amsta.leeds.ac.uk/\~{}charles/statlog/\\http://www.liacc.up.pt/ML/statlog/datasets/}},
+}
+
+@ARTICLE{Mil86,
+  author = {R. Miller and H. Pople and J. Myers},
+  title = {An Experimental Computer-Based Diagnostic Consultant for General Internal Nedicine},
+  journal = {N Engl J Med},
+  year = {1986},
+  volume = {307},
+  pages = {468-476},
+}
+
+@INCOLLECTION{Mon98,
+  author = {Stefano Monti and Gregory F. Cooper},
+  title = {Learning Hybrid Bayesian Network from Data},
+  booktitle = {Learning in Graphical Models},
+  publisher = {Kluwer Academic Publishers, Boston},
+  year = {1998},
+  editor = {Michael I. Jordan},
+  optpages = {521-540},
+}
+
+@INPROCEEDINGS{Mon97,
+  author = {Stefano Monti and Gregory F. Cooper},
+  title = {Learning Bayesian Belief Networks with Neural Network Estimators},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year = {1997},
+  editor = {Michael C. Mozer and Michael I. Jordan and Thomas Petsche},
+  volume = {9},
+  pages = {578},
+  publisher = {The {MIT} Press},
+}
+
+@INPROCEEDINGS{Mun01,
+  author = {P. Munteanu and M. Bendou},
+  title = {The EQ Framework for Learning Equivalence Classes of Bayesian Networks},
+  booktitle = {First IEEE International Conference on Data Mining (IEEE ICDM)},
+  year = {2002},
+  pages = {417-424},
+  address = {San José},
+  month = nov,
+}
+
+@MISC{BAYESIA,
+  author = {P. Munteanu and L. Jouffe and P.H. Wuillemin},
+  title = {Bayesia Lab},
+  year = {2001},
+  url = {http://www.bayesia.com/},
+}
+
+@PHDTHESIS{Mur02,
+  author = {K.P. Murphy},
+  title = {Dynamic Bayesian Networks: Representation, Inference and Learning},
+  school = {University of california},
+  year = {2002},
+  address = {Berkeley},
+}
+
+@MISC{BNT01,
+  author = {Kevin Murphy},
+  title = {The {Ba}yes{N}et {T}oolbox for {M}atlab, \textit{Computing Science and Statistics: Proceedings of Interface}, 33},
+  year = {2001},
+  note = {\texttt{http://www.ai.mit.edu/\~{}murphyk/Software/BNT/bnt.html}},
+}
+
+@INPROCEEDINGS{Mur99b,
+  author = {Murphy, Kevin},
+  title = {A Variational Approximation for Bayesian Networks with Discrete and Continuous Latent Variables},
+  booktitle = {Proceedings of the Fifteenth Annual Conference on Uncertainty in Artificial Intelligence (UAI--99)},
+  year = {1999},
+  pages = {457--466},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@INPROCEEDINGS{Mur01,
+  author = {Kevin Murphy and Yair Weiss},
+  title = {The Factored Frontier Algorithm for Approximate Inference in {DBNs}},
+  booktitle = {Proceedings of the Seventeenth Conference on Uncertainty in Artificial Intelligence ({UAI}- 01)},
+  year = {2001},
+  editor = {Jack Breese and Daphne Koller},
+  pages = {378--385},
+  address = {San Francisco, CA},
+  month = aug # { ~2--5},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@INPROCEEDINGS{Mur99,
+  author = {Murphy, Kevin and Weiss, Yair and Jordan, Michael},
+  title = {Loopy Belief Propagation for Approximate Inference: An Empirical Study},
+  booktitle = {Proceedings of the Fifteenth Annual Conference on Uncertainty in Artificial Intelligence (UAI--99)},
+  year = {1999},
+  pages = {467--475},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@MISC{Mur01b,
+  author = {Murphy, Kevin P.},
+  title = {Active Learning of Causal Bayes Net Structure},
+  month = {march},
+  year = {2001},
+}
+
+@ARTICLE{Fen01,
+  author = {Fenton N.E. and Neil M.},
+  title = {Making Decisions: Using Bayesian Nets and MCDA'},
+  journal = {Knowledge-Based Systems},
+  year = {2001},
+  volume = {14},
+  pages = {307-325},
+}
+
+@BOOK{Nai99,
+  title = {Les r\'eseaux bay\'esiens},
+  publisher = {Eyrolles},
+  year = {1999},
+  author = {P. Na\"{\i}m and A. Becker},
+  address = {Paris},
+}
+
+@ARTICLE{Nat90,
+  author = {B. Nathwan and D. Heckerman and E. Horvitz},
+  title = {Integrated Expert Sysems and Videodisc in Surgical Pathology: An Overview},
+  journal = {Hum Pathol},
+  year = {1990},
+  volume = {21},
+  pages = {11-20},
+}
+
+@TECHREPORT{Nea93,
+  author = {Radford M. Neal},
+  title = {Probabilistic Inference Using {M}arkov Chain {M}onte {C}arlo Methods},
+  institution = {Department of Computer Science, University of Toronto},
+  year = {1993},
+  type = {Technical Report},
+  number = {CRG-TR-93-1},
+  month = sep,
+  annote = {140 pages},
+}
+
+@INCOLLECTION{Nea98,
+  author = {Radford M. Neal and Geaoffrey E. Hinton},
+  title = {A View of the {EM} algorithm that justifies incremental, sparse and other variants},
+  booktitle = {Learning in Graphical Models},
+  publisher = {Kluwer Academic Publishers, Boston},
+  year = {1998},
+  editor = {Michael I. Jordan},
+  optpages = {355-368},
+}
+
+@MISC{NETICA,
+  author = {Norsys},
+  title = {Netica},
+  year = {2003},
+  url = {http://www.norsys.com/tutorials/netica/nt_toc_A.htm},
+}
+
+@PHDTHESIS{Now91,
+  author = {S.J. Nowlan},
+  title = {Soft competitive adaptation: Neural Network Learning Algorithms based on Fitting Statistical Mixtures},
+  school = {Carnegie Mellon Univ., Pittsburgh},
+  year = {1991},
+}
+
+@ARTICLE{Col94,
+  author = {O.Colot , C. Olivier , P. Courtellement and A. {El~Matouat}},
+  title = {Information Criteria and Abrupt Changes in Probability Laws},
+  journal = {Signal Processing VII : Th\'eorie and Applications},
+  year = {1994},
+  pages = {1855-1858},
+}
+
+@INPROCEEDINGS{Oni00,
+  author = {Agnieszka Onisko and Marek J. Druzdzel and Hanna Wasyluk},
+  title = {Learning Bayesian network parameters from small data sets: Application of Noisy-OR gates},
+  booktitle = {Working Notes of the Workshop on Bayesian and Causal Networks: From Inference to Data Mining, 12th European Conference on Artificial Intelligence (ECAI-2000)},
+  year = {2000},
+  address = {Berlin, Germany},
+}
+
+@INPROCEEDINGS{Oni98,
+  author = {Agnieszka Onisko and Marek J. Druzdzel and Hanna Wasyluk},
+  title = {A probabilistic causal model for diagnosis of liver disorders},
+  booktitle = {Proceedings of the Seventh Symposium on Intelligent Information Systems (IIS-98)},
+  year = {1998},
+  pages = {379-387},
+  address = {Malbork, Poland},
+}
+
+@ARTICLE{Pea86,
+  author = {Pearl, J},
+  title = {Fusion, Propagation, and Structuring in Belief Networks},
+  journal = {Artificial Intelligence},
+  year = {1986},
+  volume = {29},
+  pages = {241-288},
+}
+
+@BOOK{Pea88,
+  title = {Probabilistic Reasoning in Intelligent Systems: Networks of Plausible Inference.},
+  publisher = {Morgan Kaufmann},
+  year = {1988},
+  author = {J. Pearl},
+}
+
+@ARTICLE{Pea87b,
+  author = {Pearl, J.},
+  title = {Evidential reasoning using stochastic simulation of causal models},
+  journal = {Artificial Intelligence},
+  year = {1987},
+  volume = {32},
+  number = {2},
+  pages = {245--258},
+}
+
+@INCOLLECTION{Pea87,
+  author = {Pearl, J.},
+  title = {{B}ayes decision methods},
+  booktitle = {Encyclopedia of AI},
+  publisher = {Wiley Interscience},
+  year = {1987},
+  pages = {48--56},
+  address = {New York},
+}
+
+@ARTICLE{Pea82,
+  author = {J. Pearl},
+  title = {Reverend Bayes on Inference Engines: A Distributed Hierarchical Approach},
+  journal = {In Proceedings AAAI National Conference on AI},
+  year = {1982},
+  pages = {133-136},
+}
+
+@BOOK{Pea00,
+  title = {Causality: Models, Reasoning, and Inference},
+  publisher = {Cambridge University Press},
+  year = {2000},
+  author = {Judea Pearl},
+  address = {Cambridge, England},
+}
+
+@INCOLLECTION{Pea98,
+  author = {Judea Pearl},
+  title = {Graphical Models for Probabilistic and Causal Reasoning},
+  booktitle = {Handbook of Defeasible Reasoning and Uncertainty Management Systems, Volume 1: Quantified Representation of Uncertainty and Imprecision},
+  publisher = {Kluwer Academic Publishers},
+  year = {1998},
+  editor = {Dov M. Gabbay and Philippe Smets},
+  pages = {367--389},
+  address = {Dordrecht},
+  topic = {Bayesian-networks;},
+}
+
+@INPROCEEDINGS{Pea91,
+  author = {Judea Pearl and Tom S. Verma},
+  title = {A Theory of Inferred Causation},
+  booktitle = {{KR}'91: Principles of Knowledge Representation and Reasoning},
+  year = {1991},
+  editor = {James F. Allen and Richard Fikes and Erik Sandewall},
+  pages = {441--452},
+  address = {San Mateo, California},
+  publisher = {Morgan Kaufmann},
+}
+
+@INPROCEEDINGS{Pea99d,
+  author = {Pearl,J.},
+  title = {Reasoning With Cause and Effect},
+  booktitle = {Proceedings of the International Joint Conference on Artificial Intelligence},
+  year = {1999},
+  pages = {1437--1449},
+  address = {San Francisco},
+  publisher = {Morgan Kaufmann},
+}
+
+@INPROCEEDINGS{Pop02,
+  author = {S. Populaire and T. Den{\oe}ux and A. Guilikeng and P. Gineste and J. Blanc},
+  title = {Fusion of Expert Knowledge with data using Belief Functions: a case study in wastewater treatment},
+  booktitle = {Proceedings of the 5th International Conference on Information Fusion, IF 2002},
+  year = {2002},
+}
+
+@INPROCEEDINGS{Pra94,
+  author = {Pradhan, Malcolm and Provan, Gregory and Middleton, Blackford and Henrion, Max},
+  title = {Knowledge Engineering for Large Belief Networks},
+  booktitle = {Proceedings of the Tenth Annual Conference on Uncertainty in Artificial Intelligence (UAI--94)},
+  year = {1994},
+  pages = {484--490},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@MISC{Rao97,
+  author = {J. S. Rao and R. Tibshirani},
+  title = {The out-of-bootstrap method for model averaging and selection},
+  year = {1996},
+  institution = {University of toronto Statistics Department},
+}
+
+@ARTICLE{Ren01,
+  author = {S. Renooij},
+  title = {Probability Elicitation for Belief Networks: Issues to Consider},
+  journal = {Knowledge Engineering Review},
+  year = {2001},
+  volume = {16},
+  number = {3},
+  pages = {255-269},
+}
+
+@ARTICLE{Ric93,
+  author = {S. Richardson and W. Gilks},
+  title = {Conditional Independence Models for Epidemiological Studies with Covariates Measurement Error},
+  journal = {Statistics in Medecine},
+  year = {1993},
+  volume = {12},
+  pages = {1703-1722},
+}
+
+@ARTICLE{Ris78,
+  author = {J. Rissanen},
+  title = {Modelling by shortest data description},
+  journal = {Automatica},
+  year = {1978},
+  volume = {14},
+  pages = {465--471},
+}
+
+@BOOK{Rob94,
+  title = {The Bayesian Choice: a decision-theoretic motivation},
+  publisher = {Springer},
+  year = {1994},
+  author = {Christian P. Robert},
+  address = {New York},
+}
+
+@INPROCEEDINGS{Rob77,
+  author = {R. W. Robinson},
+  title = {Counting unlabeled acyclic digraphs},
+  booktitle = {Combinatorial Mathematics V},
+  year = {1977},
+  editor = {C. H. C. Little},
+  volume = {622},
+  series = {Lecture Notes in Mathematics},
+  pages = {28--43},
+  address = {Berlin},
+  publisher = {Springer},
+  comment = {Reference from PRNN},
+}
+
+@TECHREPORT{Roc97,
+  author = {M. Roccetti and P. Salomoni},
+  title = {Using Bayesian Belief Networks for the Automated Assessment of Students Knowledge of Geometry Problem Solving Procedures},
+  institution = {University of Bologna (Italy)},
+  year = {1997},
+}
+
+@INPROCEEDINGS{Rom97,
+  author = {M. Rombaut and V. {Berge-Cherfaoui}},
+  title = {Decision making in data fusion using Dempster-Schafer's theory},
+  booktitle = {3th IFAC Symposium on Intelligent Components and Instrumentation for Control Applications},
+  year = {1997},
+  address = {Annecy, France},
+}
+
+@INPROCEEDINGS{Ros02,
+  author = {S. Rosset and E. Segal},
+  title = {Boosting Density Estimation},
+  booktitle = {Proceedings of the 16th International Conference on Neural Information Processing Systems (NIPS)},
+  year = {2002},
+  pages = {267-281},
+  address = {Vancouver, British Columbia, Canada},
+}
+
+@INPROCEEDINGS{Rus02,
+  author = {D. Rusakov and D. Geiger},
+  title = {Asymptotic Model Selection for Naive Bayesian Network},
+  booktitle = {Proceedings of the 18th Conference on Uncertainty in Artificial Intelligence ({UAI}-02)},
+  year = {2002},
+  editor = {Adnan Darwiche and Nir Friedman},
+  pages = {438--443},
+  address = {S.F., Cal.},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@BOOK{Lau99,
+  title = {Probabilistic networks and expert systems},
+  publisher = {Spinger-Verlag, New-York},
+  year = {1999},
+  author = {S. Lauritzen, D.J. Spiegelhalter, R.G. Cowell and A.P. Dawid},
+}
+
+@ARTICLE{Sac02,
+  author = {J.P. Sacha and L. Goodenday and K.J. Cios},
+  title = {Bayesian learning for cardiac SPECT image interpretation},
+  journal = {Artificial Intelligence in Medecine},
+  year = {2002},
+  volume = {26},
+  pages = {109-143},
+}
+
+@BOOK{Sak84,
+  title = {Optimisation Combinatoire --Méthodes Mathématiques et Algorithmiques: Graphes et Programmation Linéaire},
+  publisher = {Hermann},
+  year = {1984},
+  author = {M. Sakarovitch},
+  address = {Paris},
+}
+
+@INPROCEEDINGS{Sch02,
+  author = {R. Schapire},
+  title = {Advances in Boosting},
+  booktitle = {Proceedings of the 18th Conference on Uncertainty in Artificial Intelligence ({UAI}-02)},
+  year = {2002},
+  editor = {Adnan Darwiche and Nir Friedman},
+  pages = {446-452},
+  address = {S.F., Cal.},
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@MISC{Sch01,
+  author = {R. Schapire},
+  title = {The boosting approach to machine learning: An overview},
+  year = {2001},
+  text = {In MSRI Workshop on Nonlinear Estimation and Classification, Berkeley, CA},
+  institution = {AT\&T Labs, Schannon Laboratory},
+  address = {Florham Park, NJ 07932 USA},
+}
+
+@ARTICLE{Sch99,
+  author = {R. E. Schapire and Y. Singer},
+  title = {Improved Boosting Algorithms Using Confidence-rated Predictions},
+  journal = {Machine Learning},
+  year = {1999},
+  volume = {37},
+  pages = {297-336},
+}
+
+@ARTICLE{TETRAD2,
+  author = {Scheines, R. and Spirtes, P. and Glymour, C. and Meek, C. and Richardson, and T.},
+  title = {The TETRAD Project: Constraint Based Aids to Causal Model Specification},
+  journal = {Multivariate Behavioral Research to appear},
+  year = {2004},
+}
+
+@MISC{TETRAD,
+  author = {Richard Scheines and Peter Spirtes and Clark Glymour and Christopher Meek},
+  title = {TETRAD II: Tools for Discovery },
+  howpublished = {Lawrence Erlbaum Associates, Hillsdale, NJ},
+  year = {1994},
+  url = {http://www.phil.cmu.edu/tetrad/},
+}
+
+@ARTICLE{Sch78,
+  author = {Schwartz , G},
+  title = {Estimating the dimension of a model},
+  journal = {The Annals of Statistics},
+  year = {1978},
+  volume = {6},
+  number = {2},
+  pages = {461-464},
+}
+
+@ARTICLE{Sha89,
+  author = {R. Shachter and C. Kenley},
+  title = {Gaussian Influence Diagrams},
+  journal = {Management Science},
+  year = {1989},
+  volume = {35},
+  pages = {527-550},
+}
+
+@ARTICLE{She86,
+  author = {P. Shenoy and G. Shafer},
+  title = {Propagating Belief Functions Using Local Computation},
+  journal = {IEEE Exper},
+  year = {1986},
+  volume = {3},
+  pages = {43--52},
+}
+
+@ARTICLE{Sho87,
+  author = {E. Shortliffe},
+  title = {Computer Programs to Support Clinical Decision Making},
+  journal = {JAMA},
+  year = {1987},
+  volume = {258},
+  pages = {61-76},
+}
+
+@ARTICLE{Shw91,
+  author = {M. Shwe and G. Cooper},
+  title = {An Empirical Analysis of Likelihood-Weighting Simulation on a Large, Multiply Connected Medical Belief Network},
+  journal = {Comput Biomed Ress},
+  year = {1991},
+  volume = {24},
+  pages = {453-75},
+}
+
+@ARTICLE{Sie98,
+  author = {Basilio Sierra and Pedro Larranaga},
+  title = {Predicting survival in malignant skin melanoma using Bayesian networks automatically induced by genetic algorithms. An empirical comparison between different approaches},
+  journal = {Artificial Intelligence in Medicine},
+  year = {1998},
+  volume = {14},
+  number = {1-2},
+  pages = {215-230},
+}
+
+@ARTICLE{Sie01,
+  author = {Basilio Sierra and Nicolas Serrano and Pedro Larranaga and Eliseo J. Plasencia and Inaki Inza and Juan Jose Jimenez and Pedro Revuelta and Maria Luisa Mora},
+  title = {Using Bayesian networks in the construction of a bi-level multi-classifier. A case study using intensive care unit patients data},
+  journal = {Artificial Intelligence in Medicine},
+  year = {2001},
+  volume = {22},
+  number = {3},
+  pages = {233-248},
+}
+
+@ARTICLE{Ska99,
+  author = {C. Skaanning and F. Jensen and U. Kjearul and A. Madsen},
+  title = {Acquisition and Transformation of Likelihoods to Conditional Probabilities for Bayesian Networks},
+  journal = {In AAAI Spring Symposium on AI in Equipment Maintenance Service and Support},
+  year = {1999},
+  pages = {34-40},
+}
+
+@INPROCEEDINGS{Sme00,
+  author = {P. Smets},
+  title = {Data Fusion in the Transferable Belief Model},
+  booktitle = {Proceedings of FUSION'2000},
+  year = {2000},
+  pages = {21-33},
+  address = {Paris, France},
+}
+
+@ARTICLE{Smi89,
+  author = {Smith, J.Q.},
+  title = {Influence diagrams for statistical modeling},
+  journal = {Annals of Statistics},
+  year = {1989},
+  volume = {17},
+  number = {2},
+  pages = {564--572},
+}
+
+@ARTICLE{Soy93,
+  author = {Soyer. H. P, Kerl. H},
+  title = {Microscopie de la Surface Des Tumeurs Cutan\'ees Pigmont\'ees},
+  journal = {ANN Dermatol},
+  year = {1993},
+  volume = {120},
+  pages = {15-20},
+}
+
+@ARTICLE{Spi90,
+  author = {D. J. Spiegelhalter and S. L. Lauritzen},
+  title = {Sequential updating of conditional probabilities on directed graphical structures},
+  journal = {Networks},
+  year = {1990},
+  volume = {20},
+  pages = {579--605},
+}
+
+@BOOK{Spi00,
+  title = {Causation, Prediction, and Search},
+  publisher = {The {MIT} Press},
+  year = {2000},
+  author = {Peter Spirtes and Clark Glymour and Richard Scheines },
+  edition = {2},
+}
+
+@BOOK{Spi93,
+  title = {Causation, prediction, and search},
+  publisher = {Springer-Verlag},
+  year = {1993},
+  author = {Peter Spirtes and Clark Glymour and Richard Scheines},
+}
+
+@INPROCEEDINGS{Sri93,
+  author = {Sampath Srinivas},
+  title = {A Generalization of the Noisy-Or Model},
+  booktitle = {Proceedings of the 9th Conference on Uncertainty in Artificial Intelligence},
+  year = {1993},
+  editor = {David Heckerman and Abe Mamdani},
+  pages = {208--218},
+  address = {San Mateo, CA, USA},
+  month = jul,
+  publisher = {Morgan Kaufmann Publishers},
+}
+
+@ARTICLE{Stu97,
+  author = {Studený, M.},
+  title = {Semigraphoids and structures of probabilistic conditional independence},
+  journal = {Annals of Mathematics and Artificial Intelligence},
+  year = {1997},
+  volume = {21},
+  number = {1},
+  pages = {71--98},
+}
+
+@INPROCEEDINGS{Stu92,
+  author = {Studený, M.},
+  title = {Conditional independence relations have no complete characterization},
+  booktitle = {Proceedings of 11-th Prague Conference on Information Theory, Statistical Decision Foundation and Random Processes},
+  year = {1992},
+  pages = {377--396},
+  address = {Czech},
+}
+
+@ARTICLE{Sue89,
+  author = {H. Suermondt and M. Arnylon},
+  title = {Probabilistic Prediction of the Outcome of Bone-Marrow Transplantation},
+  journal = {Kingsland (ed). Proc 13th SCAMC. New-York: IEEE Computer Press},
+  year = {1990},
+  volume = {21},
+  pages = {11-20},
+}
+
+@ARTICLE{Sue91,
+  author = {Suermondt, H.J. and Cooper,G.F.},
+  title = {Initialization for the Method of Conditioning in Bayesian Belief Networks.},
+  journal = {Artificial Intelligence},
+  year = {1991},
+  volume = {42},
+  number = {2--3},
+  pages = {393--405},
+}
+
+@ARTICLE{Sut92,
+  author = {A. I. Sutherland and R. J. Henery},
+  title = {StatLog - an {ESPRIT} projecy for the comparison of statistical and logical learning algorithms.},
+  journal = {New Techniques and Technologies for Statistics},
+  year = {1992},
+  month = feb,
+  keywords = {StatLog, ESPRIT, statistics, logic, machine learning, ML, comparison, survey, applications},
+}
+
+@ARTICLE{Suz99,
+  author = {Joe Suzuki},
+  title = {Learning {B}ayesian Belief Networks Based on the {MDL} Principle: {A}n Efficient Algorithm Using the Branch and Bound Technique},
+  journal = {IEICE Transactions on Information and Systems},
+  year = {1999},
+  volume = {E82-D},
+  number = {2},
+  pages = {356--367},
+}
+
+@PHDTHESIS{Tao95,
+  author = {Taouil, K.},
+  title = {Faisabilit\'e Et D\'etection Des M\'elanomes},
+  school = {INSA de Rouen},
+  year = {1995},
+}
+
+@ARTICLE{Tur91,
+  author = {C. Turner and M. Lincoln and P. Haug and J. Williamson and S. Jessen and K. Cundick and H. Warner},
+  title = {Iliad Training Effects: A Cognitive Model and Empirical Findings},
+  journal = {Clayton (ed). Proc 15th SCAMC. New-Yotk: McGraw-Hill},
+  year = {1991},
+  pages = {68-72},
+}
+
+@INPROCEEDINGS{Ver90,
+  author = {T. Verma and J. Pearl},
+  title = {Equivalence and Synthesis of Causal Models},
+  booktitle = {in Proceedings Sixth Conference on Uncertainty and Artificial Intelligence},
+  year = {1990},
+  address = {San Francisco},
+  publisher = {Morgan Kaufmann},
+  page = {220-227},
+}
+
+@BOOK{Gil96,
+  title = {Markov chain Monte-Carlo in pratice},
+  publisher = {Chapman and Hall},
+  year = {1996},
+  author = {W.R. Gilks, S. Richardson and D.J. Spiegehalter},
+}
+
+@ARTICLE{Wil00,
+  author = {J. Williamson},
+  title = {Approximating Discrete Probability Distributions with Bayesian Networks},
+  journal = {Artificial Intelligence in Science and Technology Hobart Tasmania},
+  year = {2000},
+  pages = {16-20},
+}
+
+@INPROCEEDINGS{Wil94,
+  author = {Wilson, N.},
+  title = {Generating Graphoids from Generalized Conditional Probability},
+  booktitle = {Proceedings of the Tenth Conference on Uncertainty in Artificial Intelligence},
+  year = {1994},
+  editor = {R. Lopez {de Mantaras} and D. Poole},
+  pages = {583--590},
+  address = {San Francisco, CA},
+  publisher = {Morgan Kaufmann},
+}
+
+@PHDTHESIS{Wui00,
+  author = {P-H. Wuillemin},
+  title = {Améliorations et implémentations d'algorithmes de propagation dans les R\'eseaux Bayesiens},
+  school = {Universit\'e Paris 6},
+  year = {2000},
+}
+
+@ARTICLE{Yor92,
+  author = {Jeremy York},
+  title = {Use of the {G}ibbs sampler in expert systems},
+  journal = ai,
+  year = {1992},
+  volume = {56},
+  pages = {115--130},
+}
+
+@ARTICLE{Ler04,
+  author = {I. Zaarour and Ph. Leray and L. Heute and B. Eter and J. Labiche and D. Mellier},
+  title = {Réseaux bayésiens pour la découverte de stratégies d'écriture manuscrites chez l'enfant en école primaire},
+  journal = {14ieme Congrès francophone de Reconnaissance des formes et d'Intelligence artificielle},
+  year = {2004},
+}
+
+@TECHREPORT{Zha03,
+  author = {N. L. Zhang},
+  title = {Structural EM for Hierarchical Latent Class Model},
+  institution = {HKUST-CS03-06},
+  year = {2003},
+}
+
+@INPROCEEDINGS{Zha02,
+  author = {N. L. Zhang},
+  title = {Hierarchical latent class models for cluster analysis},
+  booktitle = {Proceedings of AAAI'02},
+  year = {2002},
+  page = {230-237},
+}
+
+@ARTICLE{Zha98,
+  author = {N. L. Zhang},
+  title = {Probabilistic Inference in Influence Diagrams},
+  journal = {Computational Intelligence},
+  year = {1998},
+  volume = {14},
+  number = {4},
+  pages = {475-497},
+}
+
+@ARTICLE{Zha03b,
+  author = {N. L. Zhang and T.D. Nielsen and F.V. Jensen},
+  title = {Latent variable discovery in classification models},
+  journal = {to appear in Artificial Intelligence in Medicine},
+  year = {2003},
+}
+
+@BOOK{Bou03,
+  title = {Logique floue, principes, aide à la décision},
+  publisher = {Editions Hermes},
+  year = {2003},
+  author = {Bernadette {Bouchon-Meunier} and Christophe Marsala},
+  series = {Traité IC2, série informatique et systèmes d'information},
+}
+
+@TECHREPORT{Elm98,
+  author = {F. {El~Matouat}},
+  title = {Analyse de Param\'etres G\'eom\'etriques Pour la Classification de L\'esions M\'elanocytaires En Dermatologie},
+  institution = {Univercit\'e de Rouen},
+  year = {1998},
+}
+
+@INPROCEEDINGS{Elm00,
+  author = {F. {El~Matouat} and O. Colot and P. Vannoorenberghe and J. Labiche},
+  title = {From continous to discrete variables for bayésian network classifiers},
+  booktitle = {Conference on Systems, Man and Cybernetics, IEEE-SMC},
+  year = {2000},
+  address = {Nashville, USA},
+}
+
+@ARTICLE{Lar96,
+  author = {P. {Larra\~naga} and C. Kuijpers and R. Murga and Y. Yurramendi},
+  title = {Learning Bayesian Network Structures by searching the best order ordering with genetic algorithms},
+  journal = {IEEE Transactions on System, Man and Cybernetics},
+  year = {1996},
+  volume = {26},
+  pages = {487-493},
+}
+
+@ARTICLE{Pen01,
+  author = {J.M. {Pe\~na} and J.A. Lozano and P. {Larra\~naga}},
+  title = {An improved Bayesian Structural EM algorithm for learning Bayesian networks for clustering},
+  journal = {Pattern Recognition Letters},
+  year = {2001},
+  volume = {21},
+  pages = {779-786},
+}
+
+@ARTICLE{Van02,
+  author = {L. {van~der~Gaag} and S. Renooij and C. Witteman and B. Aleman and B. Taal},
+  title = {Probabilities for a probabilistic network: a case study in oesophageal cancer},
+  journal = {Artificial Intelligence in Medicine},
+  year = {2002},
+  volume = {25},
+  number = {2},
+  pages = {123-148},
+  month = {june},
+}
+
+@INPROCEEDINGS{Van03,
+  author = {S. {van~Dijk} and L. {van~der~Gaag} and D. Thierens},
+  title = {A skeleton-based approach to learning Bayesian networks from data},
+  booktitle = {In Proceedings of the Seventh Conference on Principles and Practice of Knowledge Discovery in Databases},
+  year = {2003},
+  publisher = {Kluwer},
+  page = {??-??},
+}
+
+@comment{jabref-meta: selector_journal:}
+
+@comment{jabref-meta: selector_keywords:}
+
+@comment{jabref-meta: selector_publisher:}
+

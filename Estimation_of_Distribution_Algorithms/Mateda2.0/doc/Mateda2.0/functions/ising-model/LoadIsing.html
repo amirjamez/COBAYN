@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of LoadIsing</title>
+  <meta name="keywords" content="LoadIsing">
+  <meta name="description" content="[lattice, inter] = LoadIsing(n, inst)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">ising-model</a> &gt; LoadIsing.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/ising-model&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>LoadIsing
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[lattice, inter] = LoadIsing(n, inst)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [lattice, inter] = LoadIsing(n, inst) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [lattice, inter] = LoadIsing(n, inst)
+ LoadIsing: Reads  the file of an Ising instance 
+ INPUT
+ n: number of variables
+ inst: the number of the instance
+ OUTPUT
+ Isinglattice: this structure represents the J matrix (The neighboors for each node)
+ Isinginter: this structure contains the value of the interactions between spins
+
+ Last version 8/26/2008. Carlos Echegoyen and Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/ScriptsMateda/OptimizationScripts/BayesianTree_IsingModel.html" class="code" title="">BayesianTree_IsingModel</a>	EXAMPLE 10:</li><li><a href="IsingModel.html" class="code" title="">IsingModel</a>	Description of the Ising instances included in this directory and</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [lattice, inter] = LoadIsing(n, inst)</a>
+0002 <span class="comment">% [lattice, inter] = LoadIsing(n, inst)</span>
+0003 <span class="comment">% LoadIsing: Reads  the file of an Ising instance</span>
+0004 <span class="comment">% INPUT</span>
+0005 <span class="comment">% n: number of variables</span>
+0006 <span class="comment">% inst: the number of the instance</span>
+0007 <span class="comment">% OUTPUT</span>
+0008 <span class="comment">% Isinglattice: this structure represents the J matrix (The neighboors for each node)</span>
+0009 <span class="comment">% Isinginter: this structure contains the value of the interactions between spins</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Last version 8/26/2008. Carlos Echegoyen and Roberto Santana (roberto.santana@ehu.es)</span>
+0012 
+0013 
+0014 <span class="comment">%instance = ['./IsingInstances/SG_', num2str(n), '_', num2str(inst), '.txt'];</span>
+0015 instance = [<span class="string">'SG_'</span>, num2str(n), <span class="string">'_'</span>, num2str(inst), <span class="string">'.txt'</span>];
+0016 
+0017 fp = fopen(instance, <span class="string">'r'</span>);
+0018 numVars = fscanf(fp, <span class="string">'%d'</span>, 1);
+0019 dim = fscanf(fp, <span class="string">'%d'</span>, 1);
+0020 neigh = fscanf(fp, <span class="string">'%d'</span>, 1);
+0021 width = fscanf(fp, <span class="string">'%d'</span>, 1);
+0022 
+0023 <span class="comment">% Initialize laticce and inter</span>
+0024 neighbor = power(2, neigh) * dim;
+0025 lattice = zeros(numVars, neighbor + 1);
+0026 inter = zeros(numVars, neighbor);
+0027 
+0028 <span class="comment">% Load the structures from file</span>
+0029 <span class="keyword">for</span> i=1:numVars
+0030     lattice(i,1) = fscanf(fp, <span class="string">'%d'</span>, 1);
+0031     
+0032     <span class="keyword">if</span> lattice(i,1) &gt; 0
+0033     
+0034         <span class="keyword">for</span> j=2:lattice(i,1) + 1
+0035             lattice(i,j) = fscanf(fp, <span class="string">'%d'</span>, 1) + 1;
+0036         <span class="keyword">end</span>
+0037     
+0038         <span class="keyword">for</span> j=1:lattice(i,1)
+0039             inter(i,j) = fscanf(fp, <span class="string">'%d'</span>, 1);
+0040         <span class="keyword">end</span>
+0041 
+0042     <span class="keyword">end</span>
+0043     
+0044 <span class="keyword">end</span>
+0045 
+0046 fclose(fp);</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of OffPrintProtein</title>
+  <meta name="keywords" content="OffPrintProtein">
+  <meta name="description" content="[] =  OffPrintProtein(vector)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; OffPrintProtein.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>OffPrintProtein
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[] =  OffPrintProtein(vector)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[] =  OffPrintProtein(vector) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [] =  OffPrintProtein(vector)
+ OffPrintProtein: Prints the configuration encoded by vector
+ Fixing the lengths of the edges, each angle defines the position of the next residue respective the two previous ones.    
+ For reference on the Offline HP model see:
+-- H. P. Hsu, V. Mehra and  P. Grassberger (2003)  Structure optimization in an off-lattice protein model.
+-- Phys Rev E Stat Nonlin Soft Matter Phys. 2003 Sep;68(3 Pt 2):037703. Epub 2003 Sep 30. 
+-- http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal&amp;id=PLEEE8000068000003037703000001&amp;idtype=cvips&amp;gifs=yes   
+ INPUTS
+ vector: Sequence of residues (Angles (continuous values) defining the position of the next residue respective the two previous  )
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="OffFindPos.html" class="code" title="function[Pos] =  OffFindPos(vector)">OffFindPos</a>	OffFindPos translates the vector of angles to the  positions into the lattice.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/ScriptsMateda/OptimizationScripts/GaussianNetwork_OfflineHPProtein.html" class="code" title="">GaussianNetwork_OfflineHPProtein</a>	EXAMPLE 8:  Gaussian network for  the Offline HP Model continuous function</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[] =  OffPrintProtein(vector)</a>
+0002 <span class="comment">% [] =  OffPrintProtein(vector)</span>
+0003 <span class="comment">% OffPrintProtein: Prints the configuration encoded by vector</span>
+0004 <span class="comment">% Fixing the lengths of the edges, each angle defines the position of the next residue respective the two previous ones.</span>
+0005 <span class="comment">% For reference on the Offline HP model see:</span>
+0006 <span class="comment">%-- H. P. Hsu, V. Mehra and  P. Grassberger (2003)  Structure optimization in an off-lattice protein model.</span>
+0007 <span class="comment">%-- Phys Rev E Stat Nonlin Soft Matter Phys. 2003 Sep;68(3 Pt 2):037703. Epub 2003 Sep 30.</span>
+0008 <span class="comment">%-- http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal&amp;id=PLEEE8000068000003037703000001&amp;idtype=cvips&amp;gifs=yes</span>
+0009 <span class="comment">% INPUTS</span>
+0010 <span class="comment">% vector: Sequence of residues (Angles (continuous values) defining the position of the next residue respective the two previous  )</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0013 
+0014 
+0015 
+0016 <span class="comment">% InitConf has been initialized with a Fibbonacci sequence by the RunOffLineProtein.m routine</span>
+0017 <span class="keyword">global</span> HPInitConf;
+0018 
+0019 
+0020 <span class="comment">% OffFindPos translates the vector of angles to the  positions into the lattice.</span>
+0021 [Pos] =  <a href="OffFindPos.html" class="code" title="function[Pos] =  OffFindPos(vector)">OffFindPos</a>(vector);
+0022 
+0023 sizeChain = size(HPInitConf,2)
+0024 
+0025 figure
+0026 hold on
+0027 
+0028 <span class="keyword">for</span> i=1:sizeChain
+0029  <span class="keyword">if</span>(HPInitConf(i) == 0)
+0030    plot(Pos(i,1),Pos(i,2),<span class="string">'*'</span>);
+0031  <span class="keyword">else</span>
+0032    plot(Pos(i,1),Pos(i,2),<span class="string">'o'</span>);
+0033  <span class="keyword">end</span>  
+0034 <span class="keyword">end</span>
+0035  plot(Pos(:,1),Pos(:,2),<span class="string">'b-'</span>);
+0036</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of BayesianTree_IsingModel</title>
+  <meta name="keywords" content="BayesianTree_IsingModel">
+  <meta name="description" content="EXAMPLE 10:">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="#">ScriptsMateda</a> &gt; <a href="index.html">OptimizationScripts</a> &gt; BayesianTree_IsingModel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/ScriptsMateda/OptimizationScripts&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>BayesianTree_IsingModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>EXAMPLE 10:</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> EXAMPLE 10:  
+ Bayesian tree EDA for the Ising Model using MPE-sampling (i.e.
+ the most probable individual from the net is added to the population
+ during sampling). The algorithm stops when the optimum is found or the
+ max number of generations is reached</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>	[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)</li><li><a href="../../../Mateda2.0/functions/ising-model/LoadIsing.html" class="code" title="function [lattice, inter] = LoadIsing(n, inst)">LoadIsing</a>	[lattice, inter] = LoadIsing(n, inst)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001  <span class="comment">% EXAMPLE 10:</span>
+0002  <span class="comment">% Bayesian tree EDA for the Ising Model using MPE-sampling (i.e.</span>
+0003  <span class="comment">% the most probable individual from the net is added to the population</span>
+0004  <span class="comment">% during sampling). The algorithm stops when the optimum is found or the</span>
+0005  <span class="comment">% max number of generations is reached</span>
+0006  
+0007  <span class="keyword">global</span> Isinglattice;
+0008  <span class="keyword">global</span> Isinginter;
+0009  PopSize = 500; n = 64; cache  = [0,0,0,0,0]; Card = 2*ones(1,n); 
+0010  F = <span class="string">'EvalIsing'</span>; MaxGen = 150; MaxVal = 86;
+0011  [Isinglattice, Isinginter] = <a href="../../../Mateda2.0/functions/ising-model/LoadIsing.html" class="code" title="function [lattice, inter] = LoadIsing(n, inst)">LoadIsing</a>(n, 1);
+0012  stop_cond_params = {MaxGen,MaxVal};
+0013  edaparams{1} = {<span class="string">'stop_cond_method'</span>,<span class="string">'maxgen_maxval'</span>,stop_cond_params};
+0014  edaparams{2} = {<span class="string">'sampling_method'</span>,<span class="string">' SampleMPE_BN'</span>,{PopSize}};
+0015  [AllStat,Cache]=<a href="../../../Mateda2.0/RunEDA.html" class="code" title="function[AllStat,Cache]=RunEDA(PopSize,n,F,Card,cache,edaparams)">RunEDA</a>(PopSize,n,F,Card,cache,edaparams);
+0016</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

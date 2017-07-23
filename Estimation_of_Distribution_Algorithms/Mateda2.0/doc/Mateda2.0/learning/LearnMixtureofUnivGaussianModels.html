@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of LearnMixtureofUnivGaussianModels</title>
+  <meta name="keywords" content="LearnMixtureofUnivGaussianModels">
+  <meta name="description" content="[model] =  LearnMixtureofUnivGaussianModels(k,NumbVar,Card,AuxPop,AuxFunVal,learning_params)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">learning</a> &gt; LearnMixtureofUnivGaussianModels.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/learning&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>LearnMixtureofUnivGaussianModels
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[model] =  LearnMixtureofUnivGaussianModels(k,NumbVar,Card,AuxPop,AuxFunVal,learning_params)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [model] = LearnMixtureofUnivGaussianModels(k,NumbVar,Card,AuxPop,AuxFunVal,learning_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [model] =  LearnMixtureofUnivGaussianModels(k,NumbVar,Card,AuxPop,AuxFunVal,learning_params)
+ LearnMixtureofUnivGaussianModels:     Learns a mixture of univariate Gaussian models using kmeans
+ INPUTS
+ k: Current generation
+ NumbVar: Number of variables
+ Card: Vector with the range of values for all the variables. 
+ AuxPop:  Population from which the model is learned  
+ AuxFunVal:   Evaluation of the data set (required for some learning algorithms, not for this one)
+ learning_params{1}(1) = what_to_cluster: Information used to cluster the
+                         solutions: 'vars': information about variables values, 'objs': objective
+                         values, 'vars_and_objs': objectives and variables are clustered together
+ learning_params{1}(2) = how_to_cluster: Method used to cluster the
+ solutions, currently: 'ClusterPointsAffinity' and 'ClusterPointsKmeans'
+ learning_params{1}(3) = nclusters: Number of clusters 
+ learning_params{1}(4) = distance: Distance used for clustering (e.g.
+                         'euclidean', 'correlation', 'cosine' ... See help pdist for full list of
+                          possible metrics)
+ learning_params{1}(5) = normalization: Whether the values of the variables
+                                    are normalized previous to clustering. This is done in order to avoid
+                                    that some variables have more weights in the clustering.
+ OUTPUTS
+ model: model{1,i} = mean of the variables for solutions in  cluster i
+        model{2,i} = stardard deviation of the variables for solutions in cluster i
+        model{3,i} = size(ind,1)/PopSize;    % Coefficient of component i
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [model] = LearnMixtureofUnivGaussianModels(k,NumbVar,Card,AuxPop,AuxFunVal,learning_params)</a>
+0002 <span class="comment">% [model] =  LearnMixtureofUnivGaussianModels(k,NumbVar,Card,AuxPop,AuxFunVal,learning_params)</span>
+0003 <span class="comment">% LearnMixtureofUnivGaussianModels:     Learns a mixture of univariate Gaussian models using kmeans</span>
+0004 <span class="comment">% INPUTS</span>
+0005 <span class="comment">% k: Current generation</span>
+0006 <span class="comment">% NumbVar: Number of variables</span>
+0007 <span class="comment">% Card: Vector with the range of values for all the variables.</span>
+0008 <span class="comment">% AuxPop:  Population from which the model is learned</span>
+0009 <span class="comment">% AuxFunVal:   Evaluation of the data set (required for some learning algorithms, not for this one)</span>
+0010 <span class="comment">% learning_params{1}(1) = what_to_cluster: Information used to cluster the</span>
+0011 <span class="comment">%                         solutions: 'vars': information about variables values, 'objs': objective</span>
+0012 <span class="comment">%                         values, 'vars_and_objs': objectives and variables are clustered together</span>
+0013 <span class="comment">% learning_params{1}(2) = how_to_cluster: Method used to cluster the</span>
+0014 <span class="comment">% solutions, currently: 'ClusterPointsAffinity' and 'ClusterPointsKmeans'</span>
+0015 <span class="comment">% learning_params{1}(3) = nclusters: Number of clusters</span>
+0016 <span class="comment">% learning_params{1}(4) = distance: Distance used for clustering (e.g.</span>
+0017 <span class="comment">%                         'euclidean', 'correlation', 'cosine' ... See help pdist for full list of</span>
+0018 <span class="comment">%                          possible metrics)</span>
+0019 <span class="comment">% learning_params{1}(5) = normalization: Whether the values of the variables</span>
+0020 <span class="comment">%                                    are normalized previous to clustering. This is done in order to avoid</span>
+0021 <span class="comment">%                                    that some variables have more weights in the clustering.</span>
+0022 <span class="comment">% OUTPUTS</span>
+0023 <span class="comment">% model: model{1,i} = mean of the variables for solutions in  cluster i</span>
+0024 <span class="comment">%        model{2,i} = stardard deviation of the variables for solutions in cluster i</span>
+0025 <span class="comment">%        model{3,i} = size(ind,1)/PopSize;    % Coefficient of component i</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0028  
+0029 what_to_cluster = char(cellstr(learning_params{1}(1)));
+0030 how_to_cluster =  char(cellstr(learning_params{1}(2)));
+0031 nclusters = cell2num(learning_params{1}(3));
+0032 distance = char(cellstr(learning_params{1}(4)));
+0033 normalization = cell2num(learning_params{1}(5));
+0034 
+0035 PopSize = size(AuxPop,1);
+0036 
+0037  <span class="keyword">switch</span> what_to_cluster
+0038             <span class="keyword">case</span> <span class="string">'vars'</span>, NormPop = AuxPop;
+0039             <span class="keyword">case</span> <span class="string">'objs'</span>, NormPop = AuxFunVal; 
+0040             <span class="keyword">case</span> <span class="string">'vars_and_objs'</span>,   NormPop = [AuxPop,AuxFunVal];
+0041  <span class="keyword">end</span>,        
+0042 
+0043 
+0044 <span class="keyword">if</span> normalization==1
+0045  <span class="keyword">for</span> i=1:size(NormPop,2),
+0046   NormPop(:,i) = normalize(NormPop(:,i));   <span class="comment">% First values for all the variables are normalized</span>
+0047  <span class="keyword">end</span>
+0048 <span class="keyword">end</span>
+0049 
+0050 
+0051  [ind,nclusters] = eval([how_to_cluster,<span class="string">'(NormPop,distance,nclusters);'</span>]);
+0052  
+0053  
+0054  <span class="keyword">for</span> i=1:nclusters,   
+0055    idx = find(ind==i);
+0056    nmembers = size(idx,1);
+0057    <span class="keyword">if</span> nmembers&gt;1
+0058     model{1,i} =  mean(AuxPop(idx,:));   <span class="comment">% Vector of means for each cluster</span>
+0059     model{2,i} =  std(AuxPop(idx,:));    <span class="comment">% Vector of standard deviation for each cluster</span>
+0060     model{3,i} =  nmembers/PopSize;    <span class="comment">% Coefficient for the mixture, proportional to the number of points in the cluster</span>
+0061    <span class="keyword">else</span>
+0062     model{1,i} =  mean(AuxPop);        <span class="comment">% Vector of means for each cluster</span>
+0063     model{2,i} =  std(AuxPop);         <span class="comment">% Vector of standard deviation for each cluster</span>
+0064     model{3,i} =  nmembers/PopSize;    <span class="comment">% Coefficient for the mixture, proportional to the number of points in the cluster</span>
+0065    <span class="keyword">end</span>
+0066  <span class="keyword">end</span>
+0067 
+0068  <span class="keyword">return</span>;
+0069        
+0070        
+0071</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

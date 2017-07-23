@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of LoadRandom3SAT</title>
+  <meta name="keywords" content="LoadRandom3SAT">
+  <meta name="description" content="[Formulas] = loadSAT(n, mum_i)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">sat</a> &gt; LoadRandom3SAT.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/sat&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>LoadRandom3SAT
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Formulas] = loadSAT(n, mum_i)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [Formulas] = loadSAT(n, num_i, Formulas) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Formulas] = loadSAT(n, mum_i)
+ loadMaxSAT: This function loads SAT instances from the SATLIB- benchmark
+             problems site (http://www.cs.ubc.ca/~hoos/SATLIB/benchm.html). 
+             It is only valid for the set of instances called Uniform
+             Random-3-SAT. In 'functions/sat/sat_instances' there are some examples.
+
+ INPUT
+ n: number of variables
+ num_i: instance identifier
+ Formula{i,j}: Global variable that contains j clauses for the i formula (instance). A clause is a six
+               component vector. The first three components are the numbers of the
+               variables in the clause. The rest three component indicate whether the
+               literal is negated (0) or not (1).
+
+ OUTPUT
+ Formula{i,j}
+
+ Last version 2/17/2009. Carlos Echegoyen (carlos.echegoyen@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/ScriptsMateda/OptimizationScripts/EBNA_MultiObj_SAT.html" class="code" title="">EBNA_MultiObj_SAT</a>	% EXAMPLE 2: MULTIO-OBJECTIVE MAXSAT</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Formulas] = loadSAT(n, num_i, Formulas)</a>
+0002 <span class="comment">% [Formulas] = loadSAT(n, mum_i)</span>
+0003 <span class="comment">% loadMaxSAT: This function loads SAT instances from the SATLIB- benchmark</span>
+0004 <span class="comment">%             problems site (http://www.cs.ubc.ca/~hoos/SATLIB/benchm.html).</span>
+0005 <span class="comment">%             It is only valid for the set of instances called Uniform</span>
+0006 <span class="comment">%             Random-3-SAT. In 'functions/sat/sat_instances' there are some examples.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% INPUT</span>
+0009 <span class="comment">% n: number of variables</span>
+0010 <span class="comment">% num_i: instance identifier</span>
+0011 <span class="comment">% Formula{i,j}: Global variable that contains j clauses for the i formula (instance). A clause is a six</span>
+0012 <span class="comment">%               component vector. The first three components are the numbers of the</span>
+0013 <span class="comment">%               variables in the clause. The rest three component indicate whether the</span>
+0014 <span class="comment">%               literal is negated (0) or not (1).</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% OUTPUT</span>
+0017 <span class="comment">% Formula{i,j}</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Last version 2/17/2009. Carlos Echegoyen (carlos.echegoyen@ehu.es)</span>
+0020 
+0021 file = [<span class="string">'uf'</span>, num2str(n), <span class="string">'-0'</span>,num2str(num_i),<span class="string">'.cnf'</span>];
+0022 
+0023 f = fopen(file, <span class="string">'r'</span>);
+0024 
+0025 <span class="keyword">for</span> i=1:8
+0026     Text{i} = fgetl(f);
+0027 <span class="keyword">end</span>
+0028 
+0029 <span class="comment">% Obtaining data form the text</span>
+0030 aux_s = size(Text{6}, 2);
+0031 aux_cl = strcat(Text{6}(aux_s-2), Text{6}(aux_s-1), Text{6}(aux_s));
+0032 cl = str2num(aux_cl); <span class="comment">% Clause length. (Max two digits for the length)</span>
+0033 
+0034 aux_s = size(Text{8},2);
+0035 aux_nc = strcat(Text{8}(aux_s-4), Text{8}(aux_s-3), Text{8}(aux_s-2), Text{8}(aux_s-1), Text{8}(aux_s));
+0036 nc = str2num(aux_nc); <span class="comment">% Number of clauses (Max four digits and min two digits for the number of clauses)</span>
+0037 
+0038 nf = size(Formulas,1); <span class="comment">% number of formulas</span>
+0039 
+0040 <span class="comment">% Obtaining the clauses.</span>
+0041 <span class="keyword">for</span> j=1:nc
+0042     aux = fgetl(f);
+0043     aux = str2num(aux);
+0044     Formulas{nf+1,j}(1:3) = abs(aux(1:cl));
+0045     Formulas{nf+1,j}(4:6) = aux(1:cl) &gt; 0;
+0046 <span class="keyword">end</span>
+0047 
+0048 fclose(f);
+0049</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

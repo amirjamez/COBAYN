@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of IntMutualInfFromMargProb</title>
+  <meta name="keywords" content="IntMutualInfFromMargProb">
+  <meta name="description" content="[MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">otherfiles</a> &gt; IntMutualInfFromMargProb.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/otherfiles&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>IntMutualInfFromMargProb
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb)
+ IntMutualInfFromMargProb:   This functions computes the normalized matrix of mutual information (MI)
+                             from the sets of univariate and bivariate marginal probabilities
+ INPUTS:
+ NumbVar: Number of variables
+ Card: Vector with the dimension of all the variables. 
+ UnivProb: Univariate probabilities
+ BivProb: Bivariate probalities
+ OUTPUTS: 
+ MI: Matrix of mutual information 
+ 
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/learning/LearnMOAModel.html" class="code" title="function [model] = LearnMOAModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)">LearnMOAModel</a>	[model] = LearnMOAModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</li><li><a href="../../Mateda2.0/learning/LearnMargProdModel.html" class="code" title="function [model] = LearnMargProdModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)">LearnMargProdModel</a>	[model] = LearnMargProdModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</li><li><a href="../../Mateda2.0/learning/LearnTreeModel.html" class="code" title="function [model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)">LearnTreeModel</a>	[model] = LearnTreeModel(k,NumbVar,Card,SelPop,AuxFunVal,learning_params)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb)</a>
+0002 <span class="comment">% [MI]=IntMutualInfFromMargProb(NumbVar,Card,UnivProb,BivProb)</span>
+0003 <span class="comment">% IntMutualInfFromMargProb:   This functions computes the normalized matrix of mutual information (MI)</span>
+0004 <span class="comment">%                             from the sets of univariate and bivariate marginal probabilities</span>
+0005 <span class="comment">% INPUTS:</span>
+0006 <span class="comment">% NumbVar: Number of variables</span>
+0007 <span class="comment">% Card: Vector with the dimension of all the variables.</span>
+0008 <span class="comment">% UnivProb: Univariate probabilities</span>
+0009 <span class="comment">% BivProb: Bivariate probalities</span>
+0010 <span class="comment">% OUTPUTS:</span>
+0011 <span class="comment">% MI: Matrix of mutual information</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0014 
+0015 MI = zeros(NumbVar);
+0016 <span class="keyword">for</span> i=1:NumbVar-1,
+0017  <span class="keyword">for</span> j=i+1:NumbVar,
+0018    <span class="keyword">for</span> k=0:Card(i)-1,
+0019       <span class="keyword">for</span> l=0:Card(j)-1,
+0020         <span class="keyword">if</span>(BivProb{i,j}(Card(j)*k+l+1)&gt;0)
+0021             MI(i,j) = MI(i,j) + BivProb{i,j}(Card(j)*k+l+1)* log(BivProb{i,j}(Card(j)*k+l+1)/(UnivProb{i}(k+1)*UnivProb{j}(l+1)));
+0022         <span class="keyword">end</span>
+0023       <span class="keyword">end</span>,
+0024    <span class="keyword">end</span>,
+0025    MI(i,j) = MI(i,j)/(Card(i)*Card(j)); <span class="comment">%Normalization of the mutual information</span>
+0026    MI(j,i) = MI(i,j);
+0027  <span class="keyword">end</span>,
+0028 <span class="keyword">end</span>,</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

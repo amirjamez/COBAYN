@@ -1,0 +1,121 @@
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{inputenc}
+
+%packages de polices de caractères
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{aeguill}
+\usepackage{avant}
+\usepackage{mathrsfs}
+\usepackage{mathpple}
+\usepackage{ncntrsbk}
+%\usepackage{eufrak}
+%\usepackage{lettrine}
+%\usepackage{ulem} % soulignements
+%\usepackage{times} % compatibilité PDF
+
+%packages d'environements
+%\usepackage[francais]{babel}
+%\usepackage[french]{babel}
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+\usepackage[dvips]{graphicx}
+%\usepackage[a4paper]{geometry}
+%\usepackage{a4wide}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage{boxedminipage}
+\usepackage[all]{xy}
+\usepackage{slashbox}
+%\usepackage{subfigure}
+\usepackage{rotating}
+%\usepackage{algorithme}
+\usepackage{url}
+%\usepackage{dsfont}
+\usepackage{array}
+%\usepackage{dcolumn}
+\usepackage{color}
+%\usepackage{colortbl}
+\usepackage{ltugcomn}
+%\makeatletter\let\if@openbib\iffalse\makeatother
+%\makeatletter\let\ps@plain=\ps@empty\makeatother
+
+\definecolor{Oviolet}{rgb}{0.5,0,0.5}
+\definecolor{Overt}{rgb}{0.0,0.55,0.0}
+\definecolor{Obleu}{rgb}{0.15,0.10,0.60}
+\definecolor{Ocase}{rgb}{0.96,0.97,0.3}
+\definecolor{Orange}{rgb}{0.98,0.40,0.05}
+%\definecolor{Ogris}{rgb}{0.25,0.25,0.25}
+\pdfoutput=1
+\usepackage[
+	pdfauthor={Olivier Charles Henri François},
+	% pdftitle={},
+	pdfsubject={Bayesian Network Structure learning, an empirical comparison},
+	pdfcreator = {LaTeX with hyperref package},
+	pdfproducer = {pdflatex},
+	pdfkeywords={Bayesian Networks, Learning, Information retrieval, Classification},
+	% pagebackref,
+	pdftex,
+	bookmarks,
+	%hyperindex,
+	colorlinks=true,
+	linkcolor=Obleu, %red,
+	anchorcolor=green, %black,
+	citecolor=Overt, %green,
+	filecolor=magenta, %magenta
+	menucolor=Obleu, %red,
+	urlcolor=Oviolet %cyan
+		]{hyperref}
+%\usepackage{tlhypref}
+\hypersetup{
+	pdfborder={0 0 0},
+	colorlinks=true,
+	bookmarksopen=false,
+	bookmarksnumbered=true,
+	linkcolor=Obleu, %red,
+	anchorcolor=green, %black,
+	citecolor=Overt, %green,
+	filecolor=magenta, %magenta
+	menucolor=Obleu, %red,
+	urlcolor=Oviolet %cyan
+}
+
+\setcounter{tocdepth}{4}
+
+\newcommand{\indep}{\!\!\perp\!\!\!\perp\!\!}
+\newcommand{\ligne}[1]{\begin{center}\begin{tabular}{p{#1}}\hline\\\end{tabular}\end{center}\vspace*{-\baselineskip}}
+
+\definecolor{coulmath}{rgb}{0.25,0.0,0.15}
+\newenvironment{equ}[1]{\begin{equation}\displaystyle\color{coulmath}#1}{\end{equation}\hspace*{-3pt}}
+
+%\renewcommand{\baselinestretch}{1.10}
+\newcommand{\titi}{\fontsize{6}{6}\selectfont}
+
+%\newcommand{\Filet}{\rule[-1mm]{0mm}{4mm}}
+\newcommand{\mabox}[3]{\vspace*{.5\baselineskip}{\noindent\hspace*{\textwidth}\hspace*{-35pt}\begin{boxedminipage}[c]{35pt}\begin{center}\texttt{#1}\end{center}\end{boxedminipage}\vspace*{-1.4pt}\\}{\noindent\begin{boxedminipage}[c]{\textwidth}\texttt{\vspace*{2pt}\textbf{#2}\\\small #3\normalsize}\end{boxedminipage}}}
+
+\newtheorem{Th}{Theorem} %[section]
+\newtheorem{lem}[Th]{Lemma}
+\newtheorem{de}{Definition}
+\newtheorem{prop}[Th]{Proposition}
+\newtheorem{pte}[Th]{Property}
+\newtheorem{cor}[Th]{Corollary}
+\newtheorem{ex}{Example}
+\newtheorem{rem}{Remarque}
+\newtheorem{nota}{Notation}
+
+\usepackage{caption} %[small,hang]
+\renewcommand{\captionfont}{\it \small}
+\renewcommand{\captionlabelfont}{\it \bf \small}
+\setlength{\captionmargin}{10mm}
+\setlength{\abovecaptionskip}{.25\baselineskip}
+
+%\usepackage{newapa}
+%\def\citepunct{}{\textcolor{Overt}{\&}}{\,\textcolor{Overt}(}{\textcolor{Overt}) \& }{\textcolor{Overt}\,(}{\textcolor{Overt})}%
+%\citepunct{\textcolor{Overt}(}{}{}{}{}{\textcolor{Overt})}%

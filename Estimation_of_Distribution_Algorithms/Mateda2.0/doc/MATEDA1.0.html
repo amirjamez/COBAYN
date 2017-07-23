@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>MATEDA main page</title>
+</head><body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);" vlink="#990099" alink="#000099" link="#000099">
+<h2 style="text-align: center;"><font size="+2"><font style="color: rgb(51, 102, 255); font-family: serif; font-weight: bold;"><font><font style="color: rgb(51, 102, 255); font-family: serif; font-weight: bold;">Description
+of&nbsp;</font></font>MATEDA</font></font></h2>
+<div style="text-align: center; position: absolute; left: 8px; top: 21px;">
+<h1>&nbsp; </h1>
+</div>
+<br>
+<br>
+<div style="text-align: justify;">MATEDA comprises a set of matlab
+programs that implement different
+EDAs. <em><strong>Each program is commented and some examples of their
+use are available from the code</strong>.</em> Current implementation
+includes EDAs
+for discrete and continuous problems. EDAs based on Bayesian and
+undirected graphical models have been included. The software is not
+warranteed in any way. <br>
+<br>
+There are three main classes of EDAs implemented:<br>
+</div>
+<br>
+<br>
+<ol>
+  <li><a href="#UNDEDAs">EDAs based on undirected graphical models for
+discrete problems</a></li>
+  <li><a href="#BAYEDAs">EDAs based on Bayesian networks for discrete
+problems</a></li>
+  <li><a href="#GAUSSEDA">EDAs based on Gaussian models for continous
+problems</a></li>
+</ol>
+<h2 style="font-family: Times New Roman,Times,serif; text-align: center;"><br>
+</h2>
+<h2 style="font-family: Times New Roman,Times,serif; text-align: center;"><br>
+</h2>
+<h2 style="font-family: Times New Roman,Times,serif; text-align: center;"><a name="UNDEDAs"></a>EDAs
+based on undirected graphical models</h2>
+<br>
+All the EDAs in this class do only parametric learning. The structure
+of the probability model is fixed in all the iterations. This structure
+can be given to the algorithm by the user. The model of choice is a
+junction graph where every set of interacting variables (definition
+sets of the function when it is additive function) is represented by a
+clique.<br>
+<br>
+<code><br>
+<span style="color: rgb(204, 0, 0);">RunUMDA.m</span></code><br>
+<br>
+This is the simplest EDA. It uses a univariate probabilistic model
+where all the variables are independent.<br>
+<br>
+<code><span style="color: rgb(204, 0, 0);">RunMarkovFDA.m</span><br>
+</code><br>
+EDA that uses a junction graph where each variables depends on the
+previous k variables (k-Markovian model). k is a parameter of the
+algorithm. For k=0, RunMarkovFDA.m&nbsp; behaves as RunUMDA.m<br>
+<br>
+<code><span style="color: rgb(204, 0, 0);">RunFDA.m</span></code><br>
+<br>
+Implementation of the Factorized Distribution Algorithm (FDA). The set
+of cliques where variables are defined is given. &nbsp;The cliques has
+to form a junction graph. This is a generalization of the FDA where
+cliques are constrained to form a junction graph (i.e. a junction graph
+without cycles).<br>
+<br>
+<br>
+<h2 style="font-family: Times New Roman,Times,serif; text-align: center;"><a name="BAYEDAs"></a>EDAs
+based&nbsp;on Bayesian networks<br>
+</h2>
+<br>
+<br>
+<code><span style="color: rgb(204, 0, 0);">RunBNEDA.m</span></code> <br>
+<br>
+EDA that uses as a probabilistic model a Bayesian network. Different BN
+structure learning algorithms are used.&nbsp; The instalation of the <a href="http://www.cs.ubc.ca/%7Emurphyk/Software/BNT/bnt.html">BNT</a>
+&nbsp;and the <a href="http://bnt.insa-rouen.fr/ajouts.html">BNT
+structure learning </a>software packages are needed. <br>
+Current implementations include the maximum weight spanning
+&nbsp;tree&nbsp; and K2 learning algorithms.<br>
+<br>
+<br>
+<h2 style="font-family: Times New Roman,Times,serif; text-align: center;"><a name="GAUSSEDA"></a>EDAs
+based&nbsp;on Gaussian models</h2>
+<br>
+<code><span style="color: rgb(204, 0, 0);">RunGaussianEDA.m</span></code><br>
+<br>
+EDA that uses univariate and multivariate Gaussian&nbsp;models to
+approximate probability distributions for problems with continuous
+representation.<br>
+<br>
+<br>
+<br>
+<br>
+</body></html>

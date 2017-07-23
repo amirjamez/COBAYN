@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Most_probable_explanations</title>
+  <meta name="keywords" content="Most_probable_explanations">
+  <meta name="description" content="function[MPEs] = Most_probable_explanations(bnets,func)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">knowledge_extraction</a> &gt; Most_probable_explanations.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>Most_probable_explanations
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[MPEs] = Most_probable_explanations(bnets,func)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function[MPEs] = Most_probable_explanations(bnets,func) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function[MPEs] = Most_probable_explanations(bnets,func)
+
+ Most_probable_explanations: Computes the most probable explanation and its fitness value at each
+                             generation given the corresponding Bayesian network
+
+ INPUT
+ bnets{maxgen}: Cell array that stores the Bayesian networks learned at
+                each generation
+ func:          The fitness function used in the EDA execution
+
+
+ OUTPUT
+ MPEs: Cell array that stores the most probable configuration, its 
+       probability values and its fitness function at each
+       generation.
+
+       MPEs{1,i}: An array with the point with highest probability at generation i
+       MPEs{2,i}: The probability value for the MPE at generation i. It  
+                  is an array where MPEs{2,i}(1,1) is the probability
+                  in logarithmic scale and MPEs{2,i}(1,2)
+                  is the original probability value. 
+       MPEs{3,i}: The fitness function value for the MPE at generation i
+
+ Example: 
+ for i=1:maxgen
+   bnets{i}=Cache{3,i};
+ end
+ [MPEs] = Most_probable_explanations(bnets, F);
+
+ The fitness function corresponding to the most probable configurations are shown
+ for i=1:maxgen
+   fo_mpes(i)=MPEs{3,i};  
+ end
+ X=[1:maxgen];
+ plot(X,fo_mpes);
+
+ Last version 5/11/08. Carlos Echegoyen and Roberto Santana(carlos.echegoyen@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/sampling/FindMPE.html" class="code" title="function[mpe_solution,prob_value] =  FindMPE(bnet)">FindMPE</a>	[mpe_solution,prob_value] =  FindMPE(bnet):</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/ScriptsMateda/FitnessModScripts/BN_MPCsFitness.html" class="code" title="">BN_MPCsFitness</a>	EXAMPLE 5:</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[MPEs] = Most_probable_explanations(bnets,func)</a>
+0002 <span class="comment">% function[MPEs] = Most_probable_explanations(bnets,func)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Most_probable_explanations: Computes the most probable explanation and its fitness value at each</span>
+0005 <span class="comment">%                             generation given the corresponding Bayesian network</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% INPUT</span>
+0008 <span class="comment">% bnets{maxgen}: Cell array that stores the Bayesian networks learned at</span>
+0009 <span class="comment">%                each generation</span>
+0010 <span class="comment">% func:          The fitness function used in the EDA execution</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% OUTPUT</span>
+0014 <span class="comment">% MPEs: Cell array that stores the most probable configuration, its</span>
+0015 <span class="comment">%       probability values and its fitness function at each</span>
+0016 <span class="comment">%       generation.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%       MPEs{1,i}: An array with the point with highest probability at generation i</span>
+0019 <span class="comment">%       MPEs{2,i}: The probability value for the MPE at generation i. It</span>
+0020 <span class="comment">%                  is an array where MPEs{2,i}(1,1) is the probability</span>
+0021 <span class="comment">%                  in logarithmic scale and MPEs{2,i}(1,2)</span>
+0022 <span class="comment">%                  is the original probability value.</span>
+0023 <span class="comment">%       MPEs{3,i}: The fitness function value for the MPE at generation i</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Example:</span>
+0026 <span class="comment">% for i=1:maxgen</span>
+0027 <span class="comment">%   bnets{i}=Cache{3,i};</span>
+0028 <span class="comment">% end</span>
+0029 <span class="comment">% [MPEs] = Most_probable_explanations(bnets, F);</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% The fitness function corresponding to the most probable configurations are shown</span>
+0032 <span class="comment">% for i=1:maxgen</span>
+0033 <span class="comment">%   fo_mpes(i)=MPEs{3,i};</span>
+0034 <span class="comment">% end</span>
+0035 <span class="comment">% X=[1:maxgen];</span>
+0036 <span class="comment">% plot(X,fo_mpes);</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">% Last version 5/11/08. Carlos Echegoyen and Roberto Santana(carlos.echegoyen@ehu.es)</span>
+0039 
+0040 k = size(bnets,2); <span class="comment">% Number of net</span>
+0041 num_vars = size(bnets{1}.dnodes,2); <span class="comment">% Number of variables</span>
+0042 
+0043 <span class="keyword">for</span> i=1:k
+0044    [mpe_solution,prob_value] =  <a href="../../Mateda2.0/sampling/FindMPE.html" class="code" title="function[mpe_solution,prob_value] =  FindMPE(bnet)">FindMPE</a>(bnets{i});
+0045     MPEs{1,i} = cell2num(mpe_solution)-1;
+0046     MPEs{2,i} = prob_value;
+0047     MPEs{3,i} = feval(func,MPEs{1,i});
+0048 <span class="keyword">end</span>
+0049</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

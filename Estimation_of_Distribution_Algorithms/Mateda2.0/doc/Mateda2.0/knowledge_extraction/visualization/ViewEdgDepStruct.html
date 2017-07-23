@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ViewEdgDepStruct</title>
+  <meta name="keywords" content="ViewEdgDepStruct">
+  <meta name="description" content="[results] = ViewEdgDepStruct(run_structures,viewparams)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">knowledge_extraction</a> &gt; <a href="index.html">visualization</a> &gt; ViewEdgDepStruct.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction/visualization&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ViewEdgDepStruct
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[results] = ViewEdgDepStruct(run_structures,viewparams)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[results] = ViewEdgDepStruct(run_structures,viewparams) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [results] = ViewEdgDepStruct(run_structures,viewparams)
+                       
+ 'ViewEdgDepStruct'  : Searches for substructures in the set of all the structures learned
+                       and can show the adjacency matrices corresponding to
+                       these  structures
+ INPUT
+ run_structures: Contain the data structures with all the structures
+ learned by the probability models in every run and generation (see
+ program ReadStructures.m for details.
+ viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the
+ images. fs: Font size for the images
+ viewparams{2}: Describe the substructure by giving values of
+ absence/presence to a subset of edges. (see Example below)
+ viewparams{3}:   % Vector with the selected runs  that will be inspected
+ viewparams{4};  % Vector of with the selected generations  that will be inspected
+ viewparams{5}; % Display type that could be one of the following:
+   'all_graphs': There is an image for each structure that contain the
+    substructure.
+   'one_graph': an image adding all the structures that contain the
+    substructure.
+   'no_graph': no image is generated. This option is for the cases where we only
+    want the list of runs and generations where the substructure is
+    included. This is an output of the function (see ViewEdgDepStruct.m
+    for details)
+ OUTPUT
+ results: a matrix of 2 columns, where each row contains a run and
+ generation where the subgraph has been found 
+ EXAMPLE
+ We want to see all adjacency matrices of those structures learned in all runs
+ such that edges (3,4) and (4,5) appear together and edge (3,5) does not appear
+ viewparams{1} = [100,14];
+ viewparams{2} = [3 4 1; 4 5 1; 3 5 0]; % The substructure is described
+ viewparams{3} = [1:nruns]; % Selected runs (All)
+ viewparams{4} = [1:maxgen]; % Selected generations (All)
+ viewparams{5} = 'all_graphs'; % Graphs to be seen (All)
+ [results] = ViewEdgDepStruct(run_structures,viewparams);
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="ConvertFromIndex.html" class="code" title="function[AuxContactMatrix] = ConvertFromIndex(indexmatrix,one_gen)">ConvertFromIndex</a>	[AuxContactMatrix] = ConvertFromIndex(indexmatrix,one_gen)</li><li><a href="ShowImage.html" class="code" title="function[] = ShowImage(pcolors,fs,matrix)">ShowImage</a>	[] = ShowImage(pcolors,fs,matrix)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[results] = ViewEdgDepStruct(run_structures,viewparams)</a>
+0002 <span class="comment">% [results] = ViewEdgDepStruct(run_structures,viewparams)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% 'ViewEdgDepStruct'  : Searches for substructures in the set of all the structures learned</span>
+0005 <span class="comment">%                       and can show the adjacency matrices corresponding to</span>
+0006 <span class="comment">%                       these  structures</span>
+0007 <span class="comment">% INPUT</span>
+0008 <span class="comment">% run_structures: Contain the data structures with all the structures</span>
+0009 <span class="comment">% learned by the probability models in every run and generation (see</span>
+0010 <span class="comment">% program ReadStructures.m for details.</span>
+0011 <span class="comment">% viewparams{1} = [pcolors,fs]; % pcolors: range of colors for the</span>
+0012 <span class="comment">% images. fs: Font size for the images</span>
+0013 <span class="comment">% viewparams{2}: Describe the substructure by giving values of</span>
+0014 <span class="comment">% absence/presence to a subset of edges. (see Example below)</span>
+0015 <span class="comment">% viewparams{3}:   % Vector with the selected runs  that will be inspected</span>
+0016 <span class="comment">% viewparams{4};  % Vector of with the selected generations  that will be inspected</span>
+0017 <span class="comment">% viewparams{5}; % Display type that could be one of the following:</span>
+0018 <span class="comment">%   'all_graphs': There is an image for each structure that contain the</span>
+0019 <span class="comment">%    substructure.</span>
+0020 <span class="comment">%   'one_graph': an image adding all the structures that contain the</span>
+0021 <span class="comment">%    substructure.</span>
+0022 <span class="comment">%   'no_graph': no image is generated. This option is for the cases where we only</span>
+0023 <span class="comment">%    want the list of runs and generations where the substructure is</span>
+0024 <span class="comment">%    included. This is an output of the function (see ViewEdgDepStruct.m</span>
+0025 <span class="comment">%    for details)</span>
+0026 <span class="comment">% OUTPUT</span>
+0027 <span class="comment">% results: a matrix of 2 columns, where each row contains a run and</span>
+0028 <span class="comment">% generation where the subgraph has been found</span>
+0029 <span class="comment">% EXAMPLE</span>
+0030 <span class="comment">% We want to see all adjacency matrices of those structures learned in all runs</span>
+0031 <span class="comment">% such that edges (3,4) and (4,5) appear together and edge (3,5) does not appear</span>
+0032 <span class="comment">% viewparams{1} = [100,14];</span>
+0033 <span class="comment">% viewparams{2} = [3 4 1; 4 5 1; 3 5 0]; % The substructure is described</span>
+0034 <span class="comment">% viewparams{3} = [1:nruns]; % Selected runs (All)</span>
+0035 <span class="comment">% viewparams{4} = [1:maxgen]; % Selected generations (All)</span>
+0036 <span class="comment">% viewparams{5} = 'all_graphs'; % Graphs to be seen (All)</span>
+0037 <span class="comment">% [results] = ViewEdgDepStruct(run_structures,viewparams);</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0040  
+0041 
+0042 indexmatrix = run_structures{1};
+0043 AllBigMatrices = run_structures{2};
+0044 
+0045 pcolors = viewparams{1}(1); <span class="comment">% Range of  colors</span>
+0046 fs = viewparams{1}(2);      <span class="comment">% Fontsize for the figures</span>
+0047 
+0048 substruct = viewparams{2};
+0049 selected_runs = viewparams{3};
+0050 generations = viewparams{4};
+0051 display_type = viewparams{5};
+0052 
+0053 n = size(indexmatrix,1);
+0054 AuxSumContactMatrix = zeros(n,n);
+0055 results  = [];
+0056 
+0057 nconds = size(substruct,1);  <span class="comment">% Number of conditions specified</span>
+0058 <span class="keyword">for</span> i=1:nconds
+0059  indexconds(i) = indexmatrix(substruct(i,1),substruct(i,2));    <span class="comment">% Indices of the edges in indexmatrix</span>
+0060 <span class="keyword">end</span>
+0061  valconds = substruct(:,3);                                     <span class="comment">% Values to be satisfied by the conditions</span>
+0062  
+0063 a = 1; 
+0064 <span class="keyword">for</span> j=1:size(selected_runs,2)
+0065     the_run = AllBigMatrices{selected_runs(j)} 
+0066     <span class="keyword">for</span> i=1:size(generations,2)        <span class="comment">% Only generations specified in viewparams{3}</span>
+0067       one_gen = the_run(:,generations(i)); <span class="comment">% Edges learned at that generation</span>
+0068       check_cond = sum(one_gen(indexconds)==valconds)==size(substruct,1); <span class="comment">% Checking if all conditions are satisfied</span>
+0069      
+0070       <span class="keyword">if</span>(check_cond==1)       
+0071          AuxContactMatrix = <a href="ConvertFromIndex.html" class="code" title="function[AuxContactMatrix] = ConvertFromIndex(indexmatrix,one_gen)">ConvertFromIndex</a>(indexmatrix,one_gen);
+0072          <span class="keyword">switch</span> display_type
+0073              <span class="keyword">case</span> <span class="string">'one_graph'</span>,  AuxSumContactMatrix = AuxSumContactMatrix +  AuxContactMatrix;
+0074              <span class="keyword">case</span> <span class="string">'all_graphs'</span>, <a href="ShowImage.html" class="code" title="function[] = ShowImage(pcolors,fs,matrix)">ShowImage</a>(pcolors,fs,AuxContactMatrix);
+0075          <span class="keyword">end</span>;
+0076          results(a,:) = [j,generations(i)]; <span class="comment">%These are the runs and generations corresponding to the structures.</span>
+0077          a = a + 1; 
+0078       <span class="keyword">end</span>
+0079     <span class="keyword">end</span>    
+0080 <span class="keyword">end</span>  
+0081   
+0082 
+0083   <span class="keyword">switch</span> display_type
+0084     <span class="keyword">case</span> <span class="string">'one_graph'</span>,  <a href="ShowImage.html" class="code" title="function[] = ShowImage(pcolors,fs,matrix)">ShowImage</a>(pcolors,fs,AuxSumContactMatrix);
+0085   <span class="keyword">end</span>;
+0086 
+0087 
+0088 
+0089</pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Generations_entropy</title>
+  <meta name="keywords" content="Generations_entropy">
+  <meta name="description" content="function H_gens = Generations_entropy(inds_gens,Card,laplace)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mateda2.0</a> &gt; <a href="index.html">knowledge_extraction</a> &gt; Generations_entropy.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>Generations_entropy
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function H_gens = Generations_entropy(inds_gens,Card,laplace)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function H_gens = Generations_entropy(inds_gens,Card,laplace) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function H_gens = Generations_entropy(inds_gens,Card,laplace)
+
+ Generations_entropy: Calculates the entropy accumulated by a
+                      set of individuals (population or selected individual) 
+                      at each generation of the EDA.
+ INPUT
+ inds_gens{maxgen} = A cell array with the population or the selected
+                     individual at each generation. It is obtained from
+                     Cache{1,:} or Cache{2,:}
+ Card: Cardinalities of the variables
+ laplace: Determines wether or not Laplace correction is used in the computation
+ of the probabilities. Laplace=1 (It is used), otherwise  it is not.
+
+ OUTPUT
+ H_gens: It is an array with the calculated entropies at each generation.
+ 
+
+ Example:
+ for i=1:maxgen
+   inds_gens{i}=Cache{1,i};
+ end
+ H_gens = Generations_entropy(inds_gens,Card,0);
+ X = [1,maxgen]
+ plot(X,H_gens);
+
+ Last version 5/11/08. Carlos Echegoyen (carlos.echegoyen@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="Individuals_entropy.html" class="code" title="function S_H = Individuals_entropy(Inds,Card,laplace)">Individuals_entropy</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Mateda2.0/ScriptsMateda/AnalysisScripts/FitnessMeasuresComp.html" class="code" title="">FitnessMeasuresComp</a>	%%%%%%%%%%%%%%%  COMPUTATION OF FITNESS RELATED MEASURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function H_gens = Generations_entropy(inds_gens,Card,laplace)</a>
+0002 <span class="comment">% function H_gens = Generations_entropy(inds_gens,Card,laplace)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Generations_entropy: Calculates the entropy accumulated by a</span>
+0005 <span class="comment">%                      set of individuals (population or selected individual)</span>
+0006 <span class="comment">%                      at each generation of the EDA.</span>
+0007 <span class="comment">% INPUT</span>
+0008 <span class="comment">% inds_gens{maxgen} = A cell array with the population or the selected</span>
+0009 <span class="comment">%                     individual at each generation. It is obtained from</span>
+0010 <span class="comment">%                     Cache{1,:} or Cache{2,:}</span>
+0011 <span class="comment">% Card: Cardinalities of the variables</span>
+0012 <span class="comment">% laplace: Determines wether or not Laplace correction is used in the computation</span>
+0013 <span class="comment">% of the probabilities. Laplace=1 (It is used), otherwise  it is not.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% OUTPUT</span>
+0016 <span class="comment">% H_gens: It is an array with the calculated entropies at each generation.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Example:</span>
+0020 <span class="comment">% for i=1:maxgen</span>
+0021 <span class="comment">%   inds_gens{i}=Cache{1,i};</span>
+0022 <span class="comment">% end</span>
+0023 <span class="comment">% H_gens = Generations_entropy(inds_gens,Card,0);</span>
+0024 <span class="comment">% X = [1,maxgen]</span>
+0025 <span class="comment">% plot(X,H_gens);</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% Last version 5/11/08. Carlos Echegoyen (carlos.echegoyen@ehu.es)</span>
+0028 
+0029 max_gen = size(inds_gens,2);
+0030 
+0031 <span class="keyword">for</span> i=1:max_gen
+0032     H_gens(i) = <a href="Individuals_entropy.html" class="code" title="function S_H = Individuals_entropy(Inds,Card,laplace)">Individuals_entropy</a>(inds_gens{i},Card,laplace);
+0033 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

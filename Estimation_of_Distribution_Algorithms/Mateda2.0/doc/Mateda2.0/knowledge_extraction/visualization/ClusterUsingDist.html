@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ClusterUsingDist</title>
+  <meta name="keywords" content="ClusterUsingDist">
+  <meta name="description" content="[results] = ClusterUsingDist(data,distance)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">knowledge_extraction</a> &gt; <a href="index.html">visualization</a> &gt; ClusterUsingDist.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/knowledge_extraction/visualization&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ClusterUsingDist
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[results] = ClusterUsingDist(data,distance)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[results] = ClusterUsingDist(data,distance) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [results] = ClusterUsingDist(data,distance)
+ ClusterUsingDist:     Orders a set of features (or variables) according
+                       their pdist distance
+                       Features with strong similarity will be clustered together
+                       Affinity propagation is used to cluster the
+                       features. Accordingly, the exemplars are also given as an output.
+                       Ordering may help to reduce cluttering in parallel coordinates displaying, improving
+                       visualization.
+ INPUT
+ data: A vector of data were rows are observations and columns are
+ features
+ OUTPUT
+ results{1} =  A new ordering of the features, were subsequent features
+ are suppossed to be more related
+ results{2} =  Original clustering (idx) given by the affinity propagation
+ algorithm
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>	This program has been downloaded from</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[results] = ClusterUsingDist(data,distance)</a>
+0002 <span class="comment">% [results] = ClusterUsingDist(data,distance)</span>
+0003 <span class="comment">% ClusterUsingDist:     Orders a set of features (or variables) according</span>
+0004 <span class="comment">%                       their pdist distance</span>
+0005 <span class="comment">%                       Features with strong similarity will be clustered together</span>
+0006 <span class="comment">%                       Affinity propagation is used to cluster the</span>
+0007 <span class="comment">%                       features. Accordingly, the exemplars are also given as an output.</span>
+0008 <span class="comment">%                       Ordering may help to reduce cluttering in parallel coordinates displaying, improving</span>
+0009 <span class="comment">%                       visualization.</span>
+0010 <span class="comment">% INPUT</span>
+0011 <span class="comment">% data: A vector of data were rows are observations and columns are</span>
+0012 <span class="comment">% features</span>
+0013 <span class="comment">% OUTPUT</span>
+0014 <span class="comment">% results{1} =  A new ordering of the features, were subsequent features</span>
+0015 <span class="comment">% are suppossed to be more related</span>
+0016 <span class="comment">% results{2} =  Original clustering (idx) given by the affinity propagation</span>
+0017 <span class="comment">% algorithm</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0020 
+0021 nedges = size(data,2);
+0022 y = pdist(data', distance);
+0023 rho = max(max(y)) - squareform(y); <span class="comment">%Affinity propagation maximizes similarity = minimizes distance</span>
+0024 
+0025 s = mean(rho);     <span class="comment">% The self-similarity measure is the mean of correlations for each variable</span>
+0026  
+0027 [idx,netsim,dpsim,expref]=<a href="../../../Mateda2.0/otherfiles/apcluster.html" class="code" title="function [idx,netsim,dpsim,expref,unconverged]=apcluster(s,p,varargin);">apcluster</a>(rho,s); <span class="comment">% affinity propagation is done to identify clusters of correlated variables</span>
+0028 
+0029 [val,index] = sort(idx); <span class="comment">% The variables are ordered according to their exemplar and the new ordering is output</span>
+0030 
+0031 results{1} = index';
+0032 results{2} = idx;
+0033 
+0034 <span class="keyword">return</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

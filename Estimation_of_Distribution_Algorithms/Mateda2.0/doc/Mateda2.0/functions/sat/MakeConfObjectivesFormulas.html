@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of MakeConfObjectivesFormulas</title>
+  <meta name="keywords" content="MakeConfObjectivesFormulas">
+  <meta name="description" content="[Formulas]=MakeConfObjectivesFormulas(n,m,c,cfixed)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">sat</a> &gt; MakeConfObjectivesFormulas.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/sat&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>MakeConfObjectivesFormulas
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[Formulas]=MakeConfObjectivesFormulas(n,m,c,cfixed)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Formulas]=MakeConfObjectivesFormulas(n,m,c,cfixed) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [Formulas]=MakeConfObjectivesFormulas(n,m,c,cfixed) 
+ MakeConfObjectivesFormulas: Creates a set of formulas (one correspond to each objective). 
+                            The first cfixed formulas are uniformly randomly selected. 
+                            The rest of formulas are constructed by
+                            randomly picked a previous generated formula
+                            and replacing some of the variables by other
+                            variables that are not in the formula. 
+                            The idea is to generate conditionally independent objectives given the variables
+ INPUT
+ n: Number of variables
+ m: Number of formulas (objectives)
+ c: Number of clauses in each formula 
+ cfixed: Number of fixed formulas (the first clauses generated)
+ OUTPUT
+ Formulas{i,j}: Contains the clause j in the formula i. A clause is six
+                component vector. The first three components are the numbers of the
+                variables in the clause. The rest three component indicate whether the
+                literal is negated (0) or not (1).
+
+ Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Mateda2.0/otherfiles/sus.html" class="code" title="function[Index]=sus(SelCant,Sumvector)">sus</a>	[Index]=sus(SelCant,Sumvector)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Formulas]=MakeConfObjectivesFormulas(n,m,c,cfixed) </a>
+0002 <span class="comment">% [Formulas]=MakeConfObjectivesFormulas(n,m,c,cfixed)</span>
+0003 <span class="comment">% MakeConfObjectivesFormulas: Creates a set of formulas (one correspond to each objective).</span>
+0004 <span class="comment">%                            The first cfixed formulas are uniformly randomly selected.</span>
+0005 <span class="comment">%                            The rest of formulas are constructed by</span>
+0006 <span class="comment">%                            randomly picked a previous generated formula</span>
+0007 <span class="comment">%                            and replacing some of the variables by other</span>
+0008 <span class="comment">%                            variables that are not in the formula.</span>
+0009 <span class="comment">%                            The idea is to generate conditionally independent objectives given the variables</span>
+0010 <span class="comment">% INPUT</span>
+0011 <span class="comment">% n: Number of variables</span>
+0012 <span class="comment">% m: Number of formulas (objectives)</span>
+0013 <span class="comment">% c: Number of clauses in each formula</span>
+0014 <span class="comment">% cfixed: Number of fixed formulas (the first clauses generated)</span>
+0015 <span class="comment">% OUTPUT</span>
+0016 <span class="comment">% Formulas{i,j}: Contains the clause j in the formula i. A clause is six</span>
+0017 <span class="comment">%                component vector. The first three components are the numbers of the</span>
+0018 <span class="comment">%                variables in the clause. The rest three component indicate whether the</span>
+0019 <span class="comment">%                literal is negated (0) or not (1).</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% Last version 8/26/2008. Roberto Santana (roberto.santana@ehu.es)</span>
+0022 
+0023 clear Formulas
+0024 triples = nchoosek([1:n],3);
+0025 ntriples = size(triples,1);
+0026 
+0027  val = ones(ntriples,1);
+0028 
+0029  matrix = zeros(n,n);
+0030  val = cumsum(val/sum(val));
+0031 
+0032 
+0033  
+0034  <span class="keyword">for</span> i=1:cfixed  <span class="comment">% The initial formulas are randomly selected from the [1:fixedvars];</span>
+0035     Index = <a href="../../../Mateda2.0/otherfiles/sus.html" class="code" title="function[Index]=sus(SelCant,Sumvector)">sus</a>(c,val);  
+0036    <span class="keyword">for</span> j=1:c
+0037      Formulas{i,j} = [triples(Index(j),:),fix(2*rand(1,3))];
+0038    <span class="keyword">end</span> 
+0039  <span class="keyword">end</span>
+0040  
+0041  
+0042   <span class="keyword">for</span> i=cfixed+1:m,           <span class="comment">% The rest of formulas are found by replacing some the literals in some of the previously generated formulas</span>
+0043     prev = fix((i-1)*rand) + 1;  <span class="comment">% Previous clause that will be used to construct the new one</span>
+0044     auxvect = zeros(1,n);
+0045     <span class="keyword">for</span> j=1:c,
+0046      auxvect(Formulas{prev,j}(1:3)) = 1;
+0047     <span class="keyword">end</span> 
+0048     VarsIn = find(auxvect==1);
+0049     totIn = size(VarsIn,2);
+0050     
+0051     InPerm = randperm(totIn);
+0052     tochange = fix((totIn)*rand)+1;   <span class="comment">% Number of variables that will change their literals</span>
+0053     VarsToChange = VarsIn(InPerm(1:tochange));
+0054 
+0055     <span class="keyword">for</span> j=1:c
+0056       <span class="keyword">for</span> k=1:3
+0057         found = find(VarsToChange==Formulas{prev,j}(k));
+0058         <span class="keyword">if</span> isempty(found)
+0059           Formulas{i,j}(k+3) = Formulas{prev,j}(k+3);
+0060         <span class="keyword">else</span> 
+0061           Formulas{i,j}(k+3) = 1-Formulas{prev,j}(k+3);
+0062         <span class="keyword">end</span>         
+0063       <span class="keyword">end</span>  
+0064       Formulas{i,j}(1:3) = Formulas{prev,j}(1:3);
+0065     <span class="keyword">end</span>      
+0066   <span class="keyword">end</span>
+0067   
+0068    
+0069  
+0070  
+0071    
+0072  
+0073  <span class="comment">%matrix</span>
+0074  <span class="comment">%sum(matrix(1:10,1:10))</span>
+0075  <span class="comment">%sum(matrix(11:20,11:20))</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

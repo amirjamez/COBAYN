@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of PutMoveAtPos</title>
+  <meta name="keywords" content="PutMoveAtPos">
+  <meta name="description" content="PutMoveAtPos:    updates the lattice given a mov">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Mateda2.0</a> &gt; <a href="../index.html">functions</a> &gt; <a href="index.html">protein</a> &gt; PutMoveAtPos.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mateda2.0/functions/protein&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>PutMoveAtPos
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>PutMoveAtPos:    updates the lattice given a mov</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function[Pos] = PutMoveAtPos(Pos,pos,mov) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> PutMoveAtPos:    updates the lattice given a mov
+ INPUTS
+ sizeChain: Size of the subchain inspected
+ pos: Position of the residue in the sequence  
+ mov: Corresponding move (left,front,right)
+ OUTPUTS
+ Pos: Final configuration of the sequence</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="CheckConstraint.html" class="code" title="function[Overlappings,Pos] =  CheckConstraint(Pos,pos,vector)">CheckConstraint</a>	[Overlappings,Pos] =  CheckConstraint(Pos,pos,vector)</li><li><a href="EvalChain.html" class="code" title="function[Collisions,Overlappings,Pos] =  EvalChain(vector)">EvalChain</a>	[Collisions,Overlappings,Pos] =  EvalChain(vector)</li><li><a href="HP_newrepairing.html" class="code" title="function[solutionFound,s,Pos] =   HP_newrepairing(sizeChain,Pos,pos,moves,s,vector)">HP_newrepairing</a>	HP_newrepairing:        An auxiliary function that modifies a sequence configuration to avoid self-intersections</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function[Pos] = PutMoveAtPos(Pos,pos,mov)</a>
+0002 <span class="comment">% PutMoveAtPos:    updates the lattice given a mov</span>
+0003 <span class="comment">% INPUTS</span>
+0004 <span class="comment">% sizeChain: Size of the subchain inspected</span>
+0005 <span class="comment">% pos: Position of the residue in the sequence</span>
+0006 <span class="comment">% mov: Corresponding move (left,front,right)</span>
+0007 <span class="comment">% OUTPUTS</span>
+0008 <span class="comment">% Pos: Final configuration of the sequence</span>
+0009 
+0010 <span class="keyword">if</span> (pos&lt;3) 
+0011  <span class="keyword">return</span>;
+0012 <span class="keyword">end</span>
+0013 
+0014 i = pos;
+0015 
+0016  <span class="keyword">if</span>(Pos(i-1,2)==Pos(i-2,2))
+0017   <span class="keyword">if</span> (mov==0)            <span class="comment">%UP MOVE</span>
+0018    Pos(i,1) = Pos(i-1,1);  
+0019    Pos(i,2) = Pos(i-1,2) + (Pos(i-1,1)-Pos(i-2,1));
+0020   <span class="keyword">elseif</span> (mov==1)        <span class="comment">%FORWARD MOVE</span>
+0021    Pos(i,1) = Pos(i-1,1) + (Pos(i-1,1)-Pos(i-2,1));  
+0022    Pos(i,2) = Pos(i-1,2);
+0023   <span class="keyword">else</span>                         <span class="comment">%DOWN MOVE</span>
+0024    Pos(i,1) = Pos(i-1,1);  
+0025    Pos(i,2) = Pos(i-1,2) - (Pos(i-1,1)-Pos(i-2,1));
+0026   <span class="keyword">end</span>
+0027   <span class="keyword">end</span>
+0028 <span class="keyword">if</span> (Pos(i-1,1)==Pos(i-2,1))
+0029   <span class="keyword">if</span> (mov==0)            <span class="comment">%UP MOVE</span>
+0030     Pos(i,2) = Pos(i-1,2);  
+0031     Pos(i,1) = Pos(i-1,1) -  (Pos(i-1,2)-Pos(i-2,2));  
+0032   <span class="keyword">elseif</span> (mov==1)        <span class="comment">%FORWARD MOVE</span>
+0033     Pos(i,2) = Pos(i-1,2) +  (Pos(i-1,2)-Pos(i-2,2));  
+0034     Pos(i,1) = Pos(i-1,1);
+0035   <span class="keyword">else</span>                         <span class="comment">%DOWN MOVE</span>
+0036     Pos(i,2) = Pos(i-1,2);  
+0037     Pos(i,1) = Pos(i-1,1) + (Pos(i-1,2)-Pos(i-2,2));
+0038   <span class="keyword">end</span>
+0039  <span class="keyword">end</span>
+0040 
+0041 
+0042 <span class="comment">% Last version 10/09/2005. Roberto Santana (rsantana@si.ehu.es)</span></pre></div>
+<hr><address>Generated on Fri 04-Dec-2009 13:38:29 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
