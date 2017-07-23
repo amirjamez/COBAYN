@@ -1,5 +1,5 @@
 # COBAYN: Compiler Autotuning Framework Using Bayesian Networks
-COBAYN is partialy funded by [ANTAREX](http://antarex-project.eu) European project. 
+COBAYN is parttialy funded by [ANTAREX](http://antarex-project.eu) European project. 
 ```
 All rights reserved for the author. 
 Any non-academic usage of COBAYN must be permitted by the author.
@@ -11,8 +11,7 @@ aashouri@ece.utoronto.ca
 
 
 
-This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the 
-best set of compiler flags given a new unseen application. There are one exploration dataset and two different characterization dataset provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory.
+This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. There are one exploration dataset and two different characterization dataset provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory.
 
 ## Reference Journal
 For the details of the methodology, [COBAYN](http://dl.acm.org/citation.cfm?id=2928270) can be found at ACM digital library.
@@ -52,7 +51,7 @@ DOI: http://dx.doi.org/10.1145/2928270
 
 # USAGE:
 
-A quick automated script that takes the db, does the import, train and prediction 
+A quick automated script that takes the db, does the import, train, and prediction 
 is available by just running the following command:
 
 ```
@@ -131,4 +130,4 @@ pages={1--30},
 year={2010}
 }
 ```
-# COBAYN 2016-2017
+# COBAYN 2016-2017 
