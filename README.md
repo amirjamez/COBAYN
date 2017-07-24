@@ -10,7 +10,7 @@ aashouri@ece.utoronto.ca
 ```
 
 
-This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. 
+This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. Evaluations showed that it can outperform the exisiting models, i.e., [Akagov et al. 2006], [Park et al. 2015], and GCC's standard optimization levels -O2 and -O3.
 
 ## Reference Journal
 For the details of the methodology, [COBAYN](http://dl.acm.org/citation.cfm?id=2928270) can be found at ACM digital library.
