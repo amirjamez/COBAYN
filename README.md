@@ -14,6 +14,7 @@ This is a minimal working version of the COBAYN approach. It is a Matlab project
 
 ## Reference Journal
 For the details of the methodology, [COBAYN](http://dl.acm.org/citation.cfm?id=2928270) can be found at ACM digital library.
+
 *If you use any of the materials in this project, i.e., codes, provided ready-to-go datasets, methodology, etc.,  you should cite this work*: 
 
 *Bibtex version: 
@@ -36,7 +37,7 @@ doi = {10.1145/2928270},
 acmid = {2928270},
 publisher = {ACM},
 address = {New York, NY, USA},
-keywords = {Bayesian networks, design space exploration, statistical inference},
+keywords = {compiler optimization, Bayesian networks, machine learning, statistical inference},
 } 
 ```
 
@@ -82,10 +83,19 @@ DOI: http://dx.doi.org/10.1145/2928270
 
 ```
 
+## Provided datasets
+
+In order to facilitate the test and future comparisons, I have provided a dataset consisting of execution times for many application and two different characterization methods: (i) an exploration dataset, and, (ii) two different characterization datasets provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory. 
+
+*(i) Exploration dataset: It consists of 7 compiler passes (GCC flags) (mentioned in the COBAYN's paper) with 24 applications taken from [Cbench](http://ctuning.org/wiki/index.php?title=CTools:CBench) suite. Each application has been evaluated with 5 different datasets for its execution time and code-size. They are profiled in a [Pandaboard](https://archlinuxarm.org/platforms/armv7/ti/pandaboard)  embedded device running on Arch-linux.
+
+*(ii) Characterization datasets are derived with [MICA](https://github.com/boegel/MICA) (dynamic instrumentation) and [Milepost](https://github.com/ctuning/reproduce-milepost-project) (static characterization).
+
+
+
 # USAGE:
 
-A quick automated script that takes the db, does the import, train, and prediction 
-is available by just running the following command:
+A quick automated script that takes the DBs (both the exploration and the characterization), does the import, train, and prediction (cross-validation) is available by just running the following command:
 
 ```
 >>cd COBAYN
@@ -98,12 +108,12 @@ based on you need as you have to mention the following:
 
 ```
 1- Importing files:
-- Exploration Data set
-- Application characterization file
+    - Exploration Data set (default is cBench_onPandaboard_24app_5ds.csv)
+    - Application characterization file  (default is ft_Milepost_cbench.csv)
 2- Dimension Reduction Technique
-- Default is PCA
+    - Default is PCA
 3- Dataset Normalization Technique
-- pick 1-5 and comment it out
+    - pick 1-5 and comment the others
 ```
 
 ### Importing the files 
@@ -130,16 +140,6 @@ COL#{1}       = APP_NAME (i.e. automatic_bitcount)
 COL#{2}       = DATA_SET_No (i.e: dataset1)
 COL#{3:n}     = FEATURES (Number)
 ```
-
-### Provided datasets
-
-In order to facilitate the evaluation and future comparisons, I have provided a dataset consisting of application execution times and two different characterization methods: (i) an exploration dataset, and, (ii) two different characterization datasets provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory. 
-
-*(i) Exploration dataset: It consists of 7 compiler passes (GCC flags) (mentioned in the COBAYN's paper) with 24 applications taken from [Cbench](http://ctuning.org/wiki/index.php?title=CTools:CBench) suite. Each application has been evaluated with 5 different datasets for its execution time and code-size.
-
-
-*(ii) Characterization datasets are derived with [MICA](https://github.com/boegel/MICA) (dynamic instrumentation) and [Milepost](https://github.com/ctuning/reproduce-milepost-project) (static characterization).
-
 
 
 
