@@ -10,7 +10,7 @@ aashouri@ece.utoronto.ca
 ```
 
 
-This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. Evaluations showed that it can outperform the existing models, i.e., [Agakov et al. 2006], [Park et al. 2015], and GCC's standard optimization levels -O2 and -O3. COBAYN tackles the problem of **selecting the best compiler passes**, it does not consider the **phase-ordering problem**. See my [publications](http://www.eecg.toronto.edu/~aashouri/#publications) for my other research on finding the best ordering of phases.
+This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. Evaluations showed that it can outperform the existing models, i.e., [Agakov et al. 2006], [Park et al. 2015], and GCC's standard optimization levels -O2 and -O3. COBAYN tackles the problem of **selecting the best compiler passes**, it does not consider the **phase-ordering problem**. See my other [publications](http://www.eecg.toronto.edu/~aashouri/#publications) for papers related to  finding the best ordering of optimization phases.
 
 ## Reference Journal
 For the details of the methodology, [COBAYN](http://dl.acm.org/citation.cfm?id=2928270) can be found at ACM digital library.
