@@ -1,5 +1,5 @@
 # COBAYN: Compiler Autotuning Framework Using Bayesian Networks
-COBAYN is parttialy funded by [ANTAREX](http://antarex-project.eu) European project. 
+COBAYN is partially funded by [ANTAREX](http://antarex-project.eu) European project. 
 ```
 All rights reserved for the author. 
 Any non-academic usage of COBAYN must be permitted by the author.
@@ -10,11 +10,11 @@ aashouri@ece.utoronto.ca
 ```
 
 
-This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. Evaluations showed that it can outperform the exisiting models, i.e., [Agakov et al. 2006], [Park et al. 2015], and GCC's standard optimization levels -O2 and -O3.
+This is a minimal working version of the COBAYN approach. It is a Matlab project that predicts the best set of compiler flags given a new unseen application. Evaluations showed that it can outperform the existing models, i.e., [Agakov et al. 2006], [Park et al. 2015], and GCC's standard optimization levels -O2 and -O3. COBAYN tackles the problem of **selecting the best compiler passes**, it does not consider the **phase-ordering problem**. See my [publications](http://www.eecg.toronto.edu/~aashouri/#publications) for my other research on finding the best ordering of phases.
 
 ## Reference Journal
 For the details of the methodology, [COBAYN](http://dl.acm.org/citation.cfm?id=2928270) can be found at ACM digital library.
-Make sure to cite this work when you use the code: 
+*If you use any of the materials in this project, i.e., codes, provided ready-to-go datasets, methodology, etc.,  you should cite this work*: 
 
 *Bibtex version: 
 ```
@@ -46,6 +46,40 @@ Amir Hossein Ashouri, Giovanni Mariani, Gianluca Palermo, Eunjung Park, John Cav
 2016. COBAYN: Compiler Autotuning Framework Using Bayesian Networks. 
 ACM Trans. Archit. Code Optim. 13, 2, Article 21 (June 2016), 25 pages. 
 DOI: http://dx.doi.org/10.1145/2928270
+```
+
+# Project Tree
+```
+|── COBAYN/
+|  ├── COBAYN.m                                  // automated script ro run and evaluate COBAYN
+|  ├── README.txt
+|  ├── data
+|  │   ├── cBench_onPandaboard_24app_5ds.csv     // Execution-times dataset
+|  │   ├── ft_MICA_cbench.csv                    // static characterization dataset
+|  │   └── ft_Milepost_cbench.csv                // Dynamic characterization dataset
+|  ├── dataProcessing
+|  │   ├── getBestSet.m
+|  │   ├── getBestSet2.m
+|  │   └── take_db.m
+|  ├── initMatEnv.m
+|  ├── model
+|  │   ├── enterEvidence.m
+|  │   ├── generateModels.m
+|  │   ├── getMLE.m
+|  │   ├── getModel.m
+|  │   ├── sampleModel.m
+|  │   └── useModels.m
+|  |── utils
+|  |   ├── cell2csv.m
+|  |   ├── pcaFromStatToolbox.m
+|  |   |── predictionTableGenerator.m
+├── Estimation_of_Distribution_Algorithms (*)  // Original Matlab BN package
+│   ├── BNT
+│   ├── BNT_SLP
+│   ├── Mateda2.0
+│   └── setupMatlabEnv_EDA.m
+└── README.md
+
 ```
 
 # USAGE:
@@ -85,7 +119,7 @@ COL#{M+1:N-1} = EXEC_TIME per each datasets (Numbers)
 COL#{N}       = CODE_SIZE
 ```
 
-* Appliction characterization
+* Application characterization
 
 You application characterization.csv set must be n columns csv and have 
 the following structure:
@@ -99,12 +133,13 @@ COL#{3:n}     = FEATURES (Number)
 
 ### Provided datasets
 
-There are (i) one exploration dataset, and, (ii) two different characterization datasets provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory. 
+In order to facilitate the evaluation and future comparisons, I have provided a dataset consisting of application execution times and two different characterization methods: (i) an exploration dataset, and, (ii) two different characterization datasets provided ready-to-go. They can be found at the ~COBAYN/COBAYN/data directory. 
 
-*(i) Exploration dataset: It consists of 7 compiler exploration (mentioned in the COBAYN's paper) with 24 applications from [Cbench](http://ctuning.org/wiki/index.php?title=CTools:CBench) suite. Each application has been evaluated with 5 different datasets for its execution time and code-size.
+*(i) Exploration dataset: It consists of 7 compiler passes (GCC flags) (mentioned in the COBAYN's paper) with 24 applications taken from [Cbench](http://ctuning.org/wiki/index.php?title=CTools:CBench) suite. Each application has been evaluated with 5 different datasets for its execution time and code-size.
 
 
 *(ii) Characterization datasets are derived with [MICA](https://github.com/boegel/MICA) (dynamic instrumentation) and [Milepost](https://github.com/ctuning/reproduce-milepost-project) (static characterization).
+
 
 
 
@@ -127,7 +162,7 @@ Standalone Test
 Currently not available.
 ```
 
-#### Original Bayesian network package in Matlab: 
+####  (*) Original Bayesian network package in Matlab: 
 
 The Bayesian network package is dervided from the work of "MATEDA-2.0":
 ```
