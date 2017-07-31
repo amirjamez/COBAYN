@@ -10,13 +10,13 @@ function[] = InitEnvironments()
 
 initialPath =pwd;
 
-path_mateda =  '/Users/amir/Documents/phd_stuffs/phd_scripts/Bayesian_Model/Estimation_of_Distribution_Algorithms/Mateda2.0';
-path_FullBNT = '/Users/amir/Documents/phd_stuffs/phd_scripts/Bayesian_Model/Estimation_of_Distribution_Algorithms/BNT';
-path_BNT_SLP = '/Users/amir/Documents/phd_stuffs/phd_scripts/Bayesian_Model/Estimation_of_Distribution_Algorithms/BNT_SLP';
+% AMIR: change the path accordingly
 
-%path_mateda =  'C:\Roberto\Centro\Matlab\Mateda2.0';
-%path_FullBNT = 'C:\Roberto\Centro\Matlab\FullBNT-1.0.4\FullBNT-1.0.4';
-%path_BNT_SLP = 'C:\Roberto\Centro\Matlab\FullBNT-1.0.4\BNT_StructureLearning_v1[1].4c\BNT_SLP';
+path_mateda =  '~/COBAYN/Estimation_of_Distribution_Algorithms/Mateda2.0';
+path_FullBNT = '~/COBAYN/Estimation_of_Distribution_Algorithms/BNT';
+path_BNT_SLP = '~/COBAYN/Estimation_of_Distribution_Algorithms/BNT_SLP';
+
+
 
 
    cd(path_FullBNT);
