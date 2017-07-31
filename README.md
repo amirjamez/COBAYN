@@ -97,8 +97,10 @@ In order to facilitate the test and future comparisons, I have provided a datase
 
 Please set your absolute paths in these files: 
 
-```COBAYN/Estimation_of_Distribution_Algorithms/Mateda2.0/InitEnvironments.m
-COBAYN/Estimation_of_Distribution_Algorithms/BNT_SLP/add_SLP.m```
+```
+COBAYN/Estimation_of_Distribution_Algorithms/Mateda2.0/InitEnvironments.m
+COBAYN/Estimation_of_Distribution_Algorithms/BNT_SLP/add_SLP.m
+```
 
 A quick automated script that takes the DBs (both the exploration and the characterization), does the import, train, and prediction (cross-validation) is available by just running the following command:
 
