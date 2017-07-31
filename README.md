@@ -95,11 +95,18 @@ In order to facilitate the test and future comparisons, I have provided a datase
 
 # USAGE:
 
-Please set your absolute paths in these files: 
+-Please set your absolute paths in these files: 
 
 ```
 COBAYN/Estimation_of_Distribution_Algorithms/Mateda2.0/InitEnvironments.m
 COBAYN/Estimation_of_Distribution_Algorithms/BNT_SLP/add_SLP.m
+```
+
+-Change this line to your needs: 
+
+```
+COBAYN/COBAYN/model/generateModels.m:25
+bestPerBenchmark = X; // use X number of samples in each application
 ```
 
 A quick automated script that takes the DBs (both the exploration and the characterization), does the import, train, and prediction (cross-validation) is available by just running the following command:
