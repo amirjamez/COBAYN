@@ -15,7 +15,6 @@ setupMatlabEnv_EDA; % note that this adds the Bayesian Network toolboxes as well
 addpath('./dataProcessing/');
 addpath('./model/');
 addpath('./utils/');
-addpath(genpath('../amir_matlab/'))
 
 % use learn_struct_PC passing constraints not to let primary variables be children of anybody. (page 31, gr03.pdf)
 addpath('../Estimation_of_Distribution_Algorithms/');
