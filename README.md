@@ -106,7 +106,7 @@ COBAYN/Estimation_of_Distribution_Algorithms/BNT_SLP/add_SLP.m
 
 ```
 COBAYN/COBAYN/model/generateModels.m:25
-bestPerBenchmark = X; // use X number of samples in each application
+bestPerBenchmark = X; // use X number of the best samples (sorted by execution time) in each application
 ```
 
 A quick automated script that takes the DBs (both the exploration and the characterization), does the import, train, and prediction (cross-validation) is available by just running the following command:
