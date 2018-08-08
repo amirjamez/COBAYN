@@ -2,7 +2,7 @@
 %  COBAYN Autotuning Framework  %
 %   v1.0 July 2017              %
 %   Amir H. Ashouri             %
-% aashouri@ece.utoronto.ca %
+% aashouri@ece.utoronto.ca      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 # COBAYN Compiler Autotuning Framework  
