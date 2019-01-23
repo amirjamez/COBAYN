@@ -62,7 +62,7 @@ is available by just running:
 ```
 
 ## Step-by-step Process
-Modify the "take_db.m" file located at ~/BeliefNetwork/dataProcessing/take_db.m
+Modify the "take_db.m" file located at ./dataProcessing/take_db.m
 based on you need as you have to mention the following:
 ```
 1- Importing files:
